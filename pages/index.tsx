@@ -1,9 +1,9 @@
 import Head from "next/head";
 import Image from "next/image";
-import { LinkButton } from "./components/LinkButton";
+import { LinkButton } from "../components/LinkButton";
 import type { NextPage } from "next";
-import { ProjectContainer } from "./components/ProjectContainer";
-import { Section } from "./components/Section";
+import { ProjectContainer } from "../components/ProjectContainer";
+import { Section } from "../components/Section";
 
 const Home: NextPage = () => {
   return (
