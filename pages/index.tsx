@@ -56,7 +56,13 @@ const Home: NextPage = () => {
         </Section>
         <Section>
           <div className="max-w-screen-md m-auto">
-            <h3 className="mb-4 font-medium text-white text-2xl">Projects</h3>
+            <h3 className="mb-4 font-semibold text-white text-2xl">Projects</h3>
+            <ProjectContainer
+              header="Verba"
+              description="Vocabulary learning application. Watch youtube and learn languages."
+              website="??"
+              projectImage="/verba.png"
+            />
             <ProjectContainer
               header="Pssst!"
               description="Recruitment platform with a map and the ability for creating references."
