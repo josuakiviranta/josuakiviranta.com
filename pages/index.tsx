@@ -60,7 +60,7 @@ const Home: NextPage = () => {
             <ProjectContainer
               header="Verba"
               description="Vocabulary learning application. Watch youtube and learn languages."
-              website="https://verba-eanm0ml4q-josuakiviranta-gmailcom.vercel.app/"
+              website="https://www.verba.world/"
               projectImage="/verba.png"
             />
             <ProjectContainer
