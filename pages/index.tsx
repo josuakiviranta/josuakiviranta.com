@@ -44,12 +44,12 @@ const Home: NextPage = () => {
               nice to have you here.
             </h3>
             <p className="mb-5">
-              I&apos;m Josua - product builder and software engineer. When
-              I&apos;m not coding, you&apos;ll find me doing cross country
-              skiing, following too many news sources or driving a camper van
-              somewhere in northen Europe. I&apos;m always looking for new
-              meaningful projects with enthusiastic people. If you have any
-              interesting projects or you just feel like saying hi, don&apos;t
+              I&apos;m Josua - product a builder and a software engineer. When
+              I&apos;m not doing projects, you&apos;ll find me doing
+              cross-country skiing, following too many news sources or driving a
+              camper van somewhere in Northern Europe. I&apos;m always looking
+              for new meaningful projects with enthusiastic people. If you have
+              an interesting project or you just feel like saying hi, don&apos;t
               hesitate to contact me.
             </p>
           </div>
