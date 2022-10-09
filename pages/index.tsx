@@ -44,7 +44,7 @@ const Home: NextPage = () => {
               nice to have you here.
             </h3>
             <p className="mb-5">
-              I&apos;m Josua - product a builder and a software engineer. When
+              I&apos;m Josua - a product builder and a software engineer. When
               I&apos;m not doing projects, you&apos;ll find me doing
               cross-country skiing, following too many news sources or driving a
               camper van somewhere in Northern Europe. I&apos;m always looking
