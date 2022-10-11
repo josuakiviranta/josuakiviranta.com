@@ -4,6 +4,8 @@ interface ProjectProps {
   header: string;
   description: string;
   projectImage: string;
+  storyPage?: string;
+  ideaPage?: string;
   website?: string;
   source?: string;
 }
@@ -15,6 +17,8 @@ export const ProjectContainer = (props: ProjectProps) => {
         <h3 className="grow mb-2 font-medium text-white text-2xl">
           {props.header}
         </h3>
+        {props.ideaPage && <LinkButton link={props.ideaPage} text="Idea" />}
+        {props.storyPage && <LinkButton link={props.storyPage} text="Story" />}
         {props.website && <LinkButton link={props.website} text="Website" />}
         {props.source && <LinkButton link={props.source} text="Source" />}
       </div>

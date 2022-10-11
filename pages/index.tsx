@@ -13,7 +13,6 @@ const Home: NextPage = () => {
         <meta name="description" content="Project page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className="w-screen h-full text-slate-300 flex flex-col">
         <Section>
           <div className="max-w-screen-md m-auto">
@@ -62,24 +61,28 @@ const Home: NextPage = () => {
               description="Vocabulary learning application. Watch youtube and learn languages."
               website="https://www.verba.world/"
               projectImage="/verba.png"
+              ideaPage="/verba"
             />
             <ProjectContainer
               header="Pssst!"
               description="Recruitment platform with a map and the ability for creating references."
               website="https://www.pssst.work"
               projectImage="/pssst-cover.png"
+              ideaPage="/pssst"
             />
             <ProjectContainer
               header="Soteduunit"
               description="Demo for Finnish healthcare and social welfare organizations."
               website="https://rekry-map.vercel.app/"
               projectImage="/soteduunit-cover.png"
+              storyPage="/soteduunit"
             />
             <ProjectContainer
               header="Way to influence what millions of people read"
               description="Script for manipulating news items popularity rankings on the online newspaper’s front page. To be clear, I have informed this vulnerability to Finland's newspapers top management and got repsonses. Hope that they have really fixed this issue..."
               source="https://github.com/josuakiviranta/click-script"
               projectImage="/clickscript-cover.png"
+              storyPage="/script"
             />
           </div>
         </Section>
