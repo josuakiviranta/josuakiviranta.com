@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Section } from "../components/Section";
 
 export default function SoteDuunit() {
@@ -57,9 +58,9 @@ export default function SoteDuunit() {
             After these events I pivoted the project towards startups that I
             knew would be more agile in their moves and more easy for me to
             contact. You can read the idea of{" "}
-            <a href="/pssst" className="underline hover:opacity-75">
+            <Link href="/pssst" className="underline hover:opacity-75">
               Pssst! here.
-            </a>
+            </Link>
           </p>
         </div>
       </Section>
