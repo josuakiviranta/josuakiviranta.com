@@ -35,29 +35,29 @@ export default function SoteDuunit() {
             <br />
             <br />
             About the project itself.
-            <br /> As you probably rightly assumed, I started this project when
-            I was searching for a job in 2021. At the same time my doctor
-            brother was also searching for a job and was frustrated how bad the
-            current job searching platforms were. I needed some demo group for
-            my platform and we agreed with my brother to focus first on Finnish
+            <br /> At the same time my brother, a fresh medical doctor, was also
+            considering jobs and was frustrated how bad the current job
+            searching platforms were. I needed some target group for my platform
+            demo and we agreed with my brother to focus first on Finnish
             healthcare and social welfare organisations.
             <br />
             <br />
-            We managed to get a lot of interest for this project, but then three
-            big obstacles came on the road. Firstly, we realised that Finnish
-            healthcare and social welfare organisations are very bureaucratic
-            and slow moving on any decisions they make. Secondly, their job
-            postings were in highly unstructured form and they lacked a way to
-            do api integrations for their current job posts. Finally, my brother
-            got a very lucrative offer to be a school doctor and didn’t have a
-            lot of time to contact different healthcare and social welfare
-            organisations anymore. (As a doctor he was a key player because
-            these organisations really like their kind.)
+            Discussing with the administration of HUS and certain other health
+            organizations, we managed to get a lot of interest for this project,
+            but then three big obstacles became obvious. Firstly, we realised
+            that Finnish healthcare and social care organisations are very
+            bureaucratic and slow on any decisions they make. Secondly, their
+            job postings were in highly unstructured format, which lacked a way
+            to easily perform API integrations for their job posts. Finally, my
+            brother got a very lucrative offer to be a school doctor and no
+            longer had time to contact various healthcare and social care
+            organisations. (As a medical professional he had brought a lot of
+            credibility to our project.)
             <br />
             <br />
             After these events I pivoted the project towards startups that I
-            knew would be more agile in their moves and more easy for me to
-            contact. You can read the idea of{" "}
+            knew would be more agile and easier for me to contact You can read
+            the idea of{" "}
             <Link href="/pssst" className="underline hover:opacity-75">
               Pssst! here.
             </Link>

@@ -9,19 +9,20 @@ export default function SoteDuunit() {
             Idea behind the Verba
           </h2>
           <p className="mb-5">
-            In learning the key factor is motivation. You can bang the new
-            information to someones heads but, if she lacks the inner motivation
-            to learn you cannot assume great results. However, if someone is
-            truly motivated she will learn and fast.
+            In learning the key factor is motivation. To quote Plutarch the
+            philosopher, education is cultivating the flame, not filling a
+            vessel. If someone is truly motivated she will learn fast.
             <br />
             <br />
-            The idea in Verba is to make vocabulary learning more motivating.
-            You watch YouTube about the subjects you are interested in and train
-            the spoken words from the videos. If you create an account you can
-            also start collecting your own vocabulary chest of the words you
-            already know. Then you don’t have to train these words again and for
-            some reason it is also quite satisfactory to collect new words to
-            your vocabulary chest.
+            The idea in Verba is to make foreign vocabulary learning more
+            motivating. You watch YouTube about the subjects you are interested
+            in, and Verba shows subtitles captured from speech, highlighting new
+            words, i.e. words not found in your word chest . If you have a Verba
+            account, you accumulate words familiar to you into your personal
+            word chest, and not get bothered about them any more. Only the new
+            intriguing words are highlighted for you to memorize, should you
+            wish to. Old fashioned underlining textbooks, brought to digital
+            age.
           </p>
         </div>
       </Section>
