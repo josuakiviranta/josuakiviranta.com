@@ -56,7 +56,7 @@ export default function SoteDuunit() {
             <br />
             <br />
             After these events I pivoted the project towards startups that I
-            knew would be more agile and easier for me to contact You can read
+            knew would be more agile and easier for me to contact. You can read
             the idea of{" "}
             <Link href="/pssst" className="underline hover:opacity-75">
               Pssst! here.
