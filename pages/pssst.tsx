@@ -1,14 +1,17 @@
+import { NavBar } from "../components/NavBar";
+import { ProjectContainer } from "../components/ProjectContainer";
 import { Section } from "../components/Section";
 
 export default function Script() {
   return (
     <div className="w-screen h-full text-slate-300 flex flex-col">
+      <NavBar />
       <Section>
         <div className="max-w-screen-md m-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight uppercase mb-8">
             The idea behind Pssst! recruiting platform
           </h2>
-          <p className="mb-5">
+          <p className="mb-16">
             The main idea with Pssst!-platform was to help companies to recruit
             new candidates through word-of-mouth marketing and by using
             reference links. A reference link is basically a job post that
@@ -30,6 +33,12 @@ export default function Script() {
             Basically the idea was to upgrade companies’ inside recruitment
             systems.
           </p>
+          <ProjectContainer
+            header="Pssst!"
+            description="Recruitment platform with a map and the ability for creating references."
+            website="https://www.pssst.work"
+            projectImage="/pssst-cover.png"
+          />
         </div>
       </Section>
     </div>

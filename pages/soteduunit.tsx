@@ -1,15 +1,18 @@
 import Link from "next/link";
+import { NavBar } from "../components/NavBar";
+import { ProjectContainer } from "../components/ProjectContainer";
 import { Section } from "../components/Section";
 
 export default function SoteDuunit() {
   return (
     <div className="w-screen h-full text-slate-300 flex flex-col">
+      <NavBar />
       <Section>
         <div className="max-w-screen-md m-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight uppercase mb-8">
             Story behind the Soteduunit
           </h2>
-          <p className="mb-5">
+          <p className="mb-16">
             I’m a map enthusiast and I have always thought that those are great
             ways to present information. I also believe that map interfaces are
             key factors for Airbnb’s, Uber’s and Hoodmap’s success. These were
@@ -62,6 +65,12 @@ export default function SoteDuunit() {
               Pssst! here.
             </Link>
           </p>
+          <ProjectContainer
+            header="Soteduunit"
+            description="Demo for Finnish healthcare and social welfare organizations."
+            website="https://rekry-map.vercel.app/"
+            projectImage="/soteduunit-cover.png"
+          />
         </div>
       </Section>
     </div>

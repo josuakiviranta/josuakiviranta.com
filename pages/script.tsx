@@ -1,14 +1,18 @@
+import { NavBar } from "../components/NavBar";
+import { ProjectContainer } from "../components/ProjectContainer";
 import { Section } from "../components/Section";
 
 export default function Script() {
   return (
     <div className="w-screen h-full text-slate-300 flex flex-col">
+      <NavBar />
       <Section>
         <div className="max-w-screen-md m-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight uppercase mb-8">
             Story behind a manipulation script
           </h2>
-          <p className="mb-5">
+
+          <p className="mb-16">
             In summer 2016 when the American presidential election campaigns
             were in its main phase between the Democrats and Republicans I
             noticed strange behaviour in the Ilta-Sanomat news page “most readed
@@ -101,6 +105,12 @@ export default function Script() {
             notified inside the companies. I hope that by now they have fixed
             this issue.
           </p>
+          <ProjectContainer
+            header="Way to influence what millions of people read"
+            description="Script for manipulating news items popularity rankings on the online newspaper’s front page. To be clear, I have informed this vulnerability to Finland's newspapers top management and got repsonses. Hope that they have really fixed this issue..."
+            source="https://github.com/josuakiviranta/click-script"
+            projectImage="/clickscript-cover.png"
+          />
         </div>
       </Section>
     </div>
