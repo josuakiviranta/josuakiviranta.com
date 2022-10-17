@@ -13,27 +13,18 @@ export default function Script() {
           </h2>
 
           <p className="mb-16">
-            In summer 2016 when the American presidential election campaigns
-            were in its main phase between the Democrats and Republicans I
-            noticed strange behaviour in the Ilta-Sanomat news page “most readed
-            articles”-list. I noticed that all news articles that were talking
-            negatively about Russia or Donald Trump were falling very fast while
-            at the same time garbage news were rising equally fast. For me it
-            seemed that some rogue players were deliberately trying to affect
-            what Finnish people read on this site.
+            In summer 2016, when the American presidential election campaigns
+            were in its main phase, I noticed strange behaviour in the
+            Ilta-Sanomat “most readed articles”-list. All news articles that
+            were talking negatively about Russia or Donald Trump were falling
+            very fast. These news articles could drop over 30 points in 10-20
+            minutes while some nonsense articles took their places. For me it
+            seemed that someone was influencing what people in Finland were
+            seeing in this specific news media.
             <br />
             <br />
-            At the same time I was reading the book Thinking Fast and Slow by
-            Nobel laureate Daniel Kahneman and one of the key findings of this
-            book is the notion of WYSIATI: “What you see is all there is”. This
-            struck me hard especially when I linked the suspicious behaviour of
-            the news articles in the “most readed”-list to this very same
-            notion. If the people won’t see the negative things that Russia and
-            Donald Trump is doing they don’t get concerned about those things.
-            <br />
-            <br />
-            The last proof for me that something big was happening was the
-            release of Cambridge Analytica’s presentation of{" "}
+            My suspicions were raised even more when Cambridge Analytica
+            released a presentation of{" "}
             <a
               href="https://www.youtube.com/watch?v=n8Dd5aVXLCc"
               className="underline hover:opacity-75"
@@ -42,50 +33,37 @@ export default function Script() {
             </a>{" "}
             at Concordia Summit in September 2016. In this presentation
             Cambridge Analytica’s spokesperson Alexander Nix plainly explains
-            how they are manipulating election behaviour based on big data they
-            are gathering from American people. I thought that this was
-            outrageously dangerous and surely just a tip of the iceberg. If the
-            manipulation campaigns were so easy and cheap to do in the States
-            then surely there are huge on going manipulation campaigns all over
-            the world.
+            how they are manipulating election behaviour based on data they are
+            gathering from American people. I thought that this was outrageously
+            dangerous and surely just a tip of the iceberg. If the manipulation
+            campaigns were so easy and cheap to do in the States then surely
+            there are huge ongoing influence campaigns all over the world.
             <br />
             <br />
-            Ok, back to the happenings in Finland in 2016. First I told my
-            father about my suspicions of news article manipulation, who of
-            course didn’t believe me… Luckily after a few days, his curiosity
-            won and he tried what would happen if he would select a specific
-            news article and open it multiple times in a browser with incognito
-            mode on. The finding was striking. When he selected an article that
-            possessed a rank of 70 in the “most readed”-list, he was able to
-            raise its ranking from 70 to 50 in 30 minutes just by manually
-            opening and closing it.
+            First I told my father about these suspicions of news article
+            manipulation, but he of course didn’t believe me… Luckily after a
+            few days, his curiosity won and he tried what would happen if he
+            would select a specific news article and open it multiple times in a
+            browser with incognito mode on. The finding was striking. He was
+            alone able to raise a news article’s ranking from 70 to 50 in 30
+            minutes just by manually opening and closing it.
             <br />
             <br />
-            After this finding I started to build two scrapers that would scrape
-            all top 100 rankings from the “most readed”-list every 10 minutes on
-            Ilta-Sanomat and Helsingin-Sanomat news web pages. I let the
-            scrapers run for one year and my hope was that from the scraped data
-            I could pinpoint a manipulation activity of any news article. My
-            assumption was that I could see the manipulation activity if some
-            specific and newly added news article would drop faster than on
-            average on the “most readed”-list while other news articles were
-            rising on top of it. The boundary condition for the articles of
-            interest was that those a should start their journey from top 5 most
-            readed news in the “most readed“-list.
+            After this I started to build two scrapers that would scrape every
+            10 minutes all top 100 rankings from the “most readed”-list on
+            Ilta-Sanomat and Helsingin-Sanomat web pages. I let the scrapers run
+            for a year and my hope was that from the scraped data I could
+            pinpoint a manipulation activity of any article.
             <br />
             <br />
-            The key finding from my analysis was that surprisingly many articles
-            were dropping fast. These articles didn’t only contain the stories
-            of Russia or Donald Trump but there were many other articles
-            behaving the same way as well. These suspicious articles contained
-            for example negative stories about Facebook and Google’s data
-            gathering among others. However, there were also some more ordinary
-            news dropping at almost the same rate so in the end I concluded that
-            this is not enough proof to show that news article manipulation was
-            really happening.
+            However, this task was harder than I had anticipated. It is hard to
+            say if some news article is influenced or is there some other reason
+            why it’s dropping fast. Therefore I had to invent something else to
+            prove my point. Nevertheless, I could find categories that contained
+            quite a lot of fast-dropping articles: Politics and Diginews.
             <br />
             <br />
-            Next my second way to prove this vulnerability was to create my own
+            My second way to prove this vulnerability was to create my own
             manipulation script. The script’s idea is the same as what my father
             had done earlier. Open a specific news article multiple times in a
             browser with incognito mode on. My script can open a specific
@@ -98,10 +76,10 @@ export default function Script() {
             <br />
             <br />
             Final words. When the war started in Ukraine I told about this
-            vulnerability to the Sanoma Media’s and Alma Media’s top management.
-            These are the two biggest news sources in Finland and both of those
-            have this same vulnerability in their news web pages. I got answers
-            from both media houses and they said that this issue will be
+            vulnerability to the Sanoma Media and Alma Media’s top management.
+            These are the two biggest media houses in Finland and both of those
+            have had this same vulnerability in their news web pages. I got
+            answers from both media houses and they said that this issue will be
             notified inside the companies. I hope that by now they have fixed
             this issue.
           </p>
