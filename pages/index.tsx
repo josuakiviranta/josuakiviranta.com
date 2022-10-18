@@ -1,12 +1,9 @@
-import { BookContainer } from "../components/BookContainer";
 import { BooksSection } from "../components/BooksSection";
+import { ContactSection } from "../components/ContactSection";
 import Head from "next/head";
-import Image from "next/image";
-import { LinkButton } from "../components/LinkButton";
+import { HelloSection } from "../components/HelloSection";
 import type { NextPage } from "next";
-import { ProjectContainer } from "../components/ProjectContainer";
 import { ProjectsSection } from "../components/ProjectsSection";
-import { Section } from "../components/Section";
 
 const Home: NextPage = () => {
   return (
@@ -17,56 +14,11 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="w-screen h-full text-slate-300 flex flex-col">
-        <Section>
-          <div className="max-w-screen-md m-auto">
-            <h1 className="text-white mb-4 text-5xl sm:text-6xl font-extrabold tracking-tight">
-              Josua A. Kiviranta
-            </h1>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight uppercase mb-8">
-              Helsinki, Finland
-            </h2>
-            <div className="w-full flex">
-              <Image
-                width={300}
-                height={400}
-                className="rounded-lg"
-                src="/profile.jpg"
-                alt="Profile picture"
-                objectFit="fill"
-                layout="fixed"
-                quality={100}
-              />
-            </div>
-          </div>
-        </Section>
-        <Section>
-          <div className="max-w-screen-md m-auto">
-            <h3 className="mb-4 font-medium text-white text-2xl">
-              Hello stranger 👋, <br />
-              nice to have you here.
-            </h3>
-            <p className="mb-5">
-              I&apos;m Josua - a product builder and a problem solver. When
-              I&apos;m not doing projects, you&apos;ll find me doing
-              cross-country skiing, following too many news sources or driving a
-              camper van somewhere in Northern Europe. I&apos;m always looking
-              for new meaningful projects with enthusiastic people. If you have
-              an interesting project or you just feel like saying hi, don&apos;t
-              hesitate to contact me.
-            </p>
-          </div>
-        </Section>
+        <ProjectsSection />
+        <HelloSection />
         <ProjectsSection />
         <BooksSection />
-        <Section>
-          <div className="max-w-screen-md m-auto">
-            <h3 className="mb-4 font-medium text-white text-3xl">Contact</h3>
-            <LinkButton
-              link="https://www.linkedin.com/in/josuakiviranta/"
-              text="LinkedIn"
-            />
-          </div>
-        </Section>
+        <ContactSection />
       </main>
     </div>
   );
