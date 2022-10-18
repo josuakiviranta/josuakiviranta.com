@@ -3,6 +3,7 @@ import { ContactSection } from "../components/ContactSection";
 import Head from "next/head";
 import { HelloSection } from "../components/HelloSection";
 import type { NextPage } from "next";
+import { ProfileSection } from "../components/ProfileSection";
 import { ProjectsSection } from "../components/ProjectsSection";
 
 const Home: NextPage = () => {
@@ -14,7 +15,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="w-screen h-full text-slate-300 flex flex-col">
-        <ProjectsSection />
+        <ProfileSection />
         <HelloSection />
         <ProjectsSection />
         <BooksSection />

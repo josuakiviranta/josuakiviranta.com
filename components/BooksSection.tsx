@@ -6,7 +6,7 @@ export const BooksSection = () => {
     <Section>
       <div className="max-w-screen-md m-auto">
         <h3 className="mb-4 font-semibold text-white text-3xl">
-          Books that resonate
+          Books and journals that resonate
         </h3>
         <div className="grid sm:grid-cols-2 grid-cols-1 grid-rows-1">
           <BookContainer
@@ -28,6 +28,11 @@ export const BooksSection = () => {
             header="The Man Who Mistook His Wife for a Hat"
             description="Oliver Sacks, 1985"
             projectImage="/hat.jpg"
+          />
+          <BookContainer
+            header="The Economist"
+            description="1843"
+            projectImage="/economist.jpg"
           />
         </div>
       </div>
