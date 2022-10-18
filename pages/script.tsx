@@ -9,9 +9,8 @@ export default function Script() {
       <Section>
         <div className="max-w-screen-md m-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight uppercase mb-8">
-            Story behind a manipulation script
+            How to influence what millions of people read in Finland
           </h2>
-
           <p className="mb-16">
             In summer 2016, when the American presidential election campaigns
             were in its main phase, I noticed strange behaviour in the
