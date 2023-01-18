@@ -7,7 +7,7 @@ export const ProjectsSection = () => {
       <div className="max-w-screen-md m-auto">
         <h3 className="mb-4 font-semibold text-white text-3xl">Projects</h3>
         <ProjectContainer
-          header="Verba (on going development)"
+          header="Verba"
           description="Vocabulary learning application. Watch youtube and learn languages."
           website="https://www.verba.world/"
           projectImage="/verba.png"
