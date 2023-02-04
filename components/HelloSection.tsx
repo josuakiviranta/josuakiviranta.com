@@ -14,7 +14,9 @@ export const HelloSection = () => {
           following too many news sources or driving a camper van somewhere in
           Northern Europe. I&apos;m always looking for new meaningful projects
           with enthusiastic people. If you have an interesting project or you
-          just feel like saying hi, don&apos;t hesitate to contact me.
+          just feel like saying hi, don&apos;t hesitate to contact me. <br />
+          <br />
+          josua.kiviranta@gmail.com
         </p>
       </div>
     </Section>
