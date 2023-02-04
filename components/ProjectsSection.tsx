@@ -20,14 +20,15 @@ export const ProjectsSection = () => {
           projectImage="/pssst-cover.png"
           ideaPage="/pssst"
         />
-        {/*
-        <ProjectContainer
-          header="Soteduunit"
-          description="Demo for Finnish healthcare and social welfare organizations."
-          website="https://rekry-map.vercel.app/"
-          projectImage="/soteduunit-cover.png"
-          storyPage="/soteduunit"
-  />*/}
+        <div className="hidden lg:block">
+          <ProjectContainer
+            header="Soteduunit"
+            description="Demo for Finnish healthcare and social welfare organizations."
+            website="https://rekry-map.vercel.app/"
+            projectImage="/soteduunit-cover.png"
+            storyPage="/soteduunit"
+          />
+        </div>
         <ProjectContainer
           header="Way to influence what millions of people read"
           description="Script for manipulating news items popularity rankings on the online newspaper’s front page. To be clear, I have informed this vulnerability to Finland's newspapers top management and got repsonses. Hope that they have really fixed this issue..."
