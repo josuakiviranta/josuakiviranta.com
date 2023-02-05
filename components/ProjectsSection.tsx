@@ -15,7 +15,7 @@ export const ProjectsSection = () => {
         />
         <ProjectContainer
           header="Pssst!"
-          description="Recruitment platform with a map and the ability for creating references."
+          description="Crowd-sourced headhuntin - Recruitment platform with a map and the ability for creating references."
           website="https://www.pssst.work"
           projectImage="/pssst-cover.png"
           ideaPage="/pssst"

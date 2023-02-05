@@ -9,7 +9,7 @@ export default function Script() {
       <Section>
         <div className="max-w-screen-md m-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight uppercase mb-8">
-            The idea behind Pssst! recruiting platform
+            Pssst!
           </h2>
           <p className="mb-16">
             The main idea with Pssst!-platform was to help companies to recruit
