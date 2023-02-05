@@ -38,7 +38,7 @@ export default function SoteDuunit() {
             <br />
             <br />
             About the project itself.
-            <br /> At the same time my brother, a fresh medical doctor, was also
+            <br /> At the time my brother, a fresh medical doctor, was
             considering jobs and was frustrated how bad the current job
             searching platforms were. I needed some target group for my platform
             demo and we agreed with my brother to focus first on Finnish
