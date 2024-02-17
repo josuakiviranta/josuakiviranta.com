@@ -28,7 +28,7 @@ export default function SoteDuunit() {
             age.
           </p>
           <ProjectContainer
-            header="Verba (on going development)"
+            header="Verba"
             description="Vocabulary learning application. Watch youtube and learn languages."
             website="https://www.verba.world/"
             projectImage="/verba.png"

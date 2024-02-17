@@ -7,6 +7,12 @@ export const ProjectsSection = () => {
       <div className="max-w-screen-md m-auto">
         <h3 className="mb-4 font-semibold text-white text-3xl">Projects</h3>
         <ProjectContainer
+          header="Innofactor GPT Agents"
+          description="Platform for optimized AI agents for spesific work tasks. Leading the project in Innofactor Oy."
+          projectImage="/innofactor-gpt-agents-black.png"
+          ideaPage="/innofactorGptAgents"
+        />
+        <ProjectContainer
           header="Verba"
           description="Vocabulary learning application. Watch youtube and learn languages."
           website="https://www.verba.world/"
@@ -15,7 +21,7 @@ export const ProjectsSection = () => {
         />
         <ProjectContainer
           header="Pssst!"
-          description="Crowd-sourced headhuntin - Recruitment platform with a map and the ability for creating references."
+          description="Crowd-sourced headhunting - Recruitment platform with a map and the ability for creating references."
           website="https://www.pssst.work"
           projectImage="/pssst-cover.png"
           ideaPage="/pssst"
