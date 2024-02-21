@@ -11,6 +11,7 @@ export const ProjectsSection = () => {
           description="Platform for optimized AI agents for spesific work tasks. Leading the project in Innofactor Oy."
           projectImage="/innofactor-gpt-agents-black.png"
           ideaPage="/innofactorGptAgents"
+          website="https://ai.innofactor.com/"
         />
         <ProjectContainer
           header="Verba"
