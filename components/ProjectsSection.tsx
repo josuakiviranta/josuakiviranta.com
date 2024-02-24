@@ -6,13 +6,15 @@ export const ProjectsSection = () => {
     <Section>
       <div className="max-w-screen-md m-auto">
         <h3 className="mb-4 font-semibold text-white text-3xl">Projects</h3>
-        <ProjectContainer
-          header="Innofactor GPT Agents"
-          description="Platform for optimized AI agents for spesific work tasks. Leading the project in Innofactor Oy."
-          projectImage="/innofactor-gpt-agents-black.png"
-          ideaPage="/innofactorGptAgents"
-          website="https://ai.innofactor.com/"
-        />
+        <div className="hidden lg:block">
+          <ProjectContainer
+            header="Innofactor GPT Agents"
+            description="Platform for optimized AI agents for spesific work tasks. Leading the project in Innofactor Oy."
+            projectImage="/innofactor-gpt-agents-black.png"
+            ideaPage="/innofactorGptAgents"
+            website="https://ai.innofactor.com/"
+          />
+        </div>
         <ProjectContainer
           header="Verba"
           description="Vocabulary learning application. Watch youtube and learn languages."
