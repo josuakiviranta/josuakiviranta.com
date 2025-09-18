@@ -30,14 +30,14 @@ export default function Script() {
             would have been a few thousand euros.
             <br />
             <br />
-            Basically the idea was to upgrade companies’ inside recruitment
+            Basically the idea was to upgrade companies’ internal reference
             systems.
           </p>
           <ProjectContainer
             header="Pssst!"
             description="Recruitment platform with a map and the ability for creating references."
             website="https://www.pssst.work"
-            projectImage="/pssst-cover.png"
+            projectImage="/pssst-cover.jpg"
           />
         </div>
       </Section>

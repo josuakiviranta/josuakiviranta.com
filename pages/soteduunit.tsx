@@ -71,7 +71,7 @@ export default function SoteDuunit() {
             header="Soteduunit"
             description="Demo for Finnish healthcare and social welfare organizations."
             website="https://rekry-map.vercel.app/"
-            projectImage="/soteduunit-cover.png"
+            projectImage="/soteduunit-cover.jpg"
           />
         </div>
       </Section>

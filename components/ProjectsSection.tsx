@@ -6,11 +6,18 @@ export const ProjectsSection = () => {
     <Section>
       <div className="max-w-screen-md m-auto">
         <h3 className="mb-4 font-semibold text-white text-3xl">Projects</h3>
+        <ProjectContainer
+          header="Social Synapse"
+          description="Connect Through Shared Thoughts."
+          projectImage="/social-synapse.jpg"
+          ideaPage="/socialSynapse"
+          website="https://www.socialsynapse.ai/"
+        />
         <div className="hidden lg:block">
           <ProjectContainer
             header="Innofactor GPT Agents"
             description="Platform for work task optimized AI agents. Leading the project in Innofactor Oy."
-            projectImage="/innofactor-gpt-agents-black.png"
+            projectImage="/innofactor-gpt-agents-black.jpg"
             ideaPage="/innofactorGptAgents"
             website="https://ai.innofactor.com/"
           />
@@ -19,14 +26,14 @@ export const ProjectsSection = () => {
           header="Verba"
           description="Vocabulary learning application. Watch youtube and learn languages."
           website="https://www.verba.world/"
-          projectImage="/verba.png"
+          projectImage="/verba.jpg"
           ideaPage="/verba"
         />
         <ProjectContainer
           header="Pssst!"
           description="Crowd-sourced headhunting - Recruitment platform with a map and the ability for creating references."
           website="https://www.pssst.work"
-          projectImage="/pssst-cover.png"
+          projectImage="/pssst-cover.jpg"
           ideaPage="/pssst"
         />
         <div className="hidden lg:block">
@@ -34,7 +41,7 @@ export const ProjectsSection = () => {
             header="Soteduunit"
             description="Demo for Finnish healthcare and social welfare organizations."
             website="https://rekry-map.vercel.app/"
-            projectImage="/soteduunit-cover.png"
+            projectImage="/soteduunit-cover.jpg"
             storyPage="/soteduunit"
           />
         </div>
@@ -42,7 +49,7 @@ export const ProjectsSection = () => {
           header="Way to influence what millions of people read"
           description="Script for manipulating news items popularity rankings on the online newspaper’s front page. To be clear, I have informed this vulnerability to Finland's newspapers top management and got repsonses. Hope that they have really fixed this issue..."
           source="https://github.com/josuakiviranta/click-script"
-          projectImage="/clickscript-cover.png"
+          projectImage="/clickscript-cover.jpg"
           storyPage="/script"
         />
       </div>

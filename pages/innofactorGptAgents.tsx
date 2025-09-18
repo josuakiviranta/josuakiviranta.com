@@ -12,13 +12,14 @@ export default function innofactorGptAgents() {
             Task optimized gpt agents.
           </h2>
           <p className="mb-8">
-            AI assistans are not (yet) magic buttons that do all the work while
-            we can go and ask more salary from our bosses. As much as we&apos;d
-            love to believe that these digital marvels possess by default an
-            otherworldly ability to effortlessly handle all our tasks, the
-            reality is far from it. While AI assistants have undoubtedly made
-            significant strides in last year, they still require a fair amount
-            of tailoring to perform optimally for specific tasks.
+            AI assistans are not yet (9th September 2023) magic buttons that do
+            all the work while we can go and ask more salary from our bosses. As
+            much as we&apos;d love to believe that these digital marvels possess
+            by default an otherworldly ability to effortlessly handle all our
+            tasks, the reality is far from it. While AI assistants have
+            undoubtedly made significant strides in last year, they still
+            require a fair amount of tailoring to perform optimally for specific
+            tasks.
             <br />
             <br />
             Innofactor GPT Agents offer a unique approach to enhancing
@@ -83,7 +84,7 @@ export default function innofactorGptAgents() {
           <ProjectContainer
             header="Innofactor GPT Agents"
             description="Platform for deep tailored AI agents for spesific work tasks. Project in Innofactor Oy."
-            projectImage="/innofactor-gpt-agents-light.png"
+            projectImage="/innofactor-gpt-agents-black.jpg"
           />
         </div>
       </Section>
