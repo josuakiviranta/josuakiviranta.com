@@ -13,10 +13,10 @@ export const ProfileSection = () => {
         </h2>
         <div className="w-full flex">
           <Image
-            width={300}
+            width={400}
             height={400}
             className="rounded-lg"
-            src="/profile.jpg"
+            src="/profile.jpeg"
             alt="Profile picture"
             objectFit="fill"
             layout="fixed"
