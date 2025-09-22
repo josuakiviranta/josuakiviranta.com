@@ -16,7 +16,7 @@ export const ProjectsSection = () => {
         <div className="hidden lg:block">
           <ProjectContainer
             header="Innofactor GPT Agents"
-            description="Platform for work task optimized AI agents. Leading the project in Innofactor Oy."
+            description="Platform for work task optimized AI agents. Led the project at Innofactor Oy."
             projectImage="/innofactor-gpt-agents-black.jpg"
             ideaPage="/innofactorGptAgents"
             website="https://ai.innofactor.com/"
