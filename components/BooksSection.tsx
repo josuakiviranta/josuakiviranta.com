@@ -8,11 +8,16 @@ export const BooksSection = () => {
         <h3 className="mb-4 font-semibold text-white text-3xl">
           Books and journals that resonate
         </h3>
-        <div className="grid sm:grid-cols-2 grid-cols-1 grid-rows-1">
+        <div className="grid lg:grid-cols-[2fr_1fr] grid-cols-1 grid-rows-1">
           <BookContainer
             header="Thinking, Fast and Slow"
             description="Daniel Kahneman, 2011"
             projectImage="/thinking-fast-and-slow.jpg"
+          />
+          <BookContainer
+            header="The Experience Machine"
+            description="Andy Clark, 2023"
+            projectImage="/the-experience-machine.jpeg"
           />
           <BookContainer
             header="Surely You're Joking, Mr. Feynman!"

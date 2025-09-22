@@ -14,7 +14,7 @@ export const BookContainer = (props: ProjectProps) => {
   return (
     <div className="flex flex-col w-fit">
       <div className="flex space-x-2">
-        <h3 className="grow mb-2 font-medium text-white text-2xl">
+        <h3 className="grow mb-2 font-medium text-white text-xl">
           {props.header}
         </h3>
         {props.ideaPage && <LinkButton link={props.ideaPage} text="Idea" />}
