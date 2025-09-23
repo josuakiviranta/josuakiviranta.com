@@ -15,11 +15,9 @@ export const ProfileSection = () => {
           <Image
             width={400}
             height={400}
-            className="rounded-lg"
+            className="rounded-lg max-w-full h-auto"
             src="/profile.jpeg"
             alt="Profile picture"
-            objectFit="fill"
-            layout="fixed"
             quality={100}
           />
         </div>
