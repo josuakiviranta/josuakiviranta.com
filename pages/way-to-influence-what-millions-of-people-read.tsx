@@ -74,7 +74,7 @@ export default function WayToInfluenceWhatMillionsOfPeopleRead() {
             two biggest media houses in Finland and both of those have had this
             same vulnerability in their online media web pages. I got answers
             from both media houses and they said that this issue will be
-            notified inside the companies. However, I suspect/fear is that this
+            notified inside the companies. However, I suspect/fear that this
             kind of click farming can be too close to online media houses
             business models and therefore those are not too keen to address this
             issue broadly.
