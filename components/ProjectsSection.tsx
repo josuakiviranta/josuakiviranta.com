@@ -12,6 +12,7 @@ export const ProjectsSection = () => {
           projectImage="/social-synapse.jpg"
           ideaPage="/socialSynapse"
           website="https://www.socialsynapse.ai/"
+          archived={true}
         />
         <div className="hidden lg:block">
           <ProjectContainer

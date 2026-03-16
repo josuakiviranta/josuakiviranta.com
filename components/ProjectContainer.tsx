@@ -8,6 +8,7 @@ interface ProjectProps {
   ideaPage?: string;
   website?: string;
   source?: string;
+  archived?: boolean;
 }
 
 export const ProjectContainer = (props: ProjectProps) => {
@@ -19,7 +20,11 @@ export const ProjectContainer = (props: ProjectProps) => {
         </h3>
         {props.ideaPage && <LinkButton link={props.ideaPage} text="Idea" />}
         {props.storyPage && <LinkButton link={props.storyPage} text="Story" />}
-        {props.website && <LinkButton link={props.website} text="Website" />}
+        {props.website && !props.archived ? (
+          <LinkButton link={props.website} text="Website" />
+        ) : (
+          <span>(Archived)</span>
+        )}
         {props.source && <LinkButton link={props.source} text="Source" />}
       </div>
       <p className="mb-3">{props.description}</p>
