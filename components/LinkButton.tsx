@@ -6,14 +6,14 @@ interface ButtonProps {
 export const LinkButton = (props: ButtonProps) => {
   return (
     <a
-      className="text-indigo-400 hover:text-indigo-500 focus:text-indigo-500"
+      className="text-vainamoinen hover:opacity-80 focus:opacity-80"
       href={props.link}
       target="_blank"
       rel="noopener noreferrer"
     >
       <button
         type="button"
-        className="flex flex-row space-x-1 items-center justify-center rounded-md p-1 px-2 text-white focus:outline focus:outline-yellow-500 relative bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700"
+        className="flex flex-row space-x-1 items-center justify-center rounded-md p-1 px-2 text-[#F4EDDD] focus:outline focus:outline-vainamoinen relative bg-vainamoinen hover:opacity-90 active:opacity-80"
       >
         <span>{props.text}</span>
         <svg

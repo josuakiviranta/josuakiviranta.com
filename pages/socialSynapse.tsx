@@ -14,7 +14,7 @@ export default function socialSynapse() {
           <p className="mb-8">
             During my time living at{" "}
             <a
-              className="text-[#f59f0b] underline"
+              className="text-vainamoinen underline"
               href="https://nolistudios.com/en"
             >
               Noli Studios

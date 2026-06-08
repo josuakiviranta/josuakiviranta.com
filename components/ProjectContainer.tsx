@@ -28,9 +28,9 @@ export const ProjectContainer = (props: ProjectProps) => {
         {props.source && <LinkButton link={props.source} text="Source" />}
       </div>
       <p className="mb-3">{props.description}</p>
-      <div className="bg-gradient-to-bl from-[#fde68a] to-[#f59f0b] rounded-lg p-4 sm:p-8 mb-8 w-full flex justify-center items-center">
+      <div className="bg-vainamoinen rounded-lg p-4 sm:p-8 mb-8 w-full flex justify-center items-center">
         <img
-          className="rounded sm:rounded-lg max-h-full shadow-lg shadow-yellow-900 flex"
+          className="rounded sm:rounded-lg max-h-full shadow-lg shadow-vainamoinen/40 flex"
           alt=""
           src={props.projectImage}
         />

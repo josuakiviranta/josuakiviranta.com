@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Inter:wght@300..700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,9 +8,9 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: #1e293b;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #F4EDDD;
+  color: #344128;
 }
 
 a {
@@ -20,12 +22,35 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: #1e293b;
-  }
+/* Mega palette overrides for existing dark-theme Tailwind classes */
+.text-white,
+.text-slate-300 {
+  color: #344128 !important;
+}
+
+/* Duotone Leaflet map tiles */
+.leaflet-container {
+  background: #F4EDDD;
+  position: relative;
+  isolation: isolate;
+}
+.leaflet-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #344128;
+  mix-blend-mode: color;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 300;
+}
+.leaflet-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #344128;
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 301;
 }

@@ -15,8 +15,8 @@ export const ProfileSection = () => {
           <Image
             width={400}
             height={400}
-            className="rounded-lg max-w-full h-auto"
-            src="/profile.jpeg"
+            className="max-w-full h-auto"
+            src="/bigfoot.webp"
             alt="Profile picture"
             quality={100}
           />

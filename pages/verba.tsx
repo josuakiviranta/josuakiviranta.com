@@ -20,7 +20,7 @@ export default function Verba() {
             <br />
             With{" "}
             <a
-              className="text-[#f59f0b] underline"
+              className="text-vainamoinen underline"
               href="https://www.verba.world/"
             >
               Verba
