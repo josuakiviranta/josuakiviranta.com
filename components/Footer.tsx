@@ -20,13 +20,6 @@ const ArrowIcon = () => (
 export const Footer = () => {
   return (
     <footer className="relative w-full bg-vainamoinen text-[#F4EDDD]/70 font-ibm-plex-mono text-sm mt-16 lg:mt-24 overflow-hidden">
-      <img
-        src="/footer-logo.webp"
-        alt=""
-        aria-hidden="true"
-        className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 h-80 xl:h-[28rem] w-auto pointer-events-none"
-      />
-
       <div className="max-w-7xl mx-auto w-full px-6 py-24 lg:py-40 relative">
         <div className="flex flex-col lg:flex-row justify-between gap-12">
           <div className="flex-1">
@@ -34,7 +27,7 @@ export const Footer = () => {
               AI CONSULTING &amp; SOFTWARE ENGINEERING
             </p>
             <div className="flex flex-col gap-1">
-              <span className="max-sm:text-4xl sm:text-5xl md:text-7xl lg:text-5xl xl:text-7xl font-caveat font-medium leading-none text-[#F4EDDD]">
+              <span className="max-sm:text-2xl sm:text-3xl md:text-5xl lg:text-3xl xl:text-5xl font-google-sans-flex leading-none text-[#F4EDDD]">
                 Josua A. Kiviranta
               </span>
               <span className="text-xs tracking-widest text-[#F4EDDD]/50">
@@ -68,13 +61,6 @@ export const Footer = () => {
 
         <div className="lg:hidden pt-8 text-xs text-[#F4EDDD]/50">
           © 2026 Sassosa Consulting
-        </div>
-        <div className="lg:hidden pt-8 -mx-6">
-          <img
-            src="/footer-logo.webp"
-            alt="Sassosa Consulting"
-            className="h-48 sm:h-64 md:h-80 w-auto"
-          />
         </div>
       </div>
     </footer>

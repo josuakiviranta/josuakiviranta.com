@@ -1,4 +1,6 @@
+import { AboutSection } from "../components/AboutSection";
 import { CaseStudiesSection } from "../components/CaseStudiesSection";
+import { ClientsSection } from "../components/ClientsSection";
 import { ContactSection } from "../components/ContactSection";
 import { Footer } from "../components/Footer";
 import Head from "next/head";
@@ -18,8 +20,10 @@ const Home: NextPage = () => {
       <main className="w-screen min-h-screen text-slate-300 flex flex-col">
         <NavBar />
         <HelloSection />
+        <ClientsSection />
         <ServicesSection />
         <CaseStudiesSection />
+        <AboutSection />
         <ContactSection />
         <Footer />
       </main>

@@ -12,11 +12,6 @@ const studies: CaseStudy[] = [
     title: "Haka-wood",
     tagline: "Sawmill maintenance software",
   },
-  {
-    slug: "/case-studies/eps-energia-per-lo-sviluppo",
-    title: "Energia per lo sviluppo",
-    tagline: "Websites created in a day for NGO",
-  },
 ];
 
 const ArrowIcon = () => (

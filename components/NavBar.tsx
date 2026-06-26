@@ -4,6 +4,7 @@ import { useState } from "react";
 const BOOKING_URL = "https://calendar.app.google/HQd53sZDXcfrPLnt9";
 
 const links = [
+  { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#case-studies", label: "Case Studies" },
 ];
@@ -11,18 +12,32 @@ const links = [
 export const NavBar = () => {
   const [open, setOpen] = useState(false);
 
+  const scrollToSection = (href: string) => {
+    const id = href.replace("#", "");
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="sticky top-0 z-50 bg-[#F4EDDD] text-vainamoinen">
       <div className="w-full px-6">
         <nav className="flex justify-between items-center border-b border-vainamoinen/20 transition-all duration-300 py-4">
           <Link href="/">
             <a className="flex items-center cursor-pointer">
-              <img
-                src="/bigfoot.webp"
-                alt="Logo"
-                className="h-12 w-auto mr-3"
-              />
-              <span className="font-caveat font-medium text-vainamoinen select-none text-2xl sm:text-3xl tracking-tight">
+              <svg
+                viewBox="0 0 200 200"
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-auto mr-3"
+                aria-label="Logo"
+              >
+                {/* bottom pyramid — point up at the waist */}
+                <path d="M 100 100 L 40 140 L 100 170 Z" fill="#4d5e3c" />
+                <path d="M 100 100 L 160 140 L 100 170 Z" fill="#344128" />
+                {/* top inverted pyramid — square base cap + side faces */}
+                <path d="M 100 90 L 100 100 L 40 60 Z" fill="#4d5e3c" />
+                <path d="M 100 90 L 100 100 L 160 60 Z" fill="#344128" />
+                <path d="M 100 30 L 40 60 L 100 90 L 160 60 Z" fill="#5c6e49" />
+              </svg>
+              <span className="font-google-sans-flex text-vainamoinen select-none text-xl sm:text-2xl tracking-tight">
                 Josua A. Kiviranta
               </span>
             </a>
@@ -31,11 +46,13 @@ export const NavBar = () => {
           <div className="hidden md:flex flex-1 justify-center">
             <div className="flex items-center gap-6">
               {links.map((l) => (
-                <Link key={l.href} href={l.href}>
-                  <button className="py-2 relative after:absolute after:bottom-1 after:left-0 after:right-0 after:h-px after:bg-current after:transition-all after:duration-300 font-google-sans-flex tracking-wide transition-colors text-sm after:w-0 hover:after:w-full text-vainamoinen/50 hover:text-vainamoinen cursor-pointer">
-                    {l.label}
-                  </button>
-                </Link>
+                <button
+                  key={l.href}
+                  onClick={() => scrollToSection(l.href)}
+                  className="py-2 relative after:absolute after:bottom-1 after:left-0 after:right-0 after:h-px after:bg-current after:transition-all after:duration-300 font-google-sans-flex tracking-wide transition-colors text-sm after:w-0 hover:after:w-full text-vainamoinen/50 hover:text-vainamoinen cursor-pointer"
+                >
+                  {l.label}
+                </button>
               ))}
             </div>
           </div>
@@ -87,14 +104,16 @@ export const NavBar = () => {
             Meet & talk
           </a>
           {links.map((l) => (
-            <Link key={l.href} href={l.href}>
-              <button
-                onClick={() => setOpen(false)}
-                className="py-2 font-google-sans-flex tracking-wide transition-colors text-3xl text-vainamoinen/50 hover:text-vainamoinen cursor-pointer"
-              >
-                {l.label}
-              </button>
-            </Link>
+            <button
+              key={l.href}
+              onClick={() => {
+                setOpen(false);
+                scrollToSection(l.href);
+              }}
+              className="py-2 font-google-sans-flex tracking-wide transition-colors text-3xl text-vainamoinen/50 hover:text-vainamoinen cursor-pointer"
+            >
+              {l.label}
+            </button>
           ))}
         </div>
       </div>

@@ -1,10 +1,11 @@
 import { useState } from "react";
 
+const BOOKING_URL = "https://calendar.app.google/HQd53sZDXcfrPLnt9";
+
 type Service = {
   key: string;
   title: string;
   tagline: string;
-  icon: JSX.Element;
   body: JSX.Element;
 };
 
@@ -95,39 +96,7 @@ const services: Service[] = [
   {
     key: "ai-transformation",
     title: "AI transformation",
-    tagline: "Every workflow, examined and improved.",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <path
-          d="M20 4L24 8L20 12"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M4 14V12C4 9.79 5.79 8 8 8H24"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M8 24L4 20L8 16"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M24 14V16C24 18.21 22.21 20 20 20H4"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
+    tagline: "Iterative. Measurable. End-to-end.",
     body: (
       <div>
         <p className="text-sm md:text-base text-vainamoinen/70 leading-relaxed mb-8 max-w-xl">
@@ -195,24 +164,6 @@ const services: Service[] = [
     key: "software-engineering",
     title: "Software engineering",
     tagline: "Custom software from start to finish.",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <path
-          d="M10 8L4 14L10 20"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M18 8L24 14L18 20"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
     body: (
       <div>
         <p className="text-sm md:text-base text-vainamoinen/70 leading-relaxed mb-10 max-w-2xl">
@@ -236,61 +187,9 @@ const services: Service[] = [
     ),
   },
   {
-    key: "employee-training",
-    title: "Employee training",
-    tagline: "Practical training on the latest tools.",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <path
-          d="M14 4L3 10L14 16L25 10L14 4Z"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M3 16L14 22L25 16"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
-    body: (
-      <div>
-        <p className="text-sm md:text-base text-vainamoinen/70 leading-relaxed mb-10 max-w-2xl">
-          We deliver hands-on training that equips your team with the skills to
-          work effectively with the latest AI tools and development practices.
-          Sessions are practical, not theoretical — participants leave with
-          workflows they can apply the next day.
-        </p>
-        <DeliverablesGrid
-          label="Topics"
-          items={[
-            "Claude / ChatGPT / Gemini",
-            "AI in software development",
-            "Vibe coding",
-            "Prompt engineering",
-          ]}
-        />
-      </div>
-    ),
-  },
-  {
     key: "strategy-consulting",
     title: "Strategy consulting",
-    tagline: "Concrete plans and sparring.",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <circle cx="14" cy="14" r="10" stroke="currentColor" strokeWidth="1" />
-        <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1" />
-        <line x1="14" y1="4" x2="14" y2="2" stroke="currentColor" strokeWidth="1" />
-        <line x1="14" y1="26" x2="14" y2="24" stroke="currentColor" strokeWidth="1" />
-        <line x1="4" y1="14" x2="2" y2="14" stroke="currentColor" strokeWidth="1" />
-        <line x1="26" y1="14" x2="24" y2="14" stroke="currentColor" strokeWidth="1" />
-      </svg>
-    ),
+    tagline: "Plans and sparring.",
     body: (
       <div>
         <p className="text-sm md:text-base text-vainamoinen/70 leading-relaxed mb-10 max-w-2xl">
@@ -321,7 +220,7 @@ export const ServicesSection = () => {
       <div className="max-w-7xl mx-auto w-full px-6 py-20 lg:py-28">
         <div className="pb-6">
           <h3 className="leading-none text-2xl sm:text-3xl font-google-sans-flex text-vainamoinen/60">
-            Services
+            Services —
           </h3>
         </div>
         <div>
@@ -335,9 +234,6 @@ export const ServicesSection = () => {
                   className="w-full flex items-center gap-5 py-7 cursor-pointer group"
                   aria-expanded={open}
                 >
-                  <span className="text-vainamoinen/60 transition-colors duration-300 group-hover:text-vainamoinen/80">
-                    {s.icon}
-                  </span>
                   <h3 className="text-2xl md:text-3xl font-google-sans-flex flex-1 text-left">
                     {s.title}
                   </h3>
@@ -365,6 +261,16 @@ export const ServicesSection = () => {
                       }`}
                     >
                       {s.body}
+                      <div className="flex justify-end pt-8">
+                        <a
+                          href={BOOKING_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-block font-google-sans-flex tracking-wide text-sm rounded-full bg-vainamoinen text-[#F4EDDD] px-5 py-2 transition-colors hover:bg-vainamoinen/90 cursor-pointer"
+                        >
+                          Meet & talk
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
