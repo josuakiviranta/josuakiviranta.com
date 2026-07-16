@@ -1,0 +1,128 @@
+% CV — Josua Aleksi Kiviranta
+% Style modeled on cv-elias-ylonen.pdf: classic Computer Modern, ruled
+% sections, bold "Title --- Company" entries with right-aligned dates,
+% prose paragraphs instead of bullet lists.
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[a4paper,left=1.7cm,right=1.7cm,top=1.4cm,bottom=1.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+% Section heading with a rule underneath, as in the reference CV.
+\newcommand{\cvsection}[1]{%
+  \vspace{9pt}%
+  {\textbf{#1}}\par
+  \vspace{1.5pt}\hrule\vspace{5pt}}
+
+% Entry heading: bold left part, plain right-aligned dates/location.
+\newcommand{\entry}[2]{%
+  \needspace{3\baselineskip}%
+  \vspace{4.5pt}%
+  \textbf{#1}\hfill #2\par\nopagebreak\vspace{0.5pt}}
+
+% Skills row: bold label column + wrapped description.
+\newcommand{\skillrow}[2]{%
+  \textbf{#1} & #2 \\[1.5pt]}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE Josua Aleksi Kiviranta}\\[5pt]
+  Florence, Italy \ \textperiodcentered{} \ +358\,41\,524\,2441 \ \textperiodcentered{} \ \href{mailto:josua.kiviranta@gmail.com}{josua.kiviranta@gmail.com}
+\end{center}
+
+\cvsection{Profile}
+AI full-stack engineer building production-grade LLM systems and agentic pipelines. Experienced in software engineering, context engineering, retrieval systems, vector databases, and LLM evaluation. Bridges deep technical work with business delivery in high-ownership environments.
+
+\cvsection{Experience}
+
+\entry{Founder --- Sassosa Consulting}{2026 -- Present \textperiodcentered{} Florence, Italy}
+Building software applications and helping companies with AI transformation and workflow automation. Current clients include Finnish forestry companies and politicians.
+
+\entry{AI Engineer / Project Manager --- Innofactor Oyj}{2024 -- 2025 \textperiodcentered{} Espoo, Finland}
+Led a team of four designing and deploying agentic AI pipelines on Azure serving 10+ enterprise clients. Built task-optimized GPT Agents with retrieval, orchestration, and LLM optimization, and implemented structured evaluation frameworks for the deployments. Optimized LLM pipeline latency and set up CI/CD pipelines.
+
+Contributed to sales and managed end-to-end project deliveries, translating business requirements into scalable technical solutions.
+
+\entry{AI-focused Full Stack Engineer --- Innofactor Oyj}{2023 -- 2024 \textperiodcentered{} Espoo, Finland}
+Directed internal generative AI application development and delivered rapid LLM MVPs; developed and launched \textbf{Innofactor GPT Agents} at the same Nordic event where Microsoft launched Copilot. Advised on the company's generative AI strategy, coached colleagues in generative AI techniques, delivered public talks, and supported sales initiatives.
+
+\entry{Founder --- Pssst!}{2022 -- 2023 \textperiodcentered{} Espoo, Finland}
+Built and led a three-person team; designed and implemented a full-stack platform (React, Next.js, TypeScript) for crowdsourced headhunting. Managed product development and marketing, and acquired the initial client base.
+
+\entry{Software Developer --- Variantum Oy}{2020 \textperiodcentered{} Espoo, Finland}
+Built a UI for Variantum's enterprise product data management system (VariPDM).
+
+\entry{Project Manager --- Sterly Oy}{2020 \textperiodcentered{} Helsinki, Finland}
+Led a team of 13 in a high-urgency government-adjacent funding project during Covid-19; coordinated support for 100+ Finnish companies under strict time pressure.
+
+\entry{Second Lieutenant --- Finnish Defence Forces}{2015 \textperiodcentered{} Helsinki, Finland}
+Led a 35-person military police group; developed leadership and high-stakes decision-making skills.
+
+\cvsection{Projects}
+
+\entry{Verba --- \href{https://verba.world}{verba.world}}{2025}
+LLM-powered language learning app that autodetects and translates all spoken words from YouTube videos. (React, Next.js, TypeScript, Python, Google Cloud, Azure OpenAI)
+
+\entry{Social Synapse --- \href{https://josuakiviranta.com/socialSynapse}{socialsynapse.ai} (archived)}{2025}
+Neighbor-connecting app matching users by their thoughts and media consumption using semantic vectors. (React, Node.js, TypeScript, Python, Azure Cloud, Azure OpenAI, MCP)
+
+\entry{Cyber Vulnerability Research --- Finnish media}{2019}
+Detected and disclosed a ranking-manipulation vulnerability affecting major Finnish newspapers. Built an online miner (Python) to detect and expose manipulation of item rankings and a proof-of-concept manipulation script (Node.js), then disclosed the findings to the affected newspapers.
+
+\entry{Soteduunit.fi --- \href{https://josuakiviranta.com/soteduunit}{soteduunit.fi}}{2021}
+Map-based job posting platform; designed and built a demo for Finnish healthcare and social welfare organisations. (React, Next.js, TypeScript)
+
+\entry{Cryptocurrency Mining Farm}{2017}
+Built and operated a medium-sized mining farm (over 800\,MH/s) to finance my university studies.
+
+\cvsection{Skills}
+
+\begin{tabular}{@{}p{2.5cm}@{\hspace{0.4cm}}p{\dimexpr\linewidth-2.9cm\relax}@{}}
+\skillrow{AI \& LLM}{Agentic pipeline design, RAG, context engineering, AI workflow evaluation and error analysis, MCP, vector databases, tracing, n8n, latency optimization}
+\skillrow{Cloud}{Azure, Google Cloud, Docker, Azd, IaC, Bicep}
+\skillrow{Backend}{Python, TypeScript, JavaScript, Node.js, REST APIs}
+\skillrow{Frontend}{React, Next.js, Shadcn}
+\skillrow{Data \& DB}{Pandas, NumPy, PostgreSQL + vector extension, Firebase, Supabase, MongoDB}
+\skillrow{Engineering}{Git, GitHub Workflows (CI/CD), version control, API design}
+\skillrow{Other}{Project management, product development, cross-functional team collaboration}
+\end{tabular}
+
+\cvsection{Education}
+
+\entry{Aalto University --- M.Sc.\ Industrial Engineering \& Management}{2022 -- 2023}
+Major: Strategy \textperiodcentered{} Minor: Software Engineering.
+
+\entry{Aalto University --- B.Sc.\ Computer Science}{2017 -- 2022}
+Major: Computer Science \textperiodcentered{} Minor: Industrial Engineering and Management\\
+Thesis: \emph{Open and linked parliamentary data and its utilisation}\\
+GPA 4.02/5
+
+\cvsection{Honors \& Languages}
+
+\entry{Best Team Player of the Year Award --- Innofactor Oyj}{2024}
+Recognized for exceptional teamwork, innovative solutions, technical expertise, and effective communication in AI technologies.
+
+\entry{Languages}{}
+Finnish (native) \textperiodcentered{} English (fluent) \textperiodcentered{} Italian (elementary, advancing).
+
+\cvsection{References}
+
+\vspace{2pt}
+\begin{tabular}{@{}p{0.33\linewidth}@{}p{0.33\linewidth}@{}p{0.33\linewidth}@{}}
+\textbf{Lasse Tolvanen} & \textbf{Vesa Syrjäkari} & \textbf{Klaus Oehlandt} \\
+Co-Founder / Business Architect & Ex-Vice President & Board Member and Co-owner \\
+Innofactor Oyj & Innofactor Oyj & Variantum Oy \\
+\href{mailto:lasse.tolvanen@innofactor.com}{lasse.tolvanen@innofactor.com} & \href{mailto:vesasyr@live.com}{vesasyr@live.com} & \href{mailto:klaus@oehlandt.fi}{klaus@oehlandt.fi} \\
++358 50 336 2480 & +358 50 031 6346 & +358 40 530 9060 \\
+\end{tabular}
+
+\end{document}

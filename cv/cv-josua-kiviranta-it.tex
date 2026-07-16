@@ -1,0 +1,129 @@
+% CV (italiano) — Josua Aleksi Kiviranta
+% Stile modellato su cv-elias-ylonen.pdf: Computer Modern classico, sezioni
+% con filetto, voci in grassetto "Titolo --- Azienda" con date allineate a
+% destra, paragrafi in prosa invece di elenchi puntati.
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[a4paper,left=1.7cm,right=1.7cm,top=1.4cm,bottom=1.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+% Titolo di sezione con filetto sottostante, come nel CV di riferimento.
+\newcommand{\cvsection}[1]{%
+  \vspace{9pt}%
+  {\textbf{#1}}\par
+  \vspace{1.5pt}\hrule\vspace{5pt}}
+
+% Intestazione di voce: parte sinistra in grassetto, date/luogo a destra.
+\newcommand{\entry}[2]{%
+  \needspace{3\baselineskip}%
+  \vspace{4.5pt}%
+  \textbf{#1}\hfill #2\par\nopagebreak\vspace{0.5pt}}
+
+% Riga competenze: etichetta in grassetto + descrizione.
+\newcommand{\skillrow}[2]{%
+  \textbf{#1} & #2 \\[1.5pt]}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE Josua Aleksi Kiviranta}\\[5pt]
+  Firenze, Italia \ \textperiodcentered{} \ +358\,41\,524\,2441 \ \textperiodcentered{} \ \href{mailto:josua.kiviranta@gmail.com}{josua.kiviranta@gmail.com}
+\end{center}
+
+\cvsection{Profilo}
+Ingegnere full-stack specializzato in AI, con esperienza nella realizzazione di sistemi LLM e pipeline agentiche di livello produttivo. Esperto in ingegneria del software, context engineering, sistemi di retrieval, database vettoriali e valutazione di LLM. Unisce il lavoro tecnico approfondito alla consegna di valore per il business in contesti ad alta responsabilità.
+
+\cvsection{Esperienza}
+
+\entry{Fondatore --- Sassosa Consulting}{2026 -- oggi \textperiodcentered{} Firenze, Italia}
+Sviluppo applicazioni software e supporto le aziende nella trasformazione AI e nell'automazione dei flussi di lavoro. Tra i clienti attuali figurano aziende forestali e politici finlandesi.
+
+\entry{AI Engineer / Project Manager --- Innofactor Oyj}{2024 -- 2025 \textperiodcentered{} Espoo, Finlandia}
+Ho guidato un team di quattro persone nella progettazione e nel deployment di pipeline AI agentiche su Azure al servizio di oltre 10 clienti enterprise. Ho realizzato GPT Agents ottimizzati per compiti specifici con retrieval, orchestrazione e ottimizzazione degli LLM, e ho implementato framework di valutazione strutturati per i deployment. Ho ottimizzato la latenza delle pipeline LLM e configurato pipeline CI/CD.
+
+Ho contribuito alle vendite e gestito consegne di progetti end-to-end, traducendo i requisiti di business in soluzioni tecniche scalabili.
+
+\entry{Full Stack Engineer specializzato in AI --- Innofactor Oyj}{2023 -- 2024 \textperiodcentered{} Espoo, Finlandia}
+Ho diretto lo sviluppo interno di applicazioni di AI generativa e consegnato rapidamente MVP basati su LLM; ho sviluppato e lanciato \textbf{Innofactor GPT Agents} nello stesso evento nordico in cui Microsoft ha lanciato Copilot. Ho fornito consulenza sulla strategia aziendale di AI generativa, formato i colleghi sulle tecniche di AI generativa, tenuto interventi pubblici e supportato le iniziative di vendita.
+
+\entry{Fondatore --- Pssst!}{2022 -- 2023 \textperiodcentered{} Espoo, Finlandia}
+Ho costituito e guidato un team di tre persone; ho progettato e implementato una piattaforma full-stack (React, Next.js, TypeScript) per l'headhunting in crowdsourcing. Ho gestito lo sviluppo del prodotto e il marketing e acquisito la base clienti iniziale.
+
+\entry{Sviluppatore software --- Variantum Oy}{2020 \textperiodcentered{} Espoo, Finlandia}
+Ho realizzato l'interfaccia utente per il sistema enterprise di gestione dei dati di prodotto di Variantum (VariPDM).
+
+\entry{Project Manager --- Sterly Oy}{2020 \textperiodcentered{} Helsinki, Finlandia}
+Ho guidato un team di 13 persone in un progetto di finanziamento ad alta urgenza in ambito governativo durante il Covid-19; ho coordinato il supporto a oltre 100 aziende finlandesi sotto forte pressione temporale.
+
+\entry{Sottotenente --- Forze di difesa finlandesi}{2015 \textperiodcentered{} Helsinki, Finlandia}
+Ho comandato un gruppo di polizia militare di 35 persone; ho sviluppato capacità di leadership e di decisione in situazioni ad alto rischio.
+
+\cvsection{Progetti}
+
+\entry{Verba --- \href{https://verba.world}{verba.world}}{2025}
+App per l'apprendimento delle lingue basata su LLM che rileva e traduce automaticamente tutte le parole pronunciate nei video di YouTube. (React, Next.js, TypeScript, Python, Google Cloud, Azure OpenAI)
+
+\entry{Social Synapse --- \href{https://josuakiviranta.com/socialSynapse}{socialsynapse.ai} (archiviato)}{2025}
+App per mettere in contatto i vicini di casa, abbinando gli utenti in base ai loro pensieri e consumi mediatici tramite vettori semantici. (React, Node.js, TypeScript, Python, Azure Cloud, Azure OpenAI, MCP)
+
+\entry{Ricerca di vulnerabilità informatiche --- media finlandesi}{2019}
+Ho individuato e divulgato una vulnerabilità di manipolazione delle classifiche che interessava i principali quotidiani finlandesi. Ho costruito un miner online (Python) per rilevare ed esporre le manipolazioni delle classifiche e uno script proof-of-concept di manipolazione (Node.js), comunicando poi i risultati ai quotidiani interessati.
+
+\entry{Soteduunit.fi --- \href{https://josuakiviranta.com/soteduunit}{soteduunit.fi}}{2021}
+Piattaforma di annunci di lavoro basata su mappa; ho progettato e realizzato una demo per le organizzazioni finlandesi della sanità e del welfare. (React, Next.js, TypeScript)
+
+\entry{Mining farm di criptovalute}{2017}
+Ho costruito e gestito una mining farm di medie dimensioni (oltre 800\,MH/s) per finanziare i miei studi universitari.
+
+\cvsection{Competenze}
+
+\begin{tabular}{@{}p{2.5cm}@{\hspace{0.4cm}}p{\dimexpr\linewidth-2.9cm\relax}@{}}
+\skillrow{AI \& LLM}{Progettazione di pipeline agentiche, RAG, context engineering, valutazione dei flussi di lavoro AI e analisi degli errori, MCP, database vettoriali, tracing, n8n, ottimizzazione della latenza}
+\skillrow{Cloud}{Azure, Google Cloud, Docker, Azd, IaC, Bicep}
+\skillrow{Backend}{Python, TypeScript, JavaScript, Node.js, REST API}
+\skillrow{Frontend}{React, Next.js, Shadcn}
+\skillrow{Dati e DB}{Pandas, NumPy, PostgreSQL + estensione vettoriale, Firebase, Supabase, MongoDB}
+\skillrow{Ingegneria}{Git, GitHub Workflows (CI/CD), controllo di versione, progettazione di API}
+\skillrow{Altro}{Gestione di progetti, sviluppo prodotto, collaborazione in team interfunzionali}
+\end{tabular}
+
+\cvsection{Istruzione}
+
+\entry{Aalto University --- Laurea magistrale (M.Sc.) in Industrial Engineering \& Management}{2022 -- 2023}
+Indirizzo principale: Strategia \textperiodcentered{} Indirizzo secondario: Ingegneria del software
+
+\entry{Aalto University --- Laurea triennale (B.Sc.) in Informatica}{2017 -- 2022}
+Indirizzo principale: Informatica \textperiodcentered{} Indirizzo secondario: Industrial Engineering and Management\\
+Tesi: \emph{Open and linked parliamentary data and its utilisation}\\
+Media: 4,02/5
+
+\cvsection{Riconoscimenti e lingue}
+
+\entry{Premio \emph{Best Team Player of the Year} --- Innofactor Oyj}{2024}
+Riconoscimento per l'eccezionale spirito di squadra, le soluzioni innovative, la competenza tecnica e l'efficace comunicazione nelle tecnologie AI.
+
+\entry{Lingue}{}
+Finlandese (madrelingua) \textperiodcentered{} Inglese (fluente) \textperiodcentered{} Italiano (livello elementare, in miglioramento)
+
+\cvsection{Referenze}
+
+\vspace{2pt}
+\begin{tabular}{@{}p{0.33\linewidth}@{}p{0.33\linewidth}@{}p{0.33\linewidth}@{}}
+\textbf{Lasse Tolvanen} & \textbf{Vesa Syrjäkari} & \textbf{Klaus Oehlandt} \\
+Co-fondatore / Business Architect & Ex vicepresidente & Membro del CdA e comproprietario \\
+Innofactor Oyj & Innofactor Oyj & Variantum Oy \\
+\href{mailto:lasse.tolvanen@innofactor.com}{lasse.tolvanen@innofactor.com} & \href{mailto:vesasyr@live.com}{vesasyr@live.com} & \href{mailto:klaus@oehlandt.fi}{klaus@oehlandt.fi} \\
++358 50 336 2480 & +358 50 031 6346 & +358 40 530 9060 \\
+\end{tabular}
+
+\end{document}
