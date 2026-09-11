@@ -1,28 +1,40 @@
+/**
+ * Logo strip — no heading, no claim (wayfinder brand-dossier map, 2026-09-11).
+ *
+ * Rule: a logo goes up only after a signed contract and the company's ok.
+ * Hidden until then (assets stay in public/):
+ * - EPS, Energia per lo Sviluppo (NGO, energiaperlosviluppo.org): conversations.
+ * - Chelli Energy Solutions (energy company): conversations.
+ * - Dream Italia (environment consultancy, dream-italia.it): platform build,
+ *   budget allocated, not signed.
+ */
+const HIDDEN_UNTIL_SIGNED = [
+  { src: "/eps-logo.png", alt: "EPS — Energia per lo Sviluppo", h: "h-24" },
+  { src: "/chelli-logo.png", alt: "Chelli Energy Solutions", h: "h-20" },
+  { src: "/dream-italia-logo.png", alt: "Dream Italia", h: "h-16" },
+];
+
+const LOGOS = [
+  { src: "/hakawood-logo.svg", alt: "Hakawood", h: "h-20" },
+];
+
 export const ClientsSection = () => {
+  void HIDDEN_UNTIL_SIGNED;
   return (
-    <section id="clients" className="text-vainamoinen scroll-mt-20">
-      <div className="max-w-7xl mx-auto w-full px-6 py-20 lg:py-28">
-        <div className="pb-6">
-          <h3 className="leading-none text-2xl sm:text-3xl font-google-sans-flex text-vainamoinen/60">
-            Clients —
-          </h3>
-        </div>
+    <section
+      id="clients"
+      className="bg-slate-field-2 text-slate-text scroll-mt-20"
+    >
+      <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 py-16 lg:py-20">
         <div className="flex flex-wrap items-center gap-x-16 gap-y-10">
-          <img
-            src="/hakawood-logo.svg"
-            alt="Hakawood"
-            className="h-20 w-auto grayscale opacity-70 transition-all duration-300 ease-out hover:grayscale-0 hover:opacity-100 hover:scale-105"
-          />
-          <img
-            src="/eps-logo.png"
-            alt="EPS — Energia per lo Sviluppo"
-            className="h-24 w-auto grayscale opacity-70 transition-all duration-300 ease-out hover:grayscale-0 hover:opacity-100 hover:scale-105"
-          />
-          <img
-            src="/chelli-logo.png"
-            alt="Chelli Energy Solutions"
-            className="h-20 w-auto grayscale opacity-70 transition-all duration-300 ease-out hover:grayscale-0 hover:opacity-100 hover:scale-105"
-          />
+          {LOGOS.map((l) => (
+            <img
+              key={l.src}
+              src={l.src}
+              alt={l.alt}
+              className={`${l.h} w-auto opacity-[0.48] [filter:brightness(0)_invert(1)]`}
+            />
+          ))}
         </div>
       </div>
     </section>

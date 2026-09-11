@@ -34,3 +34,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local working notes and browser screenshots (never published)
+/wayfinder/
+/.playwright-cli/
+
+# full-size photo originals (optimised copies live in /public when used)
+/public/originals/
+
+# LaTeX build artefacts and non-source PDFs in cv/
+cv/*.log
+cv/*.aux
+cv/*.out
+cv/*.synctex.gz
+cv/cv-elias-ylonen.pdf
+cv/CV-Josua-Kiviranta-8.pdf
