@@ -156,7 +156,7 @@ export const HelloSection = () => {
               className="hero-enter hero-d2 mt-3 font-space-grotesk text-lg font-light tracking-[-0.01em] sm:text-xl"
               style={{ color: DIM }}
             >
-              Advisor and engineer. Pontassieve, Florence.
+              Advisor and engineer. Florence - Helsinki.
             </p>
 
             <div id="currently" className="hero-enter hero-d3 mt-14 scroll-mt-24">
