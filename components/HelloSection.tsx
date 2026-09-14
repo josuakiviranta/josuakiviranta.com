@@ -24,8 +24,6 @@ const GLOW_OPACITY = 0.3;
 const TEXT = "#e8ebef";
 const DIM = "rgba(232, 235, 239, 0.48)";
 
-const YLONEN_URL = "https://ylonenconsulting.com/";
-
 type Engagement = { lead: ReactNode; details?: string[] };
 
 const CURRENTLY: Engagement[] = [
@@ -36,22 +34,6 @@ const CURRENTLY: Engagement[] = [
       "polling-district analysis of where votes were won and lost,",
       "weekly monitoring of a political risk.",
     ],
-  },
-  {
-    lead: (
-      <>
-        Partner of{" "}
-        <a
-          href={YLONEN_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hero-inline-link"
-        >
-          Ylönen Consulting
-        </a>
-        , Berlin.
-      </>
-    ),
   },
 ];
 
@@ -224,13 +206,6 @@ export const HelloSection = () => {
         }
         .hero-d4 {
           animation-delay: 0.55s;
-        }
-        .hero-inline-link {
-          border-bottom: 1px solid rgba(232, 235, 239, 0.35);
-          transition: border-color 0.3s ease;
-        }
-        .hero-inline-link:hover {
-          border-bottom-color: #e8ebef;
         }
         .hero-textlink {
           color: #e8ebef;
