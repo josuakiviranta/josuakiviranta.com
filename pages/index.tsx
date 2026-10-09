@@ -1,5 +1,4 @@
 import { BackgroundSection } from "../components/BackgroundSection";
-import { ClientsSection } from "../components/ClientsSection";
 import { ContactSection } from "../components/ContactSection";
 import { Footer } from "../components/Footer";
 import Head from "next/head";
@@ -24,7 +23,6 @@ const Home: NextPage = () => {
       {/* One text column, about the measure of an A4 page at 2.5 cm margins. */}
       <main className="doc mx-auto w-full max-w-[42rem] px-4 sm:px-6">
         <HelloSection />
-        <ClientsSection />
         <BackgroundSection />
         <ContactSection />
         <Footer />

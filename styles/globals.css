@@ -143,6 +143,25 @@ a {
   color: #111111;
   font-family: inherit;
 }
+/* Zoom +/−: drawn as centred 1px lines rather than font glyphs, whose
+   vertical metrics put them off-centre in the square buttons. */
+.leaflet-control-zoom a span {
+  display: none;
+}
+.leaflet-control-zoom a {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 12px;
+}
+.leaflet-control-zoom-in {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M0 6h12M6 0v12' stroke='%23111111' stroke-width='1.2'/%3E%3C/svg%3E");
+}
+.leaflet-control-zoom-out {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M0 6h12' stroke='%23111111' stroke-width='1.2'/%3E%3C/svg%3E");
+}
+.leaflet-control-zoom a.leaflet-disabled {
+  opacity: 0.35;
+}
 
 @media (prefers-reduced-motion: reduce) {
   html {
