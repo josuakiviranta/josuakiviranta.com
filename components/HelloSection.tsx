@@ -24,9 +24,9 @@ const CURRENTLY: Engagement[] = [
   {
     lead: "A Finnish MP’s 2027 re-election campaign:",
     details: [
-      "briefing and comment angles for a live TV debate,",
-      "polling-district analysis of where votes were won and lost,",
-      "weekly monitoring of a political risk.",
+      "Briefing and comment angles for a live TV debate.",
+      "Polling-district analysis of where votes were won and lost.",
+      "Weekly monitoring of a political risk.",
     ],
   },
 ];
@@ -44,7 +44,7 @@ export const HelloSection = () => {
 
         <h1
           id="title"
-          className="sr-only font-display text-[2.4em] font-bold leading-none xl:not-sr-only xl:mt-20 xl:block"
+          className="sr-only font-display text-[2.4em] font-bold leading-none xl:not-sr-only xl:mt-[2.25rem] xl:block"
         >
           Josua Kiviranta
         </h1>

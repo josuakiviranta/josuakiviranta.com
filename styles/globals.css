@@ -98,6 +98,18 @@ a {
     margin-top: 0.15em;
   }
 
+  /* Dash list: an em dash hangs in the margin of each item. */
+  .dashes > li {
+    position: relative;
+    padding-left: 1.8em;
+    margin-top: 0.6em;
+  }
+  .dashes > li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+  }
+
   .doc-link {
     text-decoration: underline;
     text-decoration-thickness: 1px;
@@ -115,53 +127,6 @@ a {
   }
 }
 
-/* Map: plain greyscale tiles, square controls, document font. Scoped
-   under .doc so it outranks leaflet.css, which loads after this file. */
-.doc .leaflet-container {
-  background: #f2f2f2;
-  font-family: inherit;
-  /* Keep Leaflet's z-index 400+ panes beneath the fixed nav. */
-  position: relative;
-  isolation: isolate;
-}
-.doc .leaflet-control-attribution,
-.doc .leaflet-control-attribution a {
-  color: #111111;
-}
-.leaflet-container .leaflet-tile-pane {
-  filter: grayscale(1);
-}
-.leaflet-bar {
-  border: 1px solid #111111 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-.leaflet-bar a,
-.leaflet-bar a:first-child,
-.leaflet-bar a:last-child {
-  border-radius: 0 !important;
-  color: #111111;
-  font-family: inherit;
-}
-/* Zoom +/−: drawn as centred 1px lines rather than font glyphs, whose
-   vertical metrics put them off-centre in the square buttons. */
-.leaflet-control-zoom a span {
-  display: none;
-}
-.leaflet-control-zoom a {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 12px 12px;
-}
-.leaflet-control-zoom-in {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M0 6h12M6 0v12' stroke='%23111111' stroke-width='1.2'/%3E%3C/svg%3E");
-}
-.leaflet-control-zoom-out {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M0 6h12' stroke='%23111111' stroke-width='1.2'/%3E%3C/svg%3E");
-}
-.leaflet-control-zoom a.leaflet-disabled {
-  opacity: 0.35;
-}
 
 @media (prefers-reduced-motion: reduce) {
   html {

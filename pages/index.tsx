@@ -5,6 +5,7 @@ import Head from "next/head";
 import { HelloSection } from "../components/HelloSection";
 import type { NextPage } from "next";
 import { NavBar } from "../components/NavBar";
+import { ClientsSection } from "../components/ClientsSection";
 
 // Link-preview tags need absolute URLs; the apex domain redirects to www.
 const SITE_URL = "https://www.josuakiviranta.com";
@@ -42,6 +43,7 @@ const Home: NextPage = () => {
       {/* One text column, about the measure of an A4 page at 2.5 cm margins. */}
       <main className="doc mx-auto w-full max-w-[42rem] px-4 sm:px-6">
         <HelloSection />
+        <ClientsSection />
         <BackgroundSection />
         <ContactSection />
         <Footer />
