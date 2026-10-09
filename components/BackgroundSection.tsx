@@ -1,3 +1,5 @@
+import { SectionHeading } from "./Section";
+
 /**
  * Background — dossier list (wayfinder brand-dossier map, 2026-09-11).
  * Replaces the Services and Case Studies sections. Facts only, no verbs,
@@ -30,34 +32,22 @@ const BACKGROUND: Line[] = [
 
 export const BackgroundSection = () => {
   return (
-    <section
-      id="background"
-      className="bg-slate-field-2 text-slate-text scroll-mt-20"
-    >
-      <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 py-20 lg:py-28">
-        <p className="font-ibm-plex-mono text-xs uppercase tracking-[0.2em] text-slate-base">
-          Background
-        </p>
-        <ul className="mt-4 max-w-2xl space-y-4 font-space-grotesk text-base font-light leading-relaxed sm:text-lg">
-          {BACKGROUND.map((line, i) => (
-            <li key={i} className="flex gap-4">
-              <span aria-hidden="true" className="text-slate-base">
-                —
-              </span>
-              {line.kind === "fact" ? (
-                <span>{line.text}</span>
-              ) : (
-                <span>
-                  <span>“{line.text}”</span>
-                  <span className="mt-1 block text-sm text-slate-dim sm:text-base">
-                    {line.source}
-                  </span>
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+    <section id="background" className="doc-anchor">
+      <SectionHeading id="background" />
+      <ol className="clauses">
+        {BACKGROUND.map((line, i) => (
+          <li key={i}>
+            {line.kind === "fact" ? (
+              line.text
+            ) : (
+              <>
+                “{line.text}”
+                <span className="mt-0.5 block italic">{line.source}</span>
+              </>
+            )}
+          </li>
+        ))}
+      </ol>
     </section>
   );
 };

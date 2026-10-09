@@ -74,9 +74,10 @@ export default function OfficeMap() {
         L.divIcon({
           className: "",
           html: primary
-            ? '<div style="width:18px;height:18px;background:#e6eaef;border:2px solid #12161b;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.4);cursor:pointer;"></div>'
-            : '<div style="width:18px;height:18px;background:transparent;border:2px solid #12161b;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.25);cursor:pointer;"></div>',
-          iconAnchor: [11, 11],
+            ? '<div style="width:14px;height:14px;background:#111111;border-radius:50%;cursor:pointer;"></div>'
+            : '<div style="width:14px;height:14px;background:#ffffff;border:2px solid #111111;border-radius:50%;cursor:pointer;"></div>',
+          iconSize: [14, 14],
+          iconAnchor: [7, 7],
         });
       for (const o of OFFICES) {
         L.marker([o.lat, o.lng], { icon: pin(o.primary), title: o.name })
@@ -98,7 +99,7 @@ export default function OfficeMap() {
           keyboard: false,
           icon: L.divIcon({
             className: "",
-            html: `<div style="transform:${LABEL_OFFSET[c.side]};white-space:nowrap;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;color:#12161b;opacity:0.85;">${c.text}</div>`,
+            html: `<div style="transform:${LABEL_OFFSET[c.side]};white-space:nowrap;font-family:'LM Roman 10',Georgia,serif;font-size:14px;color:#111111;">${c.text}</div>`,
             iconSize: [0, 0],
             iconAnchor: [0, 0],
           }),
@@ -120,7 +121,7 @@ export default function OfficeMap() {
           keyboard: false,
           icon: L.divIcon({
             className: "",
-            html: `<div style="transform:translate(-50%,-50%);white-space:nowrap;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:700;letter-spacing:0.2em;color:#12161b;opacity:0.85;">${c.text}</div>`,
+            html: `<div style="transform:translate(-50%,-50%);white-space:nowrap;font-family:'LM Roman 12','LM Roman 10',Georgia,serif;font-size:13px;font-weight:700;letter-spacing:0.18em;color:#111111;">${c.text}</div>`,
             iconSize: [0, 0],
             iconAnchor: [0, 0],
           }),
@@ -138,7 +139,7 @@ export default function OfficeMap() {
     <div
       ref={containerRef}
       className="absolute inset-0 w-full h-full"
-      style={{ background: "#1e242c" }}
+      style={{ background: "#f2f2f2" }}
     />
   );
 }

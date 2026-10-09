@@ -7,19 +7,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        /* Slate design language (site restyle, 2026-07 — see
-           wayfinder/site-restyle/tickets/assets/design-conventions.md) */
-        "slate-field-1": "#1e242c", // dark field gradient start / raised panel surface
-        "slate-field-2": "#090b0e", // dark field gradient end / page base surface
-        "slate-base": "#7e8894", // wireframe strokes, hairlines, muted labels
-        "slate-text": "#e8ebef", // primary text on dark surfaces
-        "slate-dim": "rgba(232,235,239,0.48)", // dimmed text on dark (no /opacity modifier)
-        "slate-cta": "#e6eaef", // light CTA/pill + light band surface
-        "slate-ink": "#12161b", // dark text on light surfaces
+        /* Document palette (2026-10-09): black on white, as printed. */
+        ink: "#111111", // text, rules, active nav
+        muted: "#767676", // inactive nav items
+        rule: "#d9d9d9", // hairlines behind active indicators
       },
       fontFamily: {
-        "space-grotesk": ["Space Grotesk", "system-ui", "sans-serif"],
-        "ibm-plex-mono": ["IBM Plex Mono", "ui-monospace", "monospace"],
+        serif: ["LM Roman 10", "Latin Modern Roman", "Georgia", "serif"],
+        // Headings and title: the 12 pt bold optical size, as \Large\bfseries.
+        display: ["LM Roman 12", "LM Roman 10", "Georgia", "serif"],
       },
     },
   },
