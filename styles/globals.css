@@ -1,17 +1,69 @@
-/* IBM Plex Mono (400/500/700). Space Grotesk loads via pages/_document.tsx. */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+/* Latin Modern Roman (GUST Font License), subset to Latin, in public/fonts.
+   Optical sizes as LaTeX uses them: 10 pt for text, 12 pt bold for
+   headings and the title. */
+@font-face {
+  font-family: 'LM Roman 10';
+  src: url('/fonts/lmroman10-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LM Roman 10';
+  src: url('/fonts/lmroman10-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LM Roman 10';
+  src: url('/fonts/lmroman10-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LM Roman 10';
+  src: url('/fonts/lmroman10-bolditalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LM Roman 12';
+  src: url('/fonts/lmroman12-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Space Grotesk', system-ui, sans-serif;
-  background-color: #090b0e;
-  color: #e6e6e6;
+  font-family: 'LM Roman 10', 'Latin Modern Roman', 'Computer Modern Serif', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.45;
+  background-color: #ffffff;
+  color: #111111;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 640px) {
+  html,
+  body {
+    font-size: 18px;
+  }
 }
 
 a {
@@ -23,30 +75,82 @@ a {
   box-sizing: border-box;
 }
 
-/* Palette override for the dark-theme Tailwind class used on <main> */
-.text-slate-300 {
-  color: #e6e6e6 !important;
+@layer components {
+  /* Justified and hyphenated like the LaTeX source, once the column is wide
+     enough not to open rivers. */
+  @media (min-width: 640px) {
+    .doc :where(p, li) {
+      text-align: justify;
+      hyphens: auto;
+    }
+  }
+
+  /* Contract clauses: numbered, restarting at each level, indented. */
+  .clauses {
+    list-style: decimal;
+    padding-left: 1.8em;
+  }
+  .clauses > li {
+    padding-left: 0.2em;
+    margin-top: 0.3em;
+  }
+  .clauses .clauses > li {
+    margin-top: 0.15em;
+  }
+
+  .doc-link {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: rgba(17, 17, 17, 0.35);
+    transition: text-decoration-color 0.2s ease;
+  }
+  .doc-link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  /* Clear the slim top bar when jumping to a section. */
+  .doc-anchor {
+    scroll-margin-top: 4rem;
+  }
 }
 
-/* Duotone Leaflet map tiles — slate scheme via the #map-duotone SVG filter
-   rendered inline in ContactSection (maps tiles to #1e242c / #c6cdd7) */
-.leaflet-container {
-  background: #1e242c;
+/* Map: plain greyscale tiles, square controls, document font. Scoped
+   under .doc so it outranks leaflet.css, which loads after this file. */
+.doc .leaflet-container {
+  background: #f2f2f2;
+  font-family: inherit;
+  /* Keep Leaflet's z-index 400+ panes beneath the fixed nav. */
   position: relative;
   isolation: isolate;
 }
+.doc .leaflet-control-attribution,
+.doc .leaflet-control-attribution a {
+  color: #111111;
+}
 .leaflet-container .leaflet-tile-pane {
-  filter: url('#map-duotone');
+  filter: grayscale(1);
 }
-.leaflet-control-attribution {
-  background: rgba(198, 205, 215, 0.85) !important;
-  color: #12161b !important;
+.leaflet-bar {
+  border: 1px solid #111111 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
-.leaflet-control-attribution a {
-  color: #12161b !important;
+.leaflet-bar a,
+.leaflet-bar a:first-child,
+.leaflet-bar a:last-child {
+  border-radius: 0 !important;
+  color: #111111;
+  font-family: inherit;
 }
 
-@keyframes charFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
 }

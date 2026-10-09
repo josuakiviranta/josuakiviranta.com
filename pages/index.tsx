@@ -9,7 +9,7 @@ import { NavBar } from "../components/NavBar";
 
 const Home: NextPage = () => {
   return (
-    <div className="">
+    <>
       <Head>
         <title>Josua Kiviranta — Advisor and engineer, Florence</title>
         <meta
@@ -20,15 +20,16 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </Head>
-      <main className="w-full min-h-screen text-slate-300 flex flex-col">
-        <NavBar />
+      <NavBar />
+      {/* One text column, about the measure of an A4 page at 2.5 cm margins. */}
+      <main className="doc mx-auto w-full max-w-[42rem] px-4 sm:px-6">
         <HelloSection />
         <ClientsSection />
         <BackgroundSection />
         <ContactSection />
         <Footer />
       </main>
-    </div>
+    </>
   );
 };
 

@@ -4,17 +4,20 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        {/* Latin Modern Roman, self-hosted (see @font-face in globals.css). */}
         <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
+          rel="preload"
+          href="/fonts/lmroman10-regular.woff2"
+          as="font"
+          type="font/woff2"
           crossOrigin="anonymous"
         />
-        {/* Space Grotesk (variable 300–700) for the hero + NavBar.
-            IBM Plex Mono loads via the @import in styles/globals.css. */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
-          rel="stylesheet"
+          rel="preload"
+          href="/fonts/lmroman12-bold.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
         />
       </Head>
       <body>
