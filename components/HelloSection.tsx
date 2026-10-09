@@ -8,7 +8,8 @@ import { SectionHeading } from "./Section";
  *   then the name as the document title. Below xl the name sits in the
  *   always-visible top bar instead, so the title is kept for screen readers
  *   only.
- * - "Currently" is a numbered clause list. The MP block is anonymized (NDA):
+ * - "Current work": each engagement is an unnumbered lead line with its
+ *   points numbered beneath it. The MP block is anonymized (NDA):
  *   no name, party, topic, broadcast, ally, or vote figures.
  * - No texture, no entrance animation.
  */
@@ -21,7 +22,7 @@ type Engagement = { lead: ReactNode; details?: string[] };
 
 const CURRENTLY: Engagement[] = [
   {
-    lead: "For a Finnish MP's 2027 re-election campaign:",
+    lead: "A Finnish MP’s 2027 re-election campaign:",
     details: [
       "briefing and comment angles for a live TV debate,",
       "polling-district analysis of where votes were won and lost,",
@@ -52,20 +53,18 @@ export const HelloSection = () => {
 
       <section id="currently" className="doc-anchor">
         <SectionHeading id="currently" />
-        <ol className="clauses">
-          {CURRENTLY.map((e, i) => (
-            <li key={i}>
-              {e.lead}
-              {e.details && (
-                <ol className="clauses">
-                  {e.details.map((d, j) => (
-                    <li key={j}>{d}</li>
-                  ))}
-                </ol>
-              )}
-            </li>
-          ))}
-        </ol>
+        {CURRENTLY.map((e, i) => (
+          <div key={i} className={i > 0 ? "mt-4" : undefined}>
+            <p>{e.lead}</p>
+            {e.details && (
+              <ol className="clauses">
+                {e.details.map((d, j) => (
+                  <li key={j}>{d}</li>
+                ))}
+              </ol>
+            )}
+          </div>
+        ))}
       </section>
     </>
   );

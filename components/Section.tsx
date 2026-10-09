@@ -1,7 +1,7 @@
 /* Numbered sections, in the manner of a LaTeX \section. The nav reads the
    same list, so numbers in the margin and in the headings always agree. */
 export const SECTIONS = [
-  { id: "currently", label: "Currently" },
+  { id: "currently", label: "Current work" },
   { id: "background", label: "Background" },
   { id: "contact", label: "Contact" },
 ] as const;
