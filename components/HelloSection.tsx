@@ -7,7 +7,7 @@ import { SectionHeading } from "./Section";
  * - Laid out like a letter: small right-aligned sender block (place, phone),
  *   then the name as the document title. Below xl the name sits in the
  *   always-visible top bar instead, so the title is kept for screen readers
- *   only.
+ *   only, and the subtitle shares a row with the sender block.
  * - "Current work": each engagement is an unnumbered lead line with its
  *   points numbered beneath it. The MP block is anonymized (NDA):
  *   no name, party, topic, broadcast, ally, or vote figures.
@@ -34,7 +34,7 @@ const CURRENTLY: Engagement[] = [
 export const HelloSection = () => {
   return (
     <>
-      <header id="top" className="pt-[5.5rem] xl:pt-16">
+      <header id="top" className="flex flex-row-reverse items-center justify-between gap-4 pt-[5.5rem] xl:block xl:pt-16">
         <address className="text-right text-[0.88em] not-italic leading-snug">
           <span className="block">{LOCATION}</span>
           <a href={PHONE_HREF} className="doc-link">
@@ -48,7 +48,7 @@ export const HelloSection = () => {
         >
           Josua Kiviranta
         </h1>
-        <p className="mt-10 text-[1.15em] xl:mt-3">Advisor and engineer.</p>
+        <p className="text-[1.15em] xl:mt-3">Advisor and engineer.</p>
       </header>
 
       <section id="currently" className="doc-anchor">
