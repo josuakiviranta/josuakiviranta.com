@@ -16,10 +16,10 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Josua Kiviranta — Advisor and engineer, Florence</title>
+        <title>Josua Kiviranta — Advisor and engineer</title>
         <meta
           name="description"
-          content="Josua Kiviranta. Advisor and engineer in Pontassieve, Florence. Research, briefings and AI work for Finnish and Italian clients."
+          content="Josua Kiviranta. Advisor and engineer. Research, briefings and AI work for Finnish and Italian clients."
         />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
         <meta property="og:image:height" content="630" />
         <meta
           property="og:image:alt"
-          content="The top of josuakiviranta.com: Josua Kiviranta, Florence – Helsinki, and section 1, Current work."
+          content="The top of josuakiviranta.com: Josua Kiviranta, Helsinki – Florence, and section 1, Current work."
         />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>

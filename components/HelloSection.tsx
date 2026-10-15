@@ -16,7 +16,7 @@ import { SectionHeading } from "./Section";
 
 const PHONE_DISPLAY = "+358 41 524 2441";
 const PHONE_HREF = "tel:+358415242441";
-const LOCATION = "Florence – Helsinki";
+const LOCATION = "Helsinki – Florence";
 
 type Engagement = { lead: ReactNode; details?: string[] };
 

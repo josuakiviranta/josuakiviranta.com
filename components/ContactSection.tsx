@@ -4,27 +4,22 @@ import { SectionHeading } from "./Section";
 /* Contact = a static map plus one legend row beneath it, set like a
    caption. The map is public/office-map.png, a frozen copy of the old
    interactive map's default view (built by map/generate-map.mjs); pins and
-   labels are HTML on top so they use the page's font. Solid pin:
-   Pontassieve, where Josua works. Hollow ring: Helsinki, the invoicing
+   labels are HTML on top so they use the page's font. Both pins are the
+   same hollow ring; the legend lists only Helsinki, the invoicing
    address. */
-const PLACES = [
-  { city: "Florence", role: "office", tz: "CET", primary: true },
-  { city: "Helsinki", role: "invoicing", tz: "EET", primary: false },
-];
+const PLACES = [{ city: "Helsinki", role: "invoicing", tz: "EET" }];
 
 const CHANNELS = [
   { label: "Email", value: "josua.kiviranta@gmail.com", href: "mailto:josua.kiviranta@gmail.com" },
   { label: "Phone", value: "+358 41 524 2441", href: "tel:+358415242441" },
 ];
 
-/* The map's two pin styles, at text size, so the place rows read as the
-   map's legend. */
-const Pin = ({ primary }: { primary: boolean }) => (
+/* The map's pin, at text size, so the place rows read as the map's
+   legend. */
+const Pin = () => (
   <span
     aria-hidden="true"
-    className={`inline-block h-[0.6em] w-[0.6em] rounded-full ${
-      primary ? "bg-ink" : "border-[1.5px] border-ink"
-    }`}
+    className="inline-block h-[0.6em] w-[0.6em] rounded-full border-[1.5px] border-ink"
   />
 );
 
@@ -46,9 +41,7 @@ export const ContactSection = () => {
           <span
             key={p.name}
             aria-hidden="true"
-            className={`absolute h-[14px] w-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full ${
-              p.primary ? "bg-ink" : "border-2 border-ink bg-white"
-            }`}
+            className="absolute h-[14px] w-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-ink bg-white"
             style={{ left: `${p.left}%`, top: `${p.top}%` }}
           />
         ))}
@@ -86,7 +79,7 @@ export const ContactSection = () => {
         <ul className="grid grid-cols-[1.4em_5.5em_1fr] items-baseline gap-y-1.5 sm:border-l sm:border-ink/25 sm:pl-10">
           {PLACES.map((p) => (
             <li key={p.city} className="contents">
-              <Pin primary={p.primary} />
+              <Pin />
               <span>{p.city}</span>
               <span className="italic text-muted">
                 {p.role}, {p.tz}
