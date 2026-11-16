@@ -7,8 +7,10 @@ import { LANGS, type Lang } from "../components/prototype/homepageCopy";
 
 // Link-preview tags need absolute URLs; the apex domain redirects to www.
 const SITE_URL = "https://www.josuakiviranta.com";
+// The first screen's English words (owner, 2026-11-16); previews read the
+// page without ?lang=, so they are in English.
 const SHARE_DESCRIPTION =
-  "Research, briefings and AI work for Finnish and Italian clients.";
+  "People search for you with AI before deciding. I help you show up in AI answers.";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -16,11 +18,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Josua Kiviranta — Advisor and engineer</title>
-        <meta
-          name="description"
-          content="Josua Kiviranta. Advisor and engineer. Research, briefings and AI work for Finnish and Italian clients."
-        />
+        <title>Josua Kiviranta — GEO and branding for AI</title>
+        <meta name="description" content={SHARE_DESCRIPTION} />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -35,7 +34,7 @@ const Home: NextPage = () => {
         <meta property="og:image:height" content="630" />
         <meta
           property="og:image:alt"
-          content="The top of josuakiviranta.com: Josua Kiviranta, Helsinki – Florence, and section 1, Current work."
+          content="The top of josuakiviranta.com: Josua Kiviranta, GEO and branding for AI. People search for you with AI before deciding."
         />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
