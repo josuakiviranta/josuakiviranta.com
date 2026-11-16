@@ -5,7 +5,7 @@
    the clean-up (owner, 2026-11-16). */
 
 import { useRouter } from "next/router";
-import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { MAP_ASPECT, MAP_PINS } from "../officeMapLabels";
 import { COPY, LANGS, type Copy, type Lang, type OfferCopy } from "./homepageCopy";
 
@@ -143,11 +143,30 @@ const usePage = () => {
   return { page, go };
 };
 
+/* The screen height for holds and thresholds. On touch screens it is read
+   again only when the width changes (turning the phone): phone browsers show
+   and hide their address bar while scrolling, which changes innerHeight by
+   about 80 px and resized every hold under the reader, so the page jumped
+   (2026-11-16). */
+let screenW = 0;
+let screenH = 0;
+const screenHeight = () => {
+  if (!window.matchMedia("(pointer: coarse)").matches) return window.innerHeight;
+  if (window.innerWidth !== screenW) {
+    screenW = window.innerWidth;
+    screenH = window.innerHeight;
+  }
+  return screenH;
+};
+
+/* Layout effects only run in the browser; the server render skips them. */
+const useBrowserLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 /* True once the reader has scrolled past most of the first screen. */
 const useScrolledPast = (share = 0.6) => {
   const [past, setPast] = useState(false);
   useEffect(() => {
-    const update = () => setPast(window.scrollY > share * window.innerHeight);
+    const update = () => setPast(window.scrollY > share * screenHeight());
     update();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
@@ -173,7 +192,7 @@ const scrollToServices = () => {
   const top = sec.getBoundingClientRect().top + window.scrollY - start;
   const above = sec.previousElementSibling?.getBoundingClientRect().bottom;
   const clear = above === undefined ? top : above + window.scrollY - head + 8;
-  const land = Math.min(Math.max(top, clear), top + OFFER_LAND * OFFER_HOLD * window.innerHeight);
+  const land = Math.min(Math.max(top, clear), top + OFFER_LAND * OFFER_HOLD * screenHeight());
   window.scrollTo({ top: land, behavior: "smooth" });
 };
 
@@ -184,6 +203,21 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
   const compact = useScrolledPast();
   const phoneHide = compact ? "hidden sm:block" : "block";
   const [menu, setMenu] = useState(false);
+  // The compact row keeps the full header's room as a bottom margin, so the
+  // page under it does not move up when it shrinks (2026-11-16: the page
+  // jumped 38 px, and Chrome's scroll anchoring then moved back under the
+  // threshold, so the header flipped between sizes).
+  const ref = useRef<HTMLElement>(null);
+  const full = useRef(0);
+  const [room, setRoom] = useState(0);
+  useBrowserLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!compact) {
+      full.current = el.offsetHeight;
+      setRoom(0);
+    } else setRoom(Math.max(0, full.current - el.offsetHeight));
+  }, [compact]);
   const services = () => {
     setMenu(false);
     if (page !== "home") {
@@ -195,7 +229,9 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
   /* Sticky while scrolling (owner, 2026-11-13); white so content passes under it.
      `data-b3-header`: Pinned centres held sections in the space below it. */
   <header
+    ref={ref}
     data-b3-header
+    style={{ marginBottom: room }}
     className={`sticky top-0 z-30 -mx-5 flex flex-wrap items-center justify-between gap-x-8 gap-y-4 bg-white px-5 sm:-mx-8 sm:px-8 sm:py-6 ${compact ? "py-3" : "py-6"}`}
   >
     <button onClick={() => go("home")} className="flex items-center gap-3 text-left">
@@ -635,7 +671,7 @@ const Pinned = ({ length, align, children }: { length: number; align?: (p: numbe
     let frame = 0;
     const update = () => {
       frame = 0;
-      const vh = window.innerHeight;
+      const vh = screenHeight();
       const h = el.offsetHeight;
       // Centred in the space below the sticky header.
       const head = (document.querySelector("[data-b3-header]") as HTMLElement | null)?.offsetHeight ?? 0;
