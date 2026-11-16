@@ -115,8 +115,8 @@ const placesLine = (c: Copy) =>
 
 /* `places`: B3 also shows the place and the business ID here, moved from
    Yhteystiedot (owner, 2026-11-15). */
-const Footer = ({ c, places }: { c: Copy; places?: boolean }) => (
-  <footer className="mt-20 border-t border-ink pt-5 text-[0.85em] text-muted">
+const Footer = ({ c, places, close }: { c: Copy; places?: boolean; close?: boolean }) => (
+  <footer className={`${close ? "mt-8" : "mt-20"} border-t border-ink pt-5 text-[0.85em] text-muted`}>
     {/* One line, the places before the year (owner, 2026-11-15). */}
     Josua Kiviranta · {c.role.replace(/\.$/, "")} · {places && `${placesLine(c)} · `}© 2026
   </footer>
@@ -372,7 +372,9 @@ const B3Home = ({ c, go }: { c: Copy; go: (p: Page) => void }) => {
     </div>
     <VisibilitySection c={c} />
 
-    <Band>
+    {/* No padding under the map, so the footer starts right under it
+        (owner, 2026-11-16). */}
+    <Band className="!pb-0">
       <ContactCentred c={c} />
     </Band>
   </>
@@ -388,7 +390,7 @@ const B3Home = ({ c, go }: { c: Copy; go: (p: Page) => void }) => {
 const ContactCentred = ({ c }: { c: Copy }) => {
   const links = c.facts.filter((f) => f.href);
   return (
-    <section className="pb-8 text-center">
+    <section className="text-center">
       <h2 className="font-display text-[2.1em] font-bold leading-[1.15]">{c.contactHeading}</h2>
       <Photo className="mx-auto mt-10 aspect-[4/5] w-40" />
       <div className="mt-10 flex flex-col items-center gap-5 sm:flex-row sm:items-start sm:justify-center sm:gap-x-8">
@@ -1016,8 +1018,10 @@ const Sample = ({ c }: { c: Copy }) => {
           }}
         </Pinned>
         {/* The free conversation again once the reader has seen the
-            prices and the report (owner, 2026-11-15). */}
-        <BookButton offer={c.visibility} />
+            prices and the report (owner, 2026-11-15), further from the
+            report than the next step's button from its text (owner,
+            2026-11-16). */}
+        <BookButton offer={c.visibility} gap="mt-12 sm:mt-20" />
       </section>
     </>
   );
@@ -1065,8 +1069,8 @@ const FillCaps = ({ f, children }: { f: number; children: ReactNode }) => (
    offer block, its question and urgency line, the phone link and the free
    industry review's price row were dropped from the home page (owner,
    2026-11-14). */
-const BookButton = ({ offer }: { offer: Pick<OfferCopy, "request"> }) => (
-  <div className="mt-6 sm:mt-12">
+const BookButton = ({ offer, gap = "mt-6 sm:mt-12" }: { offer: Pick<OfferCopy, "request">; gap?: string }) => (
+  <div className={gap}>
     <a href={BOOKING} target="_blank" rel="noopener noreferrer" className="inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
       {offer.request?.label}&nbsp;→
     </a>
@@ -1153,7 +1157,7 @@ const VariantB3 = ({ c, lang }: { c: Copy; lang: Lang }) => {
       {page === "home" && <B3Home c={c} go={go} />}
       {page === "background" && <B3Background c={c} />}
       {page === "case" && <B3Case c={c} />}
-      <Footer c={c} places />
+      <Footer c={c} places close={page === "home"} />
     </main>
   );
 };
