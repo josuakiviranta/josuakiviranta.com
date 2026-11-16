@@ -6,6 +6,12 @@ import { HelloSection } from "../components/HelloSection";
 import type { NextPage } from "next";
 import { NavBar } from "../components/NavBar";
 import { ClientsSection } from "../components/ClientsSection";
+import { useRouter } from "next/router";
+// PROTOTYPE (2026-11-09): the brand-map homepage B3 at ?variant=B3, dev only.
+import { HomepageVariant } from "../components/prototype/HomepageVariants";
+import { LANGS, type Lang } from "../components/prototype/homepageCopy";
+
+const PROTOTYPE = process.env.NODE_ENV !== "production";
 
 // Link-preview tags need absolute URLs; the apex domain redirects to www.
 const SITE_URL = "https://www.josuakiviranta.com";
@@ -13,6 +19,10 @@ const SHARE_DESCRIPTION =
   "Research, briefings and AI work for Finnish and Italian clients.";
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  const variant = router.query.variant as string;
+  const lang = (LANGS as string[]).includes(router.query.lang as string) ? (router.query.lang as Lang) : "en";
+  if (PROTOTYPE && variant === "B3") return <HomepageVariant variant={variant} lang={lang} />;
   return (
     <>
       <Head>
