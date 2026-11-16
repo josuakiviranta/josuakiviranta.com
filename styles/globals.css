@@ -76,28 +76,6 @@ a {
 }
 
 @layer components {
-  /* Justified and hyphenated like the LaTeX source, once the column is wide
-     enough not to open rivers. */
-  @media (min-width: 640px) {
-    .doc :where(p, li) {
-      text-align: justify;
-      hyphens: auto;
-    }
-  }
-
-  /* Contract clauses: numbered, restarting at each level, indented. */
-  .clauses {
-    list-style: decimal;
-    padding-left: 1.8em;
-  }
-  .clauses > li {
-    padding-left: 0.2em;
-    margin-top: 0.3em;
-  }
-  .clauses .clauses > li {
-    margin-top: 0.15em;
-  }
-
   /* Dash list: an em dash hangs in the margin of each item. */
   .dashes > li {
     position: relative;
@@ -119,11 +97,6 @@ a {
   }
   .doc-link:hover {
     text-decoration-color: currentColor;
-  }
-
-  /* Clear the slim top bar when jumping to a section. */
-  .doc-anchor {
-    scroll-margin-top: 4rem;
   }
 }
 
