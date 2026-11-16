@@ -5,7 +5,7 @@
    the clean-up (owner, 2026-11-16). */
 
 import { useRouter } from "next/router";
-import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { MAP_ASPECT, MAP_PINS } from "../officeMapLabels";
 import { COPY, LANGS, type Copy, type Lang, type OfferCopy } from "./homepageCopy";
 
@@ -143,11 +143,30 @@ const usePage = () => {
   return { page, go };
 };
 
+/* The screen height for holds and thresholds. On touch screens it is read
+   again only when the width changes (turning the phone): phone browsers show
+   and hide their address bar while scrolling, which changes innerHeight by
+   about 80 px and resized every hold under the reader, so the page jumped
+   (2026-11-16). */
+let screenW = 0;
+let screenH = 0;
+const screenHeight = () => {
+  if (!window.matchMedia("(pointer: coarse)").matches) return window.innerHeight;
+  if (window.innerWidth !== screenW) {
+    screenW = window.innerWidth;
+    screenH = window.innerHeight;
+  }
+  return screenH;
+};
+
+/* Layout effects only run in the browser; the server render skips them. */
+const useBrowserLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 /* True once the reader has scrolled past most of the first screen. */
 const useScrolledPast = (share = 0.6) => {
   const [past, setPast] = useState(false);
   useEffect(() => {
-    const update = () => setPast(window.scrollY > share * window.innerHeight);
+    const update = () => setPast(window.scrollY > share * screenHeight());
     update();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
@@ -173,7 +192,7 @@ const scrollToServices = () => {
   const top = sec.getBoundingClientRect().top + window.scrollY - start;
   const above = sec.previousElementSibling?.getBoundingClientRect().bottom;
   const clear = above === undefined ? top : above + window.scrollY - head + 8;
-  const land = Math.min(Math.max(top, clear), top + OFFER_LAND * OFFER_HOLD * window.innerHeight);
+  const land = Math.min(Math.max(top, clear), top + OFFER_LAND * OFFER_HOLD * screenHeight());
   window.scrollTo({ top: land, behavior: "smooth" });
 };
 
@@ -184,6 +203,21 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
   const compact = useScrolledPast();
   const phoneHide = compact ? "hidden sm:block" : "block";
   const [menu, setMenu] = useState(false);
+  // The compact row keeps the full header's room as a bottom margin, so the
+  // page under it does not move up when it shrinks (2026-11-16: the page
+  // jumped 38 px, and Chrome's scroll anchoring then moved back under the
+  // threshold, so the header flipped between sizes).
+  const ref = useRef<HTMLElement>(null);
+  const full = useRef(0);
+  const [room, setRoom] = useState(0);
+  useBrowserLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!compact) {
+      full.current = el.offsetHeight;
+      setRoom(0);
+    } else setRoom(Math.max(0, full.current - el.offsetHeight));
+  }, [compact]);
   const services = () => {
     setMenu(false);
     if (page !== "home") {
@@ -195,7 +229,9 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
   /* Sticky while scrolling (owner, 2026-11-13); white so content passes under it.
      `data-b3-header`: Pinned centres held sections in the space below it. */
   <header
+    ref={ref}
     data-b3-header
+    style={{ marginBottom: room }}
     className={`sticky top-0 z-30 -mx-5 flex flex-wrap items-center justify-between gap-x-8 gap-y-4 bg-white px-5 sm:-mx-8 sm:px-8 sm:py-6 ${compact ? "py-3" : "py-6"}`}
   >
     <button onClick={() => go("home")} className="flex items-center gap-3 text-left">
@@ -294,13 +330,17 @@ const RefSection = ({ c, go }: { c: Copy; go: (p: Page) => void }) => {
    references: no rules above or below, a short thin line between the items
    (owner, 2026-11-14). Phones stack them without lines. */
 const B3Steps = ({ items }: { items: { title: string; body: string; price?: string }[] }) => (
-  <div className="flex flex-col gap-6 sm:grid sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-start sm:gap-x-8">
+  <div className="flex flex-col gap-4 sm:grid sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-start sm:gap-x-8">
     {items.map((s, i) => (
       <Fragment key={s.title}>
         {i > 0 && <span aria-hidden="true" className="hidden h-8 w-px self-center bg-rule sm:block" />}
         <div className="flex flex-col sm:self-stretch">
-          <div className="text-muted tabular-nums">{String(i + 1).padStart(2, "0")}</div>
-          <div className="mt-1 font-display text-[1.1em] font-bold">{s.title}</div>
+          {/* Phones put the number beside the title, so held pieces fit
+              the screen (owner, 2026-11-16). */}
+          <div className="flex items-baseline justify-center gap-[0.5em] sm:block">
+            <div className="text-muted tabular-nums">{String(i + 1).padStart(2, "0")}</div>
+            <div className="font-display text-[1.1em] font-bold sm:mt-1">{s.title}</div>
+          </div>
           <p className="mt-1 leading-snug">{s.body}</p>
           {/* The offer's steps carry their price, on one shared line on wide
               screens (owner, 2026-11-15). */}
@@ -616,7 +656,7 @@ const Pinned = ({ length, align, children }: { length: number; align?: (p: numbe
   alignRef.current = align;
   const outer = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
-  const [st, setSt] = useState({ p: 0, top: 0, h: 0, hold: 0 });
+  const [st, setSt] = useState({ p: 0, top: 0, h: 0, hold: 0, moving: false });
   // The top at the moment the hold starts: progress is measured from it, so
   // content that grows while held (the study box) does not move it.
   const start = useRef(0);
@@ -625,20 +665,23 @@ const Pinned = ({ length, align, children }: { length: number; align?: (p: numbe
     const el = inner.current;
     if (!o || !el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setSt({ p: 1, top: 0, h: 0, hold: 0 });
+      setSt({ p: 1, top: 0, h: 0, hold: 0, moving: false });
       return;
     }
     let frame = 0;
     const update = () => {
       frame = 0;
-      const vh = window.innerHeight;
+      const vh = screenHeight();
       const h = el.offsetHeight;
-      // Centred in the space below the sticky header; taller than that
-      // space, its bottom shows.
+      // Centred in the space below the sticky header.
       const head = (document.querySelector("[data-b3-header]") as HTMLElement | null)?.offsetHeight ?? 0;
       const room = vh - head;
       const centre: Centre = (ch, off = 0) => (ch <= room - 32 ? head + (room - ch) / 2 : vh - ch - 16) - off;
-      const fit = alignRef.current;
+      // Taller than that space (short phones), it starts with its top under
+      // the header and moves up while held until its bottom shows, so every
+      // line is seen (owner, 2026-11-16).
+      const slide = h > room - 32 ? (p: number) => head + 16 + p * (vh - h - 32 - head) : undefined;
+      const fit = slide ?? alignRef.current;
       const top0 = fit ? fit(0, centre) : centre(h);
       const hold = length * vh;
       const at = o.getBoundingClientRect().top;
@@ -646,7 +689,7 @@ const Pinned = ({ length, align, children }: { length: number; align?: (p: numbe
       const p = seg(start.current - at, 0, hold);
       const top = fit ? fit(p, centre) : top0;
       // Moving up while held would stretch the hold; shorten it by as much.
-      setSt({ p, top, h, hold: hold - (start.current - top) });
+      setSt({ p, top, h, hold: hold - (start.current - top), moving: !!fit });
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -666,7 +709,7 @@ const Pinned = ({ length, align, children }: { length: number; align?: (p: numbe
   }, [length]);
   return (
     <div ref={outer} style={st.hold ? { height: st.h + st.hold } : undefined}>
-      <div ref={inner} className={st.hold ? `sticky ${align ? "" : "transition-[top] duration-500 ease-out"}` : undefined} style={st.hold ? { top: st.top } : undefined}>
+      <div ref={inner} className={st.hold ? `sticky ${st.moving ? "" : "transition-[top] duration-500 ease-out"}` : undefined} style={st.hold ? { top: st.top } : undefined}>
         {children(st.p)}
       </div>
     </div>
@@ -765,7 +808,7 @@ const Measured = ({ c }: { c: Copy }) => {
           {(p) => (
             <>
               {/* The threat as the long-tail section's header (owner, 2026-11-13). */}
-              <h2 className="font-display text-[2.1em] font-bold leading-[1.15]">{c.visibility.summary}</h2>
+              <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{c.visibility.summary}</h2>
               <div className="mt-8">
                 <TailCurve m={m} p={p} />
               </div>
@@ -780,10 +823,10 @@ const Measured = ({ c }: { c: Copy }) => {
             <>
               {/* Its own header, the size of the others (owner, 2026-11-15;
                   was the title of a box that opened under the curve). */}
-              <h2 className="font-display text-[2.1em] font-bold leading-[1.15]">{m.study.title}</h2>
+              <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{m.study.title}</h2>
               {/* Ties the curve to the elections, a black caps label
                   (owner, 2026-11-16; was plain text). */}
-              <div className="mt-6 sm:mt-10">
+              <div className="mt-4 sm:mt-10">
                 <Caps className="block leading-relaxed !text-ink">{m.study.bridge}</Caps>
               </div>
               <div className="mt-4 sm:mt-6">
@@ -855,10 +898,10 @@ const Sample = ({ c }: { c: Copy }) => {
         <Pinned length={OFFER_HOLD}>
           {(p) => (
             <>
-              <h2 className="font-display text-[2.1em] font-bold leading-[1.15]">{s.weekly.lead}</h2>
+              <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{s.weekly.lead}</h2>
               {/* The label turns black from right to left while the steps
                   hold (owner, 2026-11-15). */}
-              <div className="mt-8 mb-4 sm:mt-14 sm:mb-5">
+              <div className="mt-4 mb-4 sm:mt-14 sm:mb-5">
                 <FillCaps f={seg(p, OFFER_FILL[0], OFFER_FILL[1])}>{s.weekly.label}</FillCaps>
               </div>
               <B3Steps items={s.weekly.steps} />
@@ -878,7 +921,7 @@ const Sample = ({ c }: { c: Copy }) => {
             let k = 0;
             return (
               <>
-              <h2 className="font-display text-[2.1em] font-bold leading-[1.15]">{s.label}</h2>
+              <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{s.label}</h2>
               {/* A thin line on each side, so the body reads as a report
                   (owner, 2026-11-15). */}
               <div className="mt-8 border-x border-rule px-3 sm:mt-14 sm:px-6">
@@ -1001,7 +1044,7 @@ const OFFER_FILL = [0.35, 0.9] as const;
 /* A header that starts grey and turns black from its right end to its
    left as `f` runs 0 to 1, like FillCaps (owner, 2026-11-16). */
 const FillH2 = ({ f, children }: { f: number; children: ReactNode }) => (
-  <h2 className="relative font-display text-[2.1em] font-bold leading-[1.15]">
+  <h2 className="relative font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">
     <span className="text-muted">{children}</span>
     <span aria-hidden className="absolute inset-0" style={{ clipPath: `inset(0 0 0 ${(1 - f) * 100}%)` }}>
       {children}
@@ -1023,7 +1066,7 @@ const FillCaps = ({ f, children }: { f: number; children: ReactNode }) => (
    industry review's price row were dropped from the home page (owner,
    2026-11-14). */
 const BookButton = ({ offer }: { offer: Pick<OfferCopy, "request"> }) => (
-  <div className="mt-8 sm:mt-12">
+  <div className="mt-6 sm:mt-12">
     <a href={BOOKING} target="_blank" rel="noopener noreferrer" className="inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
       {offer.request?.label}&nbsp;→
     </a>
@@ -1052,7 +1095,7 @@ const VisibilitySection = ({ c }: { c: Copy }) => {
           {(p) => (
             <>
               <FillH2 f={seg(p, 0.1, 0.85)}>{v.next.lead}</FillH2>
-              <div className="mt-8 mb-5 sm:mt-14">
+              <div className="mt-4 mb-5 sm:mt-14">
                 {/* Black, no fill (owner, 2026-11-16). */}
                 <Caps className="!text-ink">{v.next.body}</Caps>
               </div>
