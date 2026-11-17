@@ -1021,10 +1021,15 @@ const Sample = ({ c }: { c: Copy }) => {
             2026-11-17), as far from the report as the button was (owner,
             2026-11-16). */}
         <div className="mt-12 sm:mt-20">
-          <p className="font-display text-[1.1em] font-bold">{s.guide.lead}</p>
-          <ol className="mt-3 space-y-1">
-            {s.guide.items.map((it) => (
-              <li key={it}>{it}</li>
+          {/* Black caps over numbered bold lines, like the next step's
+              label and topics (owner, 2026-11-17). */}
+          <Caps className="block leading-relaxed !text-ink">{s.guide.lead}</Caps>
+          <ol className="mt-5 flex flex-col gap-3">
+            {s.guide.items.map((it, i) => (
+              <li key={it} className="flex items-baseline justify-center gap-[0.5em]">
+                <span className="text-muted tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-display text-[1.1em] font-bold">{it}</span>
+              </li>
             ))}
           </ol>
         </div>
