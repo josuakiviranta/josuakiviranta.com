@@ -1017,11 +1017,20 @@ const Sample = ({ c }: { c: Copy }) => {
             );
           }}
         </Pinned>
-        {/* The free conversation again once the reader has seen the
-            prices and the report (owner, 2026-11-15), further from the
-            report than the next step's button from its text (owner,
+        {/* What comes with the report, before the button (owner,
+            2026-11-17), as far from the report as the button was (owner,
             2026-11-16). */}
-        <BookButton offer={c.visibility} gap="mt-12 sm:mt-20" />
+        <div className="mt-12 sm:mt-20">
+          <p className="font-display text-[1.1em] font-bold">{s.guide.lead}</p>
+          <ol className="mt-3 space-y-1">
+            {s.guide.items.map((it) => (
+              <li key={it}>{it}</li>
+            ))}
+          </ol>
+        </div>
+        {/* The free conversation again once the reader has seen the
+            prices and the report (owner, 2026-11-15). */}
+        <BookButton offer={c.visibility} />
       </section>
     </>
   );
@@ -1069,8 +1078,8 @@ const FillCaps = ({ f, children }: { f: number; children: ReactNode }) => (
    offer block, its question and urgency line, the phone link and the free
    industry review's price row were dropped from the home page (owner,
    2026-11-14). */
-const BookButton = ({ offer, gap = "mt-6 sm:mt-12" }: { offer: Pick<OfferCopy, "request">; gap?: string }) => (
-  <div className={gap}>
+const BookButton = ({ offer }: { offer: Pick<OfferCopy, "request"> }) => (
+  <div className="mt-6 sm:mt-12">
     <a href={BOOKING} target="_blank" rel="noopener noreferrer" className="inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
       {offer.request?.label}&nbsp;→
     </a>
