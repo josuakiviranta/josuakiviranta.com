@@ -74,7 +74,8 @@ export type Copy = {
       /* `price`: the step's price under its text (owner, 2026-11-15). */
       weekly: { label: string; lead: string; steps: { title: string; body: string; price?: string }[] };
       /* What comes with the weekly report, under it and before the button
-         (owner, 2026-11-17): a bold line and numbered lines. */
+         (owner, 2026-11-17): a caps line over numbered lines, the numbers
+         drawn by the page. */
       guide: { lead: string; items: string[] };
     };
     /* The next step before the offer (owner, 2026-11-12): `lead` the
@@ -161,7 +162,7 @@ export const COPY: Record<Lang, Copy> = {
         questions: ["Topic 1", "Topic 2", "Topic 101"],
         guide: {
           lead: "+ Weekly instructions based on personal analysis how to increase visibility:",
-          items: ["1. What you have to do.", "2. Where you should be.", "3. What should you add.", "4. What should you change."],
+          items: ["What you have to do.", "Where you should be.", "What should you add.", "What should you change."],
         },
         weekly: {
           label: "Services and prices, no commitment",
@@ -260,7 +261,7 @@ export const COPY: Record<Lang, Copy> = {
         questions: ["Aihe 1", "Aihe 2", "Aihe 101"],
         guide: {
           lead: "+ Viikoittaiset ohjeet henkilökohtaisen analyysin pohjalta, miten lisäät näkyvyyttäsi:",
-          items: ["1. Mitä sinun pitää tehdä.", "2. Missä sinun pitää olla.", "3. Mitä sinun pitää lisätä.", "4. Mitä sinun pitää muuttaa."],
+          items: ["Mitä sinun pitää tehdä.", "Missä sinun pitää olla.", "Mitä sinun pitää lisätä.", "Mitä sinun pitää muuttaa."],
         },
         weekly: {
           label: "Palvelut ja hinnat ilman sitoutumista",
@@ -359,7 +360,7 @@ export const COPY: Record<Lang, Copy> = {
         questions: ["Argomento 1", "Argomento 2", "Argomento 101"],
         guide: {
           lead: "+ Istruzioni settimanali, basate su un'analisi personale, su come aumentare la tua visibilità:",
-          items: ["1. Cosa devi fare.", "2. Dove devi essere.", "3. Cosa devi aggiungere.", "4. Cosa devi cambiare."],
+          items: ["Cosa devi fare.", "Dove devi essere.", "Cosa devi aggiungere.", "Cosa devi cambiare."],
         },
         weekly: {
           label: "Servizi e prezzi senza vincoli",
