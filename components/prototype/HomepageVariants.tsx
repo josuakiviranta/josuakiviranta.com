@@ -727,7 +727,7 @@ const seg = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a)
    a stop; then one ink column slides from the least mentioned Candidate
    on the right to the most mentioned on the left. The columns it has
    passed turn a darker grey; the sentence and the squares show the ink
-   column's own mentions per 10 answers. No arrows. */
+   column's own mentions per 100 answers. No arrows. */
 const StudyBody = ({ m, p }: { m: M; p: number }) => {
   const counts = MEASURED.combined;
   const n = counts.length;
@@ -753,14 +753,14 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
           sentence always names a place (owner, 2026-11-14). */}
       <AvgTen m={m} rank={at + 1} v={(counts[at] / PAGE_ANSWERS) * 10} />
       {/* What the slide shows (owner, 2026-11-15): the Candidates named
-          under once in 10 answers, as soon as the ink column has passed
+          under 10 times in 100 answers, as soon as the ink column has passed
           them all; then, once it reaches place 1, place 1's count rounded. */}
       <div className="space-y-1 pt-4 tabular-nums leading-snug sm:pt-6">
         <p style={{ opacity: seg(few - 0.5 - pos, 0, 1.5) }}>
           <Bolded text={m.own.most.replace("{n}", String(n - few)).replace("{all}", String(n))} />
         </p>
         <p style={{ opacity: seg(p, 0.86, 0.95) }}>
-          <Bolded text={m.own.first.replace("{n}", String(Math.round((counts[0] / PAGE_ANSWERS) * 10)))} />
+          <Bolded text={m.own.first.replace("{n}", String(Math.round((counts[0] / PAGE_ANSWERS) * 100)))} />
         </p>
       </div>
     </figure>
@@ -772,13 +772,13 @@ const Bolded = ({ text }: { text: string }) => (
   <>{text.split(/\*\*(.+?)\*\*/).map((part, i) => (i % 2 ? <b key={i}>{part}</b> : part))}</>
 );
 
-/* 10 squares, one per question asked; ink fills `v` of them, a fraction
-   filling part of a square. One sentence over them says the same, its
-   number following the animation; no label, count or key (owner,
-   2026-11-14). */
+/* 10 squares, each 10 answers; ink fills `v` of them (`v` = mentions per
+   10 answers), a fraction filling part of a square. One sentence over them
+   says the same per 100 answers, a whole number, following the animation
+   (owner, 2026-11-19: whole numbers show the gap better than 0,3 vs 2,1);
+   no label, count or key (owner, 2026-11-14). */
 const AvgTen = ({ m, rank, v }: { m: M; rank: number; v: number }) => {
-  const shown = Math.round(v * 10) / 10;
-  const fill: Record<string, string> = { "{rank}": String(rank), "{n}": shown ? shown.toFixed(1).replace(".", m.dist.decimal) : "0" };
+  const fill: Record<string, string> = { "{rank}": String(rank), "{n}": String(Math.round(v * 10)) };
   return (
     <div className="space-y-3 pt-4 sm:pt-6">
       {/* The body's size like all plain text (owner, 2026-11-16); the place
