@@ -775,7 +775,7 @@ const Bolded = ({ text }: { text: string }) => (
 );
 
 /* One ink square per mention in 100 answers (`v`), a fraction filling part
-   of a square; the row grows from the left as the ink column slides, up to
+   of a square; the row fills left to right as the ink column slides, up to
    place 1's `max` (owner, 2026-11-19: the gap shows in the row's length;
    was 10 grey squares filled in ink). One sentence over it says the same,
    its number following the animation; no label, count or key (owner,
@@ -789,12 +789,14 @@ const AvgRow = ({ m, rank, v, max }: { m: M; rank: number; v: number; max: numbe
       <p className="tabular-nums leading-snug">
         {m.own.live.split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
       </p>
-      {/* 24 px squares as before (owner, 2026-11-19); 13 px on phones so
-          place 1's row fits. */}
-      <div className="mx-auto flex w-fit gap-[2px] sm:gap-[3px]">
+      {/* 24 px squares as before (owner, 2026-11-19); 12 px on phones so
+          place 1's row fits 360 px screens. The row is as wide as place 1's
+          ink, its last square cut to the fraction, so place 1's full row
+          ends centred (owner, 2026-11-19). */}
+      <div className="mx-auto flex w-fit gap-[2px] [--sq:12px] sm:gap-[3px] sm:[--sq:24px]">
         {Array.from({ length: Math.ceil(max) }, (_, i) => (
-          <span key={i} className="relative h-[13px] w-[13px] sm:h-6 sm:w-6">
-            <span className="absolute inset-y-0 left-0 bg-ink" style={{ width: `${Math.min(1, Math.max(0, v - i)) * 100}%` }} />
+          <span key={i} className="relative h-[var(--sq)]" style={{ width: `calc(var(--sq) * ${Math.min(1, max - i)})` }}>
+            <span className="absolute inset-y-0 left-0 bg-ink" style={{ width: `${(Math.min(1, Math.max(0, v - i)) / Math.min(1, max - i)) * 100}%` }} />
           </span>
         ))}
       </div>
