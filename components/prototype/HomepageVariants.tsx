@@ -488,11 +488,11 @@ const Offer = ({ c, offer, centred }: { c: Copy; offer: OfferCopy; centred?: boo
 };
 
 
-/* Measured in a Helsinki Round (5–7.11.2026) over the 71 Candidates with
+/* Measured in a Helsinki Round (18–19.11.2026) over the 78 Candidates with
    an own website and at least one talking point. `combined`: mentions per
    Candidate, OpenAI and Claude joined, sorted high to low. */
 const MEASURED = {
-  combined: [26.27, 20.91, 19.82, 16.18, 15.91, 13.82, 13.45, 12.82, 12.09, 10.55, 10.45, 9.27, 9.27, 7.91, 7.91, 7.82, 6, 6, 5.82, 5.18, 4.91, 4.82, 4.36, 4, 3.82, 3.82, 3.73, 3.45, 3.45, 3.27, 3.09, 3.09, 2.82, 2.73, 2.73, 2.73, 2.64, 2.64, 2.27, 2.18, 2, 1.91, 1.82, 1.82, 1.82, 1.82, 1.73, 1.73, 1.64, 1.64, 1.55, 1.45, 0.91, 0.91, 0.91, 0.91, 0.91, 0.64, 0.36, 0.36, 0.36, 0.27, 0.27, 0.09, 0.09, ...Array(6).fill(0)],
+  combined: [90.36, 70, 58.45, 57, 53.18, 51.64, 51, 43, 39.36, 38.55, 36.55, 31.27, 30.36, 29.09, 22.55, 21.91, 20.73, 18.82, 18, 16.09, 15.82, 14.64, 14.64, 13.55, 13.27, 13, 12.91, 12.82, 12.55, 12.45, 12, 10.64, 10.55, 10.36, 10.18, 10.18, 9.82, 9.55, 9.36, 9.27, 8.82, 8.82, 8.64, 8.36, 8.36, 8.27, 8.18, 8, 7.82, 7.73, 7.55, 7.45, 7.18, 6.73, 6.27, 6, 6, 5.82, 5.82, 5.82, 5.82, 5.73, 4.91, 4.91, 4.82, 4.73, 3.36, 2.82, 2.18, 1.36, 1.27, 1.18, 1.09, 0.91, 0.45, ...Array(3).fill(0)],
 };
 
 /* Keeps a number and its "%" (with any case ending), and any two words
@@ -513,9 +513,10 @@ const Spread = ({ counts, className = "h-14", shade }: { counts: number[]; class
   return (
     <svg viewBox={`0 0 ${counts.length * (w + gap)} ${h + 2}`} preserveAspectRatio="none" className={`block w-full ${className}`} aria-hidden>
       {counts.map((x, i) => {
-        // Never named: a column 1 px high (owner, 2026-11-12); the graph is
-        // 64 px (h-16) for 50 units, so 0.8 units ≈ 1 px.
-        const bh = x === 0 ? 0.8 : Math.max(2, (x / max) * h);
+        // Every column to scale (owner, 2026-11-19), never under 1 px, the
+        // height of a never-named column (owner, 2026-11-12); the graph is
+        // 96–112 px (h-24, sm:h-28) for 50 units, so 0.5 units ≈ 1 px.
+        const bh = Math.max(0.5, (x / max) * h);
         return (
           <rect
             key={i}
@@ -533,7 +534,7 @@ const Spread = ({ counts, className = "h-14", shade }: { counts: number[]; class
 
 
 /* The answers per AI behind `MEASURED.combined`. */
-const PAGE_ANSWERS = 92;
+const PAGE_ANSWERS = 422;
 /* The long tail, drawn as an idea, not data (owner, 2026-11-12: explain
    simply how players get named, one smooth long-tail curve; the measured
    numbers go into the case study under it). */
@@ -722,18 +723,20 @@ const Pinned = ({ length, align, children }: { length: number; align?: (p: numbe
 const seg = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)));
 
 /* The election box's body (owner, 2026-11-14), as `p` runs 0 to 1: the
-   sentence, the 71 grey columns over "71 ehdokasta" and the squares at 0;
+   sentence, the 78 grey columns over "78 ehdokasta" and the squares at 0;
    a stop; then one ink column slides from the least mentioned Candidate
    on the right to the most mentioned on the left. The columns it has
    passed turn a darker grey; the sentence and the squares show the ink
-   column's own mentions per 10 answers. No arrows. */
+   column's own mentions per 100 answers. No arrows. */
 const StudyBody = ({ m, p }: { m: M; p: number }) => {
   const counts = MEASURED.combined;
   const n = counts.length;
   const pos = (n - 1) * (1 - seg(p, 0.15, 0.85));
   const at = Math.round(pos);
-  // The Candidates named once or more in 10 answers (13 of 71 now).
-  const few = counts.filter((v) => (v / PAGE_ANSWERS) * 10 >= 1).length;
+  const per100 = (v: number) => (v / PAGE_ANSWERS) * 100;
+  // The typical Candidate: the median of all of them.
+  const mid = (n - 1) / 2;
+  const typical = per100((counts[Math.floor(mid)] + counts[Math.ceil(mid)]) / 2);
   return (
     <figure className="space-y-3">
       {/* A quiet caps label like the other sections' (owner, 2026-11-15;
@@ -750,16 +753,16 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
       </div>
       {/* The ink column waits on the last place through the stop, so the
           sentence always names a place (owner, 2026-11-14). */}
-      <AvgTen m={m} rank={at + 1} v={(counts[at] / PAGE_ANSWERS) * 10} />
-      {/* What the slide shows (owner, 2026-11-15): the Candidates named
-          under once in 10 answers, as soon as the ink column has passed
-          them all; then, once it reaches place 1, place 1's count rounded. */}
+      <AvgRow m={m} rank={at + 1} v={per100(counts[at])} max={per100(counts[0])} />
+      {/* What the slide shows (owner, 2026-11-19): the typical Candidate as
+          soon as the ink column reaches the middle place; then, once it
+          reaches place 1, place 1's count and how many times the typical. */}
       <div className="space-y-1 pt-4 tabular-nums leading-snug sm:pt-6">
-        <p style={{ opacity: seg(few - 0.5 - pos, 0, 1.5) }}>
-          <Bolded text={m.own.most.replace("{n}", String(n - few)).replace("{all}", String(n))} />
+        <p style={{ opacity: seg(mid + 0.5 - pos, 0, 1.5) }}>
+          <Bolded text={m.own.typical.replace("{n}", String(Math.round(typical)))} />
         </p>
         <p style={{ opacity: seg(p, 0.86, 0.95) }}>
-          <Bolded text={m.own.first.replace("{n}", String(Math.round((counts[0] / PAGE_ANSWERS) * 10)))} />
+          <Bolded text={m.own.first.replace("{n}", String(Math.round(per100(counts[0])))).replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
         </p>
       </div>
     </figure>
@@ -771,13 +774,14 @@ const Bolded = ({ text }: { text: string }) => (
   <>{text.split(/\*\*(.+?)\*\*/).map((part, i) => (i % 2 ? <b key={i}>{part}</b> : part))}</>
 );
 
-/* 10 squares, one per question asked; ink fills `v` of them, a fraction
-   filling part of a square. One sentence over them says the same, its
-   number following the animation; no label, count or key (owner,
+/* One ink square per mention in 100 answers (`v`), a fraction filling part
+   of a square; the row fills left to right as the ink column slides, up to
+   place 1's `max` (owner, 2026-11-19: the gap shows in the row's length;
+   was 10 grey squares filled in ink). One sentence over it says the same,
+   its number following the animation; no label, count or key (owner,
    2026-11-14). */
-const AvgTen = ({ m, rank, v }: { m: M; rank: number; v: number }) => {
-  const shown = Math.round(v * 10) / 10;
-  const fill: Record<string, string> = { "{rank}": String(rank), "{n}": shown ? shown.toFixed(1).replace(".", m.dist.decimal) : "0" };
+const AvgRow = ({ m, rank, v, max }: { m: M; rank: number; v: number; max: number }) => {
+  const fill: Record<string, string> = { "{rank}": String(rank), "{n}": String(Math.round(v)) };
   return (
     <div className="space-y-3 pt-4 sm:pt-6">
       {/* The body's size like all plain text (owner, 2026-11-16); the place
@@ -785,10 +789,14 @@ const AvgTen = ({ m, rank, v }: { m: M; rank: number; v: number }) => {
       <p className="tabular-nums leading-snug">
         {m.own.live.split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
       </p>
-      <div className="flex justify-center gap-[3px]">
-        {Array.from({ length: 10 }, (_, i) => (
-          <span key={i} className="relative h-6 w-6 bg-[#bdbdbd]">
-            <span className="absolute inset-y-0 left-0 bg-ink" style={{ width: `${Math.min(1, Math.max(0, v - i)) * 100}%` }} />
+      {/* 24 px squares as before (owner, 2026-11-19); 12 px on phones so
+          place 1's row fits 360 px screens. The row is as wide as place 1's
+          ink, its last square cut to the fraction, so place 1's full row
+          ends centred (owner, 2026-11-19). */}
+      <div className="mx-auto flex w-fit gap-[2px] [--sq:12px] sm:gap-[3px] sm:[--sq:24px]">
+        {Array.from({ length: Math.ceil(max) }, (_, i) => (
+          <span key={i} className="relative h-[var(--sq)]" style={{ width: `calc(var(--sq) * ${Math.min(1, max - i)})` }}>
+            <span className="absolute inset-y-0 left-0 bg-ink" style={{ width: `${(Math.min(1, Math.max(0, v - i)) / Math.min(1, max - i)) * 100}%` }} />
           </span>
         ))}
       </div>
@@ -849,19 +857,20 @@ const STUDY = {
   body: 1.5,
 } as const;
 
-/* The one number both examples show, so a reader may sense they are the
-   same data (owner, 2026-11-15): the election example's "{n} kysymystä" and
-   the weekly example's "Näkyvyytesi {n} vastauksissa". */
-const ASKED = 101;
+/* The questions behind `MEASURED.combined`, each asked in 2 wordings, so
+   `PAGE_ANSWERS` answers per AI. The election example's "{n} kysymystä"
+   shows `ASKED`, the weekly example's "Näkyvyytesi {n} vastauksissa"
+   `PAGE_ANSWERS`: the same data (owner, 2026-11-15). */
+const ASKED = 211;
 
 /* The weekly example (owner, 2026-11-15: tie it to the election example):
    the rivals are places 1–3 of `MEASURED.combined` and "Sinä" place 24,
    each rounded. `questions`: per square, 0 = not named, n = place among
    the names in the answer; the last row follows a "⋮". */
 const SAMPLE = {
-  answers: 92,
-  top: [26, 21, 20],
-  you: { rank: 24, count: 4 },
+  answers: PAGE_ANSWERS,
+  top: [90, 70, 58],
+  you: { rank: 24, count: 14 },
   questions: [
     [0, 0, 0, 0],
     [1, 4, 2, 2],
@@ -929,7 +938,7 @@ const Sample = ({ c }: { c: Copy }) => {
               <div className="mt-8 border-x border-rule px-3 sm:mt-14 sm:px-6">
                 <figure>
                   {/* Black caps (owner, 2026-11-15; was a grey line). */}
-                  <Caps className="block !text-ink">{s.basis.replace("{n}", String(ASKED))}</Caps>
+                  <Caps className="block !text-ink">{s.basis.replace("{n}", String(PAGE_ANSWERS))}</Caps>
                   <ol className="mt-4 text-left">
                     {SAMPLE.top.map((n, i) => (
                       <Row key={i} rank={i + 1} name={s.rivals[i]} count={n} grow={seg(p1, i / rows, (i + 1) / rows)} />
@@ -966,7 +975,7 @@ const Sample = ({ c }: { c: Copy }) => {
                               : null;
                           return (
                             <Fragment key={i}>
-                              {/* "⋮" before the last row, "Aihe 101" (owner, 2026-11-15). */}
+                              {/* "⋮" before the last row, "Aihe 211" (owner, 2026-11-15). */}
                               {i > 0 && i === SAMPLE.questions.length - 1 && <li className="text-muted">⋮</li>}
                               <li>
                                 {/* Labels like the long tail's: plain black text over

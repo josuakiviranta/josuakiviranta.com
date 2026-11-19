@@ -43,15 +43,13 @@ export type Copy = {
     summary: string;
     /* The numbers are in `MEASURED` in HomepageVariants.tsx. */
     measured: {
-      own: { /* The live sentence over the squares, "{rank}" = the ink column's place, "{n}" = its mentions per 10 answers (owner, 2026-11-14). */ live: string; /* Once the slide has passed them: "{n}" = the Candidates named under once in 10 answers, "{all}" = all of them; **…** is bold (owner, 2026-11-15). */ most: string; /* Under it once the slide reaches place 1, "{n}" = place 1's mentions per 10 answers, rounded (owner, 2026-11-15). */ first: string; };
+      own: { /* The live sentence over the squares, "{rank}" = the ink column's place, "{n}" = its mentions per 100 answers (owner, 2026-11-14; per 100 since 2026-11-19). */ live: string; /* From the middle place on, "{n}" = the typical (median) Candidate's mentions per 100 answers (owner, 2026-11-19). */ typical: string; /* Once the slide reaches place 1, "{n}" = place 1's mentions per 100 answers, "{x}" = that over the typical count, both rounded (owner, 2026-11-19). */ first: string; };
       /* The long-tail curve (owner, 2026-11-12): `y` the axis; `most` and
          `here` the two labels on the curve. */
       tail: { y: string; /* Under the axis's two ends (owner, 2026-11-14). */ left: string; right: string; /* Over the flat tail (owner, 2026-11-13). */ most: string; /* At the arrow to the striped head (owner, 2026-11-13). */ here: string };
       /* The election example; `players`: the axis unit under its graph
          (owner, 2026-11-13). */
       study: { title: string; /* The line under the header that ties the curve to the elections (owner, 2026-11-15). */ bridge: string; players: string; /* The box's sentence; owner's wording, 2026-11-14. */ intro: string };
-      /* `decimal`: the decimal mark in the live sentence's count. */
-      dist: { decimal: string };
     };
     /* The weekly example, names hidden. The numbers are in `SAMPLE` in
        HomepageVariants.tsx; `questions` match its rows in order. */
@@ -141,11 +139,10 @@ export const COPY: Record<Lang, Copy> = {
     visibility: {
       summary: "If AI can't find you, it recommends your rival.",
       measured: {
-        dist: { decimal: "." },
         own: {
-          live: "The candidate in place {rank} is named on average {n} times in 10 answers.",
-          most: "**{n}** of the {all} candidates are named on average **less than once** in 10 answers.",
-          first: "The candidate in **place 1** is named on average **{n} times** in 10 answers.",
+          live: "The candidate in place {rank} is named on average {n} times in 100 answers.",
+          typical: "The typical candidate is named **{n} times** in 100 answers.",
+          first: "The candidate in **place 1** is named **{n} times**: **{x} times as often**.",
         },
         tail: { y: "Mentions in AI answers", left: "Many mentions", right: "Few mentions", most: "Most options are rarely mentioned", here: "You want to be among the few options mentioned often" },
         study: { title: "Example: Finnish parliamentary elections 2027", bridge: "The same distribution can be measured in how candidates are named in elections.", players: "{n} candidates", intro: "ChatGPT and Claude were asked {n} questions about candidates in the Helsinki electoral district, without naming any candidate." },
@@ -159,7 +156,7 @@ export const COPY: Record<Lang, Copy> = {
         legend: "For each topic, precisely defined questions are put to different AI models.",
         none: "No mention",
         named: "You were named no. {n} in the answer",
-        questions: ["Topic 1", "Topic 2", "Topic 101"],
+        questions: ["Topic 1", "Topic 2", "Topic 211"],
         guide: {
           lead: "+ Weekly instructions based on personal analysis how to increase visibility:",
           items: ["What you have to do.", "Where you should be.", "What should you add.", "What should you change."],
@@ -240,11 +237,10 @@ export const COPY: Record<Lang, Copy> = {
     visibility: {
       summary: "Jos tekoäly ei löydä sinua, se suosittelee kilpailijaasi.",
       measured: {
-        dist: { decimal: "," },
         own: {
-          live: "Sijalla {rank} oleva ehdokas mainitaan keskimäärin {n} kertaa 10 vastauksessa.",
-          most: "**{n}** ehdokasta {all}:stä mainitaan keskimäärin **alle kerran** 10 vastauksessa.",
-          first: "**Sijalla 1** oleva ehdokas mainitaan keskimäärin **{n} kertaa** 10 vastauksessa.",
+          live: "Sijalla {rank} oleva ehdokas mainitaan keskimäärin {n} kertaa 100 vastauksessa.",
+          typical: "Tyypillinen ehdokas mainitaan **{n} kertaa** 100 vastauksessa.",
+          first: "**Sijalla 1** oleva ehdokas mainitaan **{n} kertaa**: **{x} kertaa useammin**.",
         },
         tail: { y: "Maininnat tekoälyn vastauksissa", left: "Paljon mainintoja", right: "Vähän mainintoja", most: "Useimmat vaihtoehdot mainitaan harvoin", here: "Haluat kuulua harvoihin usein mainittuihin vaihtoehtoihin" },
         study: { title: "Esimerkki: Eduskuntavaalit 2027", bridge: "Sama jakauma voidaan mitata ehdokkaiden nimeämisessä vaaleissa.", players: "{n} ehdokasta", intro: "ChatGPT:ltä ja Claudelta kysyttiin {n} kysymystä Helsingin vaalipiirin ehdokkaista, ilman ehdokkaiden nimeämistä." },
@@ -258,7 +254,7 @@ export const COPY: Record<Lang, Copy> = {
         legend: "Jokaisesta aiheesta kysytään tarkoin määritellyt kysymykset eri tekoälymalleilta.",
         none: "Ei mainintaa",
         named: "Sinut mainittiin {n}. nimenä vastauksessa",
-        questions: ["Aihe 1", "Aihe 2", "Aihe 101"],
+        questions: ["Aihe 1", "Aihe 2", "Aihe 211"],
         guide: {
           lead: "+ Viikoittaiset ohjeet henkilökohtaisen analyysin pohjalta, miten lisäät näkyvyyttäsi:",
           items: ["Mitä sinun pitää tehdä.", "Missä sinun pitää olla.", "Mitä sinun pitää lisätä.", "Mitä sinun pitää muuttaa."],
@@ -339,11 +335,10 @@ export const COPY: Record<Lang, Copy> = {
     visibility: {
       summary: "Se l’IA non ti trova, raccomanda il tuo rivale.",
       measured: {
-        dist: { decimal: "," },
         own: {
-          live: "Il candidato al {rank}º posto è nominato in media {n} volte su 10 risposte.",
-          most: "**{n}** dei {all} candidati sono nominati in media **meno di una volta** su 10 risposte.",
-          first: "Il candidato al **1º posto** è nominato in media **{n} volte** su 10 risposte.",
+          live: "Il candidato al {rank}º posto è nominato in media {n} volte su 100 risposte.",
+          typical: "Il candidato tipico è nominato **{n} volte** su 100 risposte.",
+          first: "Il candidato al **1º posto** è nominato **{n} volte**: **{x} volte più spesso**.",
         },
         tail: { y: "Menzioni nelle risposte dell’IA", left: "Molte menzioni", right: "Poche menzioni", most: "La maggior parte delle opzioni è citata di rado", here: "Vuoi essere tra le poche opzioni citate spesso" },
         study: { title: "Esempio: elezioni parlamentari finlandesi 2027", bridge: "La stessa distribuzione si può misurare nel modo in cui vengono nominati i candidati alle elezioni.", players: "{n} candidati", intro: "A ChatGPT e Claude sono state poste {n} domande sui candidati della circoscrizione di Helsinki, senza nominare alcun candidato." },
@@ -357,7 +352,7 @@ export const COPY: Record<Lang, Copy> = {
         legend: "Per ogni argomento si pongono domande ben definite a diversi modelli di IA.",
         none: "Nessuna menzione",
         named: "Sei stato nominato come {n}º nella risposta",
-        questions: ["Argomento 1", "Argomento 2", "Argomento 101"],
+        questions: ["Argomento 1", "Argomento 2", "Argomento 211"],
         guide: {
           lead: "+ Istruzioni settimanali, basate su un'analisi personale, su come aumentare la tua visibilità:",
           items: ["Cosa devi fare.", "Dove devi essere.", "Cosa devi aggiungere.", "Cosa devi cambiare."],
