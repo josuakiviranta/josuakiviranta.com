@@ -43,7 +43,7 @@ export type Copy = {
     summary: string;
     /* The numbers are in `MEASURED` in HomepageVariants.tsx. */
     measured: {
-      own: { /* The live sentence over the squares, "{rank}" = the ink column's place, "{n}" = its mentions per 100 answers (owner, 2026-11-14; per 100 since 2026-11-19). */ live: string; /* Once the slide has passed them: "{n}" = the Candidates named under 10 times in 100 answers, "{all}" = all of them; **…** is bold (owner, 2026-11-15). */ most: string; /* Under it once the slide reaches place 1, "{n}" = place 1's mentions per 100 answers, rounded (owner, 2026-11-15). */ first: string; };
+      own: { /* The live sentence over the squares, "{rank}" = the ink column's place, "{n}" = its mentions per 100 answers (owner, 2026-11-14; per 100 since 2026-11-19). */ live: string; /* From the middle place on, "{n}" = the typical (median) Candidate's mentions per 100 answers (owner, 2026-11-19). */ typical: string; /* Once the slide reaches place 1, "{n}" = place 1's mentions per 100 answers, "{x}" = that over the typical count, both rounded (owner, 2026-11-19). */ first: string; };
       /* The long-tail curve (owner, 2026-11-12): `y` the axis; `most` and
          `here` the two labels on the curve. */
       tail: { y: string; /* Under the axis's two ends (owner, 2026-11-14). */ left: string; right: string; /* Over the flat tail (owner, 2026-11-13). */ most: string; /* At the arrow to the striped head (owner, 2026-11-13). */ here: string };
@@ -141,8 +141,8 @@ export const COPY: Record<Lang, Copy> = {
       measured: {
         own: {
           live: "The candidate in place {rank} is named on average {n} times in 100 answers.",
-          most: "**{n}** of the {all} candidates are named on average **less than 10 times** in 100 answers.",
-          first: "The candidate in **place 1** is named on average **{n} times** in 100 answers.",
+          typical: "The typical candidate is named **{n} times** in 100 answers.",
+          first: "The candidate in **place 1** is named **{n} times**: **{x} times as often**.",
         },
         tail: { y: "Mentions in AI answers", left: "Many mentions", right: "Few mentions", most: "Most options are rarely mentioned", here: "You want to be among the few options mentioned often" },
         study: { title: "Example: Finnish parliamentary elections 2027", bridge: "The same distribution can be measured in how candidates are named in elections.", players: "{n} candidates", intro: "ChatGPT and Claude were asked {n} questions about candidates in the Helsinki electoral district, without naming any candidate." },
@@ -239,8 +239,8 @@ export const COPY: Record<Lang, Copy> = {
       measured: {
         own: {
           live: "Sijalla {rank} oleva ehdokas mainitaan keskimäärin {n} kertaa 100 vastauksessa.",
-          most: "**{n}** ehdokasta {all}:stä mainitaan keskimäärin **alle 10 kertaa** 100 vastauksessa.",
-          first: "**Sijalla 1** oleva ehdokas mainitaan keskimäärin **{n} kertaa** 100 vastauksessa.",
+          typical: "Tyypillinen ehdokas mainitaan **{n} kertaa** 100 vastauksessa.",
+          first: "**Sijalla 1** oleva ehdokas mainitaan **{n} kertaa**: **{x} kertaa useammin**.",
         },
         tail: { y: "Maininnat tekoälyn vastauksissa", left: "Paljon mainintoja", right: "Vähän mainintoja", most: "Useimmat vaihtoehdot mainitaan harvoin", here: "Haluat kuulua harvoihin usein mainittuihin vaihtoehtoihin" },
         study: { title: "Esimerkki: Eduskuntavaalit 2027", bridge: "Sama jakauma voidaan mitata ehdokkaiden nimeämisessä vaaleissa.", players: "{n} ehdokasta", intro: "ChatGPT:ltä ja Claudelta kysyttiin {n} kysymystä Helsingin vaalipiirin ehdokkaista, ilman ehdokkaiden nimeämistä." },
@@ -337,8 +337,8 @@ export const COPY: Record<Lang, Copy> = {
       measured: {
         own: {
           live: "Il candidato al {rank}º posto è nominato in media {n} volte su 100 risposte.",
-          most: "**{n}** dei {all} candidati sono nominati in media **meno di 10 volte** su 100 risposte.",
-          first: "Il candidato al **1º posto** è nominato in media **{n} volte** su 100 risposte.",
+          typical: "Il candidato tipico è nominato **{n} volte** su 100 risposte.",
+          first: "Il candidato al **1º posto** è nominato **{n} volte**: **{x} volte più spesso**.",
         },
         tail: { y: "Menzioni nelle risposte dell’IA", left: "Molte menzioni", right: "Poche menzioni", most: "La maggior parte delle opzioni è citata di rado", here: "Vuoi essere tra le poche opzioni citate spesso" },
         study: { title: "Esempio: elezioni parlamentari finlandesi 2027", bridge: "La stessa distribuzione si può misurare nel modo in cui vengono nominati i candidati alle elezioni.", players: "{n} candidati", intro: "A ChatGPT e Claude sono state poste {n} domande sui candidati della circoscrizione di Helsinki, senza nominare alcun candidato." },

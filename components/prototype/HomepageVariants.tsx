@@ -733,8 +733,10 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
   const n = counts.length;
   const pos = (n - 1) * (1 - seg(p, 0.15, 0.85));
   const at = Math.round(pos);
-  // The Candidates named once or more in 10 answers (8 of 78 now).
-  const few = counts.filter((v) => (v / PAGE_ANSWERS) * 10 >= 1).length;
+  const per100 = (v: number) => (v / PAGE_ANSWERS) * 100;
+  // The typical Candidate: the median of all of them.
+  const mid = (n - 1) / 2;
+  const typical = per100((counts[Math.floor(mid)] + counts[Math.ceil(mid)]) / 2);
   return (
     <figure className="space-y-3">
       {/* A quiet caps label like the other sections' (owner, 2026-11-15;
@@ -751,16 +753,16 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
       </div>
       {/* The ink column waits on the last place through the stop, so the
           sentence always names a place (owner, 2026-11-14). */}
-      <AvgTen m={m} rank={at + 1} v={(counts[at] / PAGE_ANSWERS) * 10} />
-      {/* What the slide shows (owner, 2026-11-15): the Candidates named
-          under 10 times in 100 answers, as soon as the ink column has passed
-          them all; then, once it reaches place 1, place 1's count rounded. */}
+      <AvgRow m={m} rank={at + 1} v={per100(counts[at])} max={per100(counts[0])} />
+      {/* What the slide shows (owner, 2026-11-19): the typical Candidate as
+          soon as the ink column reaches the middle place; then, once it
+          reaches place 1, place 1's count and how many times the typical. */}
       <div className="space-y-1 pt-4 tabular-nums leading-snug sm:pt-6">
-        <p style={{ opacity: seg(few - 0.5 - pos, 0, 1.5) }}>
-          <Bolded text={m.own.most.replace("{n}", String(n - few)).replace("{all}", String(n))} />
+        <p style={{ opacity: seg(mid + 0.5 - pos, 0, 1.5) }}>
+          <Bolded text={m.own.typical.replace("{n}", String(Math.round(typical)))} />
         </p>
         <p style={{ opacity: seg(p, 0.86, 0.95) }}>
-          <Bolded text={m.own.first.replace("{n}", String(Math.round((counts[0] / PAGE_ANSWERS) * 100)))} />
+          <Bolded text={m.own.first.replace("{n}", String(Math.round(per100(counts[0])))).replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
         </p>
       </div>
     </figure>
@@ -772,13 +774,14 @@ const Bolded = ({ text }: { text: string }) => (
   <>{text.split(/\*\*(.+?)\*\*/).map((part, i) => (i % 2 ? <b key={i}>{part}</b> : part))}</>
 );
 
-/* 10 squares, each 10 answers; ink fills `v` of them (`v` = mentions per
-   10 answers), a fraction filling part of a square. One sentence over them
-   says the same per 100 answers, a whole number, following the animation
-   (owner, 2026-11-19: whole numbers show the gap better than 0,3 vs 2,1);
-   no label, count or key (owner, 2026-11-14). */
-const AvgTen = ({ m, rank, v }: { m: M; rank: number; v: number }) => {
-  const fill: Record<string, string> = { "{rank}": String(rank), "{n}": String(Math.round(v * 10)) };
+/* One ink square per mention in 100 answers (`v`), a fraction filling part
+   of a square; the row grows from the left as the ink column slides, up to
+   place 1's `max` (owner, 2026-11-19: the gap shows in the row's length;
+   was 10 grey squares filled in ink). One sentence over it says the same,
+   its number following the animation; no label, count or key (owner,
+   2026-11-14). */
+const AvgRow = ({ m, rank, v, max }: { m: M; rank: number; v: number; max: number }) => {
+  const fill: Record<string, string> = { "{rank}": String(rank), "{n}": String(Math.round(v)) };
   return (
     <div className="space-y-3 pt-4 sm:pt-6">
       {/* The body's size like all plain text (owner, 2026-11-16); the place
@@ -786,9 +789,11 @@ const AvgTen = ({ m, rank, v }: { m: M; rank: number; v: number }) => {
       <p className="tabular-nums leading-snug">
         {m.own.live.split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
       </p>
-      <div className="flex justify-center gap-[3px]">
-        {Array.from({ length: 10 }, (_, i) => (
-          <span key={i} className="relative h-6 w-6 bg-[#bdbdbd]">
+      {/* 24 px squares as before (owner, 2026-11-19); 13 px on phones so
+          place 1's row fits. */}
+      <div className="mx-auto flex w-fit gap-[2px] sm:gap-[3px]">
+        {Array.from({ length: Math.ceil(max) }, (_, i) => (
+          <span key={i} className="relative h-[13px] w-[13px] sm:h-6 sm:w-6">
             <span className="absolute inset-y-0 left-0 bg-ink" style={{ width: `${Math.min(1, Math.max(0, v - i)) * 100}%` }} />
           </span>
         ))}
