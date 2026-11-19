@@ -247,7 +247,7 @@ export const COPY: Record<Lang, Copy> = {
       },
       sample: {
         label: "Viikoittainen jatkuva mittaus",
-        basis: "Näkyvyytesi {n} vastauksissa.",
+        basis: "Näkyvyytesi {n} vastauksessa.",
         rivals: ["Kilpailija A", "Kilpailija B", "Kilpailija C"],
         you: "Sinä",
         ask: "Näytkö sinulle tärkeissä aiheissa?",
