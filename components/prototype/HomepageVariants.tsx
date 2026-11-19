@@ -858,9 +858,9 @@ const STUDY = {
 } as const;
 
 /* The questions behind `MEASURED.combined`, each asked in 2 wordings, so
-   `PAGE_ANSWERS` answers per AI. The election example's "{n} kysymystä"
-   shows `ASKED`, the weekly example's "Näkyvyytesi {n} vastauksissa"
-   `PAGE_ANSWERS`: the same data (owner, 2026-11-15). */
+   `PAGE_ANSWERS` answers per AI. Both examples show `ASKED`: the election
+   example's "{n} kysymystä" and the weekly example's "Näkyvyytesi {n}
+   vastauksessa" (owner, 2026-11-15; 2026-11-19: "keep it simple"). */
 const ASKED = 211;
 
 /* The weekly example (owner, 2026-11-15: tie it to the election example):
@@ -938,7 +938,7 @@ const Sample = ({ c }: { c: Copy }) => {
               <div className="mt-8 border-x border-rule px-3 sm:mt-14 sm:px-6">
                 <figure>
                   {/* Black caps (owner, 2026-11-15; was a grey line). */}
-                  <Caps className="block !text-ink">{s.basis.replace("{n}", String(PAGE_ANSWERS))}</Caps>
+                  <Caps className="block !text-ink">{s.basis.replace("{n}", String(ASKED))}</Caps>
                   <ol className="mt-4 text-left">
                     {SAMPLE.top.map((n, i) => (
                       <Row key={i} rank={i + 1} name={s.rivals[i]} count={n} grow={seg(p1, i / rows, (i + 1) / rows)} />
