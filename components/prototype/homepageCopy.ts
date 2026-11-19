@@ -159,7 +159,7 @@ export const COPY: Record<Lang, Copy> = {
         legend: "For each topic, precisely defined questions are put to different AI models.",
         none: "No mention",
         named: "You were named no. {n} in the answer",
-        questions: ["Topic 1", "Topic 2", "Topic 101"],
+        questions: ["Topic 1", "Topic 2", "Topic 211"],
         guide: {
           lead: "+ Weekly instructions based on personal analysis how to increase visibility:",
           items: ["What you have to do.", "Where you should be.", "What should you add.", "What should you change."],
@@ -258,7 +258,7 @@ export const COPY: Record<Lang, Copy> = {
         legend: "Jokaisesta aiheesta kysytään tarkoin määritellyt kysymykset eri tekoälymalleilta.",
         none: "Ei mainintaa",
         named: "Sinut mainittiin {n}. nimenä vastauksessa",
-        questions: ["Aihe 1", "Aihe 2", "Aihe 101"],
+        questions: ["Aihe 1", "Aihe 2", "Aihe 211"],
         guide: {
           lead: "+ Viikoittaiset ohjeet henkilökohtaisen analyysin pohjalta, miten lisäät näkyvyyttäsi:",
           items: ["Mitä sinun pitää tehdä.", "Missä sinun pitää olla.", "Mitä sinun pitää lisätä.", "Mitä sinun pitää muuttaa."],
@@ -357,7 +357,7 @@ export const COPY: Record<Lang, Copy> = {
         legend: "Per ogni argomento si pongono domande ben definite a diversi modelli di IA.",
         none: "Nessuna menzione",
         named: "Sei stato nominato come {n}º nella risposta",
-        questions: ["Argomento 1", "Argomento 2", "Argomento 101"],
+        questions: ["Argomento 1", "Argomento 2", "Argomento 211"],
         guide: {
           lead: "+ Istruzioni settimanali, basate su un'analisi personale, su come aumentare la tua visibilità:",
           items: ["Cosa devi fare.", "Dove devi essere.", "Cosa devi aggiungere.", "Cosa devi cambiare."],

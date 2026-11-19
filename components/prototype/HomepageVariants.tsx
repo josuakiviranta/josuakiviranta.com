@@ -488,11 +488,11 @@ const Offer = ({ c, offer, centred }: { c: Copy; offer: OfferCopy; centred?: boo
 };
 
 
-/* Measured in a Helsinki Round (5–7.11.2026) over the 71 Candidates with
+/* Measured in a Helsinki Round (18–19.11.2026) over the 78 Candidates with
    an own website and at least one talking point. `combined`: mentions per
    Candidate, OpenAI and Claude joined, sorted high to low. */
 const MEASURED = {
-  combined: [26.27, 20.91, 19.82, 16.18, 15.91, 13.82, 13.45, 12.82, 12.09, 10.55, 10.45, 9.27, 9.27, 7.91, 7.91, 7.82, 6, 6, 5.82, 5.18, 4.91, 4.82, 4.36, 4, 3.82, 3.82, 3.73, 3.45, 3.45, 3.27, 3.09, 3.09, 2.82, 2.73, 2.73, 2.73, 2.64, 2.64, 2.27, 2.18, 2, 1.91, 1.82, 1.82, 1.82, 1.82, 1.73, 1.73, 1.64, 1.64, 1.55, 1.45, 0.91, 0.91, 0.91, 0.91, 0.91, 0.64, 0.36, 0.36, 0.36, 0.27, 0.27, 0.09, 0.09, ...Array(6).fill(0)],
+  combined: [90.36, 70, 58.45, 57, 53.18, 51.64, 51, 43, 39.36, 38.55, 36.55, 31.27, 30.36, 29.09, 22.55, 21.91, 20.73, 18.82, 18, 16.09, 15.82, 14.64, 14.64, 13.55, 13.27, 13, 12.91, 12.82, 12.55, 12.45, 12, 10.64, 10.55, 10.36, 10.18, 10.18, 9.82, 9.55, 9.36, 9.27, 8.82, 8.82, 8.64, 8.36, 8.36, 8.27, 8.18, 8, 7.82, 7.73, 7.55, 7.45, 7.18, 6.73, 6.27, 6, 6, 5.82, 5.82, 5.82, 5.82, 5.73, 4.91, 4.91, 4.82, 4.73, 3.36, 2.82, 2.18, 1.36, 1.27, 1.18, 1.09, 0.91, 0.45, ...Array(3).fill(0)],
 };
 
 /* Keeps a number and its "%" (with any case ending), and any two words
@@ -533,7 +533,7 @@ const Spread = ({ counts, className = "h-14", shade }: { counts: number[]; class
 
 
 /* The answers per AI behind `MEASURED.combined`. */
-const PAGE_ANSWERS = 92;
+const PAGE_ANSWERS = 422;
 /* The long tail, drawn as an idea, not data (owner, 2026-11-12: explain
    simply how players get named, one smooth long-tail curve; the measured
    numbers go into the case study under it). */
@@ -722,7 +722,7 @@ const Pinned = ({ length, align, children }: { length: number; align?: (p: numbe
 const seg = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)));
 
 /* The election box's body (owner, 2026-11-14), as `p` runs 0 to 1: the
-   sentence, the 71 grey columns over "71 ehdokasta" and the squares at 0;
+   sentence, the 78 grey columns over "78 ehdokasta" and the squares at 0;
    a stop; then one ink column slides from the least mentioned Candidate
    on the right to the most mentioned on the left. The columns it has
    passed turn a darker grey; the sentence and the squares show the ink
@@ -732,7 +732,7 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
   const n = counts.length;
   const pos = (n - 1) * (1 - seg(p, 0.15, 0.85));
   const at = Math.round(pos);
-  // The Candidates named once or more in 10 answers (13 of 71 now).
+  // The Candidates named once or more in 10 answers (8 of 78 now).
   const few = counts.filter((v) => (v / PAGE_ANSWERS) * 10 >= 1).length;
   return (
     <figure className="space-y-3">
@@ -849,19 +849,20 @@ const STUDY = {
   body: 1.5,
 } as const;
 
-/* The one number both examples show, so a reader may sense they are the
-   same data (owner, 2026-11-15): the election example's "{n} kysymystä" and
-   the weekly example's "Näkyvyytesi {n} vastauksissa". */
-const ASKED = 101;
+/* The questions behind `MEASURED.combined`, each asked in 2 wordings, so
+   `PAGE_ANSWERS` answers per AI. The election example's "{n} kysymystä"
+   shows `ASKED`, the weekly example's "Näkyvyytesi {n} vastauksissa"
+   `PAGE_ANSWERS`: the same data (owner, 2026-11-15). */
+const ASKED = 211;
 
 /* The weekly example (owner, 2026-11-15: tie it to the election example):
    the rivals are places 1–3 of `MEASURED.combined` and "Sinä" place 24,
    each rounded. `questions`: per square, 0 = not named, n = place among
    the names in the answer; the last row follows a "⋮". */
 const SAMPLE = {
-  answers: 92,
-  top: [26, 21, 20],
-  you: { rank: 24, count: 4 },
+  answers: PAGE_ANSWERS,
+  top: [90, 70, 58],
+  you: { rank: 24, count: 14 },
   questions: [
     [0, 0, 0, 0],
     [1, 4, 2, 2],
@@ -929,7 +930,7 @@ const Sample = ({ c }: { c: Copy }) => {
               <div className="mt-8 border-x border-rule px-3 sm:mt-14 sm:px-6">
                 <figure>
                   {/* Black caps (owner, 2026-11-15; was a grey line). */}
-                  <Caps className="block !text-ink">{s.basis.replace("{n}", String(ASKED))}</Caps>
+                  <Caps className="block !text-ink">{s.basis.replace("{n}", String(PAGE_ANSWERS))}</Caps>
                   <ol className="mt-4 text-left">
                     {SAMPLE.top.map((n, i) => (
                       <Row key={i} rank={i + 1} name={s.rivals[i]} count={n} grow={seg(p1, i / rows, (i + 1) / rows)} />
@@ -966,7 +967,7 @@ const Sample = ({ c }: { c: Copy }) => {
                               : null;
                           return (
                             <Fragment key={i}>
-                              {/* "⋮" before the last row, "Aihe 101" (owner, 2026-11-15). */}
+                              {/* "⋮" before the last row, "Aihe 211" (owner, 2026-11-15). */}
                               {i > 0 && i === SAMPLE.questions.length - 1 && <li className="text-muted">⋮</li>}
                               <li>
                                 {/* Labels like the long tail's: plain black text over
