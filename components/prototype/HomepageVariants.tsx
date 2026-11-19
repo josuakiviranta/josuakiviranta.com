@@ -513,9 +513,10 @@ const Spread = ({ counts, className = "h-14", shade }: { counts: number[]; class
   return (
     <svg viewBox={`0 0 ${counts.length * (w + gap)} ${h + 2}`} preserveAspectRatio="none" className={`block w-full ${className}`} aria-hidden>
       {counts.map((x, i) => {
-        // Never named: a column 1 px high (owner, 2026-11-12); the graph is
-        // 64 px (h-16) for 50 units, so 0.8 units ≈ 1 px.
-        const bh = x === 0 ? 0.8 : Math.max(2, (x / max) * h);
+        // Every column to scale (owner, 2026-11-19), never under 1 px, the
+        // height of a never-named column (owner, 2026-11-12); the graph is
+        // 96–112 px (h-24, sm:h-28) for 50 units, so 0.5 units ≈ 1 px.
+        const bh = Math.max(0.5, (x / max) * h);
         return (
           <rect
             key={i}
