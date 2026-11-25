@@ -21,6 +21,8 @@ const LangSwitch = ({ lang }: { lang: Lang }) => {
         <span key={l}>
           {i > 0 && <span className="mx-1.5 text-muted">·</span>}
           <button
+            data-track="lang"
+            data-track-place={l}
             onClick={() => router.replace({ query: { ...router.query, lang: l } }, undefined, { shallow: true })}
             className={l === lang ? "font-bold" : "text-muted hover:text-ink"}
           >
@@ -115,13 +117,29 @@ const placesLine = (c: Copy) =>
 
 /* `places`: B3 also shows the place and the business ID here, moved from
    Yhteystiedot (owner, 2026-11-15). */
-const Footer = ({ c, places, close }: { c: Copy; places?: boolean; close?: boolean }) => (
+const Footer = ({ c, places, close, go }: { c: Copy; places?: boolean; close?: boolean; go: (p: Page) => void }) => (
   <footer className={`${close ? "mt-8" : "mt-20"} border-t border-ink pt-5 text-[0.85em] text-muted`}>
     {/* One line, the places before the year (owner, 2026-11-15). */}
-    Josua Kiviranta · {c.role.replace(/\.$/, "")} · {places && `${placesLine(c)} · `}
-    {/* The AI Code of Conduct, one PDF in EN, FI and IT, built by
-        coc/generate-pdf.sh (owner, 2026-11-25). */}
-    <a href="/ai-code-of-conduct.pdf" target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-ink">{c.codeOfConduct}</a> · © 2026
+    <p>Josua Kiviranta · {c.role.replace(/\.$/, "")} · {places && `${placesLine(c)} · `}© 2026</p>
+    {/* Its own legal part: the privacy notice and the AI Code of Conduct,
+        one PDF in EN, FI and IT built by coc/generate-pdf.sh (owner,
+        2026-11-25). */}
+    <p className="mt-2 flex flex-wrap gap-x-2">
+      <span className="whitespace-nowrap uppercase tracking-[0.12em]">{c.legal}</span>
+      <span>·</span>
+      <a
+        href="?page=privacy"
+        onClick={(e) => {
+          e.preventDefault();
+          go("privacy");
+        }}
+        className="whitespace-nowrap underline underline-offset-2 hover:text-ink"
+      >
+        {c.privacyLink}
+      </a>
+      <span>·</span>
+      <a href="/ai-code-of-conduct.pdf" target="_blank" rel="noopener" data-track="code-of-conduct-pdf" className="whitespace-nowrap underline underline-offset-2 hover:text-ink">{c.codeOfConduct}</a>
+    </p>
   </footer>
 );
 
@@ -132,7 +150,7 @@ const Band = ({ children, tight, id, className = "" }: { children: ReactNode; ti
   <section id={id} className={`${tight ? "py-10" : "py-14"} ${className}`}>{children}</section>
 );
 
-const PAGES = ["home", "background", "case"] as const;
+const PAGES = ["home", "background", "case", "privacy"] as const;
 type Page = (typeof PAGES)[number];
 
 const usePage = () => {
@@ -365,7 +383,7 @@ const B3Home = ({ c, go }: { c: Copy; go: (p: Page) => void }) => {
         <h1 className="mx-auto max-w-[44rem] font-display text-[2.7em] font-bold leading-[1.08] sm:text-[3.4em]">{c.problem}</h1>
         <p className="mx-auto mt-4 max-w-[32rem] text-[1.15em]">{c.offer}</p>
         {/* The free conversation in place of the phone link (owner, 2026-11-15). */}
-        <a href={BOOKING} target="_blank" rel="noopener noreferrer" className="mt-5 inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
+        <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="first-screen" className="mt-5 inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
           {c.visibility.request?.label}&nbsp;→
         </a>
       </section>
@@ -390,10 +408,14 @@ const B3Home = ({ c, go }: { c: Copy; go: (p: Page) => void }) => {
    over their values split by thin vertical lines, then the map at the
    sales section's width. The other facts are in the footer (owner,
    2026-11-15). */
+// The visit counter's name for a contact link (components/VisitCounter.tsx).
+const contactKind = (href?: string) =>
+  href?.startsWith("tel:") ? "phone" : href?.startsWith("mailto:") ? "email" : href?.includes("linkedin") ? "linkedin" : "other";
+
 const ContactCentred = ({ c }: { c: Copy }) => {
   const links = c.facts.filter((f) => f.href);
   return (
-    <section className="text-center">
+    <section data-track-section="contact" className="text-center">
       <h2 className="font-display text-[2.1em] font-bold leading-[1.15]">{c.contactHeading}</h2>
       <Photo className="mx-auto mt-10 aspect-[4/5] w-40" />
       <div className="mt-10 flex flex-col items-center gap-5 sm:flex-row sm:items-start sm:justify-center sm:gap-x-8">
@@ -402,7 +424,7 @@ const ContactCentred = ({ c }: { c: Copy }) => {
             {i > 0 && <span aria-hidden="true" className="hidden h-8 w-px self-center bg-rule sm:block" />}
             <div className="flex flex-col items-center">
               <Caps>{f.label}</Caps>
-              <a className="doc-link mt-1 whitespace-nowrap" href={f.href}>
+              <a className="doc-link mt-1 whitespace-nowrap" href={f.href} data-track="contact" data-track-place={contactKind(f.href)}>
                 {f.value}
               </a>
             </div>
@@ -416,6 +438,20 @@ const ContactCentred = ({ c }: { c: Copy }) => {
   );
 };
 
+
+/* The privacy notice (?page=privacy), linked from the footer's legal part
+   (owner, 2026-11-25). */
+const B3Privacy = ({ c }: { c: Copy }) => (
+  <article className="max-w-[40rem] pt-12 pb-8">
+    <h1 className="mb-6 font-display text-[2.3em] font-bold leading-[1.1]">{c.privacy.title}</h1>
+    {c.privacy.sections.map((s) => (
+      <Fragment key={s.heading}>
+        <h2 className="mt-8 mb-2 font-display text-[1.15em] font-bold">{s.heading}</h2>
+        <p className="leading-relaxed">{s.text}</p>
+      </Fragment>
+    ))}
+  </article>
+);
 
 const B3Background = ({ c }: { c: Copy }) => (
   <section className="pt-12 pb-8">
@@ -467,7 +503,7 @@ const Offer = ({ c, offer, centred }: { c: Copy; offer: OfferCopy; centred?: boo
       {offer.assurance && <p className="mt-4 text-white/75">{offer.assurance}</p>}
       {offer.request ? (
         <div className={`mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 ${centred ? "justify-center" : ""}`}>
-          <a href={BOOKING} target="_blank" rel="noopener noreferrer" className="bg-white px-5 py-3 font-bold text-ink hover:bg-white/90">
+          <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="case" className="bg-white px-5 py-3 font-bold text-ink hover:bg-white/90">
             {offer.request.label}&nbsp;→
           </a>
           <a href={PHONE.href} className="text-white/75 underline underline-offset-4 hover:text-white">
@@ -817,7 +853,7 @@ const Measured = ({ c }: { c: Copy }) => {
   // example under its own big header, held while its ink column slides.
   return (
     <>
-      <section>
+      <section data-track-section="long-tail">
         <Pinned length={STUDY.curve}>
           {(p) => (
             <>
@@ -831,7 +867,7 @@ const Measured = ({ c }: { c: Copy }) => {
         </Pinned>
       </section>
 
-      <section className={SECTION_GAP}>
+      <section data-track-section="election" className={SECTION_GAP}>
         <Pinned length={STUDY.body}>
           {(p) => (
             <>
@@ -909,7 +945,7 @@ const Sample = ({ c }: { c: Copy }) => {
           quiet label spaced like the next step's (owner, 2026-11-15). Its
           own held section, apart from the weekly example (owner, 2026-11-15;
           the example rose under the steps as one piece). */}
-      <section id={SERVICES_ID} className={SECTION_GAP}>
+      <section id={SERVICES_ID} data-track-section="offer" className={SECTION_GAP}>
         <Pinned length={OFFER_HOLD}>
           {(p) => (
             <>
@@ -928,7 +964,7 @@ const Sample = ({ c }: { c: Copy }) => {
       {/* The weekly example as its own section like the election example,
           the whole report open before its animations start (owner,
           2026-11-15; was a box that rose under the steps and opened). */}
-      <section className={SECTION_GAP}>
+      <section data-track-section="weekly" className={SECTION_GAP}>
         <Pinned length={WEEKLY_HOLD}>
           {(p) => {
             const p1 = seg(p, 0.1, 0.45);
@@ -1048,7 +1084,7 @@ const Sample = ({ c }: { c: Copy }) => {
         </div>
         {/* The free conversation again once the reader has seen the
             prices and the report (owner, 2026-11-15). */}
-        <BookButton offer={c.visibility} />
+        <BookButton offer={c.visibility} place="weekly" />
       </section>
     </>
   );
@@ -1096,9 +1132,9 @@ const FillCaps = ({ f, children }: { f: number; children: ReactNode }) => (
    offer block, its question and urgency line, the phone link and the free
    industry review's price row were dropped from the home page (owner,
    2026-11-14). */
-const BookButton = ({ offer }: { offer: Pick<OfferCopy, "request"> }) => (
+const BookButton = ({ offer, place }: { offer: Pick<OfferCopy, "request">; place: string }) => (
   <div className="mt-6 sm:mt-12">
-    <a href={BOOKING} target="_blank" rel="noopener noreferrer" className="inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
+    <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place={place} className="inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
       {offer.request?.label}&nbsp;→
     </a>
   </div>
@@ -1115,7 +1151,7 @@ const VisibilitySection = ({ c }: { c: Copy }) => {
       <div className="mx-auto max-w-[40rem] text-center">
       <Measured c={c} />
 
-      <section className={SECTION_GAP}>
+      <section data-track-section="next-step" className={SECTION_GAP}>
         {/* The header, then the first call's three topics under a quiet
             label spaced like the first screen's "Referenssit": 3.5 rem
             above, 1.25 rem below (owner, 2026-11-14; the label "Seuraava
@@ -1131,7 +1167,7 @@ const VisibilitySection = ({ c }: { c: Copy }) => {
                 <Caps className="!text-ink">{v.next.body}</Caps>
               </div>
               <B3Steps items={v.next.steps} />
-              <BookButton offer={v} />
+              <BookButton offer={v} place="next-step" />
             </>
           )}
         </Pinned>
@@ -1184,7 +1220,8 @@ const VariantB3 = ({ c, lang }: { c: Copy; lang: Lang }) => {
       {page === "home" && <B3Home c={c} go={go} />}
       {page === "background" && <B3Background c={c} />}
       {page === "case" && <B3Case c={c} />}
-      <Footer c={c} places close={page === "home"} />
+      {page === "privacy" && <B3Privacy c={c} />}
+      <Footer c={c} places close={page === "home"} go={go} />
     </main>
   );
 };

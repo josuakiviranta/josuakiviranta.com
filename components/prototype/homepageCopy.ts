@@ -26,6 +26,14 @@ export type Copy = {
   places: string;
   /* The footer link to public/ai-code-of-conduct.pdf (owner, 2026-11-25). */
   codeOfConduct: string;
+  /* The footer's legal part (owner, 2026-11-25): its label and the link to
+     the privacy notice (?page=privacy). */
+  legal: string;
+  privacyLink: string;
+  /* The privacy notice: the owner approved the English 2026-11-25; FI and IT
+     are the agent's translations. Says what components/VisitCounter.tsx and
+     pages/api/hit.ts record. */
+  privacy: { title: string; sections: { heading: string; text: string }[] };
   problem: string;
   offer: string;
   /* The services; the case page's line names the one with `case` (owner,
@@ -121,6 +129,19 @@ export const COPY: Record<Lang, Copy> = {
     role: "GEO and branding for AI.",
     places: "Helsinki – Florence",
     codeOfConduct: "AI Code of Conduct",
+    legal: "Legal",
+    privacyLink: "Privacy",
+    privacy: {
+      title: "Privacy",
+      sections: [
+        { heading: "Who", text: "Sassosa Consulting (Josua Kiviranta), business ID 3127895-3, josua.kiviranta@gmail.com." },
+        { heading: "What this site records", text: "The pages opened, the sections scrolled to, clicks on the booking, contact, language and Code of Conduct links, the referring website, approximate location (country, region, city), and browser, operating system and device type." },
+        { heading: "What it does not record", text: "No cookies, nothing stored on your device, no IP address. Visits from one day are grouped by a code made with a key that is deleted the next day, so no visitor can be traced back." },
+        { heading: "Why", text: "To see how many people visit and which parts of the site they read (legitimate interest, GDPR Art. 6(1)(f))." },
+        { heading: "Where and how long", text: "The site is hosted by Vercel Inc.; the data is stored by Neon (Databricks) in Frankfurt, EU, and deleted after 12 months." },
+        { heading: "Your rights", text: "You can ask what is stored and object to it by email, and complain to the Data Protection Ombudsman (tietosuoja.fi)." },
+      ],
+    },
     problem: "Before deciding, people ask AI.",
     offer: "I help you show up in AI answers.",
     moreServices: [
@@ -221,6 +242,19 @@ export const COPY: Record<Lang, Copy> = {
     role: "GEO ja brändäys tekoälylle.",
     places: "Helsinki – Firenze",
     codeOfConduct: "Tekoälyn käytön periaatteet",
+    legal: "Oikeudelliset tiedot",
+    privacyLink: "Tietosuoja",
+    privacy: {
+      title: "Tietosuojaseloste",
+      sections: [
+        { heading: "Kuka", text: "Sassosa Consulting (Josua Kiviranta), Y-tunnus 3127895-3, josua.kiviranta@gmail.com." },
+        { heading: "Mitä sivusto tallentaa", text: "Avatut sivut, sivun osat, joihin asti on vieritetty, klikkaukset ajanvaraus-, yhteystieto-, kieli- ja periaatelinkkeihin, sivusto, jolta tultiin, likimääräinen sijainti (maa, alue, kaupunki) sekä selain, käyttöjärjestelmä ja laitetyyppi." },
+        { heading: "Mitä se ei tallenna", text: "Ei evästeitä, ei mitään laitteellesi tallennettua, ei IP-osoitetta. Saman päivän käynnit ryhmitellään koodilla, joka tehdään seuraavana päivänä poistettavalla avaimella, joten yksittäistä kävijää ei voi jäljittää." },
+        { heading: "Miksi", text: "Jotta näen, kuinka moni sivustolla käy ja mitä sen osia luetaan (oikeutettu etu, tietosuoja-asetuksen 6 artiklan 1 kohdan f alakohta)." },
+        { heading: "Missä ja kuinka kauan", text: "Sivuston palvelimet ovat Vercel Inc:n; tiedot säilyttää Neon (Databricks) Frankfurtissa EU:ssa, ja ne poistetaan 12 kuukauden jälkeen." },
+        { heading: "Oikeutesi", text: "Voit kysyä sähköpostilla, mitä on tallennettu, ja vastustaa käsittelyä. Voit tehdä valituksen tietosuojavaltuutetulle (tietosuoja.fi)." },
+      ],
+    },
     problem: "Ennen päätöstä kysytään tekoälyltä.",
     offer: "Autan sinua näkymään tekoälyn vastauksissa.",
     moreServices: [
@@ -321,6 +355,19 @@ export const COPY: Record<Lang, Copy> = {
     role: "GEO e branding per l’IA.",
     places: "Helsinki – Firenze",
     codeOfConduct: "Codice di condotta sull’IA",
+    legal: "Note legali",
+    privacyLink: "Privacy",
+    privacy: {
+      title: "Informativa sulla privacy",
+      sections: [
+        { heading: "Chi", text: "Sassosa Consulting (Josua Kiviranta), codice aziendale (Y-tunnus) 3127895-3, josua.kiviranta@gmail.com." },
+        { heading: "Cosa registra il sito", text: "Le pagine aperte, le sezioni raggiunte scorrendo, i clic sui link di prenotazione, contatto, lingua e Codice di condotta, il sito di provenienza, la posizione approssimativa (paese, regione, città), il browser, il sistema operativo e il tipo di dispositivo." },
+        { heading: "Cosa non registra", text: "Nessun cookie, nulla salvato sul tuo dispositivo, nessun indirizzo IP. Le visite di uno stesso giorno sono raggruppate con un codice creato con una chiave che viene cancellata il giorno dopo, quindi nessun visitatore può essere rintracciato." },
+        { heading: "Perché", text: "Per sapere quante persone visitano il sito e quali parti leggono (legittimo interesse, art. 6, par. 1, lett. f del GDPR)." },
+        { heading: "Dove e per quanto tempo", text: "Il sito è ospitato da Vercel Inc.; i dati sono conservati da Neon (Databricks) a Francoforte, UE, e cancellati dopo 12 mesi." },
+        { heading: "I tuoi diritti", text: "Puoi chiedere via email quali dati sono conservati e opporti al trattamento, e presentare reclamo al Garante finlandese per la protezione dei dati (tietosuoja.fi)." },
+      ],
+    },
     problem: "Prima di decidere, si chiede all’IA.",
     offer: "Ti aiuto a comparire nelle risposte dell’IA.",
     moreServices: [
