@@ -183,6 +183,15 @@ const screenHeight = () => {
 /* Layout effects only run in the browser; the server render skips them. */
 const useBrowserLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
+/* False in the server's HTML and the first browser render, then true. Parts
+   drawn only for the eye wait for it, so crawlers, which run no JavaScript,
+   read each text once and in its finished state (ticket 20). */
+const useMounted = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return mounted;
+};
+
 /* True once the reader has scrolled past most of the first screen. */
 const useScrolledPast = (share = 0.6) => {
   const [past, setPast] = useState(false);
@@ -778,6 +787,7 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
   const pos = (n - 1) * (1 - seg(p, 0.15, 0.85));
   const at = Math.round(pos);
   const per100 = (v: number) => (v / PAGE_ANSWERS) * 100;
+  const mounted = useMounted();
   // The typical Candidate: the median of all of them.
   const mid = (n - 1) / 2;
   const typical = per100((counts[Math.floor(mid)] + counts[Math.ceil(mid)]) / 2);
@@ -797,7 +807,9 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
       </div>
       {/* The ink column waits on the last place through the stop, so the
           sentence always names a place (owner, 2026-11-14). */}
-      <AvgRow m={m} rank={at + 1} v={per100(counts[at])} max={per100(counts[0])} />
+      {/* The server's HTML names place 1, not place 78's "0 kertaa"
+          (ticket 20). */}
+      <AvgRow m={m} rank={(mounted ? at : 0) + 1} v={per100(counts[mounted ? at : 0])} max={per100(counts[0])} />
       {/* What the slide shows (owner, 2026-11-19): the typical Candidate as
           soon as the ink column reaches the middle place; then, once it
           reaches place 1, place 1's count and how many times the typical. */}
@@ -1115,23 +1127,33 @@ const OFFER_FILL = [0.35, 0.9] as const;
    `f` runs 0 to 1. */
 /* A header that starts grey and turns black from its right end to its
    left as `f` runs 0 to 1, like FillCaps (owner, 2026-11-16). */
-const FillH2 = ({ f, children }: { f: number; children: ReactNode }) => (
-  <h2 className="relative font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">
-    <span className="text-muted">{children}</span>
-    <span aria-hidden className="absolute inset-0" style={{ clipPath: `inset(0 0 0 ${(1 - f) * 100}%)` }}>
-      {children}
-    </span>
-  </h2>
-);
+const FillH2 = ({ f, children }: { f: number; children: ReactNode }) => {
+  const mounted = useMounted();
+  return (
+    <h2 className="relative font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">
+      <span className="text-muted">{children}</span>
+      {mounted && (
+        <span aria-hidden className="absolute inset-0" style={{ clipPath: `inset(0 0 0 ${(1 - f) * 100}%)` }}>
+          {children}
+        </span>
+      )}
+    </h2>
+  );
+};
 
-const FillCaps = ({ f, children }: { f: number; children: ReactNode }) => (
-  <span className="relative inline-block">
-    <Caps>{children}</Caps>
-    <span aria-hidden className="absolute inset-0" style={{ clipPath: `inset(0 0 0 ${(1 - f) * 100}%)` }}>
-      <Caps className="!text-ink">{children}</Caps>
+const FillCaps = ({ f, children }: { f: number; children: ReactNode }) => {
+  const mounted = useMounted();
+  return (
+    <span className="relative inline-block">
+      <Caps>{children}</Caps>
+      {mounted && (
+        <span aria-hidden className="absolute inset-0" style={{ clipPath: `inset(0 0 0 ${(1 - f) * 100}%)` }}>
+          <Caps className="!text-ink">{children}</Caps>
+        </span>
+      )}
     </span>
-  </span>
-);
+  );
+};
 
 /* The free conversation's button under the next step's topics; the dark
    offer block, its question and urgency line, the phone link and the free
