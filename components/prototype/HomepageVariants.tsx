@@ -238,6 +238,16 @@ const scrollToServices = () => {
   window.scrollTo({ top: land, behavior: "smooth" });
 };
 
+/* The nav's link to the elections page, counted like the main page's
+   link line; underlined on that page itself (owner, 2026-11-25). */
+const ElectionsNav = ({ c, lang, current, place, className }: { c: Copy; lang: Lang; current: boolean; place: string; className: string }) => (
+  <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
+    <a data-track="elections-page" data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "underline underline-offset-4" : ""}`}>
+      {c.navElectionsPage}
+    </a>
+  </Link>
+);
+
 const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: (p: Page) => void }) => {
   // On phones, once scrolled, one compact row: photo, name, languages; the
   // role comes back at the top (owner, 2026-11-14). The nav sits behind a
@@ -284,9 +294,10 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
       </span>
     </button>
     <div className="flex items-center gap-6">
-      {/* One link, to the offer (owner, 2026-11-16; "Eduskuntavaalit 2027"
-          and "Tausta" hidden, their pages kept). */}
+      {/* The elections page and the offer (owner, 2026-11-25; was the
+          offer alone, 2026-11-16; "Tausta" hidden, its page kept). */}
       <nav className="hidden gap-5 text-[0.9em] sm:flex">
+        <ElectionsNav c={c} lang={lang} current={page === "elections"} place="nav" className="hover:underline" />
         <button onClick={services} className="hover:underline">
           {c.navServices}
         </button>
@@ -308,6 +319,7 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
     </div>
     {menu && (
       <nav className="absolute inset-x-0 top-full border-b border-rule bg-white px-5 pb-5 pt-2 sm:hidden">
+        <ElectionsNav c={c} lang={lang} current={page === "elections"} place="menu" className="block py-2 font-display text-[1.3em] font-bold" />
         <button onClick={services} className="block py-2 font-display text-[1.3em] font-bold">
           {c.navServices}
         </button>
