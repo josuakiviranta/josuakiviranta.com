@@ -73,9 +73,8 @@ export type Copy = {
      with `findings` is the MP case (hidden, SHOW_CASE). */
   clients: { name: string; year: string; logo?: { src: string; href: string }; findings?: { label: string; text: string }[] }[];
   backgroundHeading: string;
-  /* The nav's link to the offer's section (owner, 2026-11-16). */
-  navServices: string;
-  /* The nav's link to the elections page (owner, 2026-11-25). */
+  /* The nav's one link, to the elections page (owner, 2026-11-25; was
+     `navServices`, to the offer). */
   navElectionsPage: string;
   /* The sales section under the first screen (owner, 2026-11-13; was the
      AI-visibility service page). `request.label` is the booking button's
@@ -221,7 +220,6 @@ export const COPY: Record<Lang, Copy> = {
       },
     ],
     backgroundHeading: "Background",
-    navServices: "Services",
     navElectionsPage: "Finnish elections 2027",
     visibility: {
       summary: "If AI can’t find you, it recommends your rival.",
@@ -367,7 +365,6 @@ export const COPY: Record<Lang, Copy> = {
       },
     ],
     backgroundHeading: "Tausta",
-    navServices: "Palvelut",
     navElectionsPage: "Eduskuntavaalit 2027",
     visibility: {
       summary: "Jos tekoäly ei löydä sinua, se suosittelee kilpailijaasi.",
@@ -513,7 +510,6 @@ export const COPY: Record<Lang, Copy> = {
       },
     ],
     backgroundHeading: "Formazione ed esperienza",
-    navServices: "Servizi",
     navElectionsPage: "Elezioni finlandesi 2027",
     visibility: {
       summary: "Se l’IA non ti trova, raccomanda il tuo rivale.",

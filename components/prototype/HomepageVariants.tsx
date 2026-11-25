@@ -220,29 +220,14 @@ const useScrolledPast = (share = 0.6) => {
   return past;
 };
 
-/* Scrolls to the offer's section (owner, 2026-11-16: the nav's
-   "Palvelut"): its held piece centred, the section above out of sight under
-   the header, and the label not yet filling (`OFFER_FILL` starts after
-   `OFFER_LAND`, the furthest this stops into the hold). */
+/* The offer's section's anchor. */
 const SERVICES_ID = "palvelut-ja-hinnat";
-const scrollToServices = () => {
-  const sec = document.getElementById(SERVICES_ID);
-  if (!sec) return;
-  const sticky = sec.querySelector("div.sticky") as HTMLElement | null;
-  const head = (document.querySelector("[data-b3-header]") as HTMLElement | null)?.offsetHeight ?? 0;
-  const start = sticky ? parseFloat(sticky.style.top) : head;
-  const top = sec.getBoundingClientRect().top + window.scrollY - start;
-  const above = sec.previousElementSibling?.getBoundingClientRect().bottom;
-  const clear = above === undefined ? top : above + window.scrollY - head + 8;
-  const land = Math.min(Math.max(top, clear), top + OFFER_LAND * OFFER_HOLD * screenHeight());
-  window.scrollTo({ top: land, behavior: "smooth" });
-};
 
 /* The nav's link to the elections page, counted like the main page's
-   link line; bold on that page itself, like the current language (owner, 2026-11-25). */
+   link line; underlined on that page itself (owner, 2026-11-25). */
 const ElectionsNav = ({ c, lang, current, place, className }: { c: Copy; lang: Lang; current: boolean; place: string; className: string }) => (
   <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
-    <a data-track="elections-page" data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "font-bold" : ""}`}>
+    <a data-track="elections-page" data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "underline underline-offset-4" : ""}`}>
       {c.navElectionsPage}
     </a>
   </Link>
@@ -270,13 +255,6 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
       setRoom(0);
     } else setRoom(Math.max(0, full.current - el.offsetHeight));
   }, [compact]);
-  const services = () => {
-    setMenu(false);
-    if (page !== "home" && page !== "elections") {
-      go("home");
-      setTimeout(scrollToServices, 400);
-    } else scrollToServices();
-  };
   return (
   /* Sticky while scrolling (owner, 2026-11-13); white so content passes under it.
      `data-b3-header`: Pinned centres held sections in the space below it. */
@@ -294,13 +272,10 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
       </span>
     </button>
     <div className="flex items-center gap-6">
-      {/* The elections page and the offer (owner, 2026-11-25; was the
-          offer alone, 2026-11-16; "Tausta" hidden, its page kept). */}
+      {/* One link, to the elections page (owner, 2026-11-25; was "Palvelut",
+          to the offer, 2026-11-16; "Tausta" hidden, its page kept). */}
       <nav className="hidden gap-5 text-[0.9em] sm:flex">
         <ElectionsNav c={c} lang={lang} current={page === "elections"} place="nav" className="hover:underline" />
-        <button onClick={services} className="hover:underline">
-          {c.navServices}
-        </button>
       </nav>
       {/* On phones the languages move into the menu, so the header keeps
           one row (2026-11-16). */}
@@ -320,9 +295,6 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
     {menu && (
       <nav className="absolute inset-x-0 top-full border-b border-rule bg-white px-5 pb-5 pt-2 sm:hidden">
         <ElectionsNav c={c} lang={lang} current={page === "elections"} place="menu" className="block py-2 font-display text-[1.3em] font-bold" />
-        <button onClick={services} className="block py-2 font-display text-[1.3em] font-bold">
-          {c.navServices}
-        </button>
         <div className="mt-3">
           <LangSwitch lang={lang} />
         </div>
@@ -1157,9 +1129,7 @@ const NEXT_HOLD = 0.7;
 
 /* The offer's hold in screen heights, the long tail's length. */
 const OFFER_HOLD = 0.7;
-/* How far into the offer's hold the nav link may stop, and when its label
-   fills (was 0.1–0.85; later so the link lands on a grey label, 2026-11-16). */
-const OFFER_LAND = 0.3;
+/* When the offer's label fills (was 0.1–0.85; later, 2026-11-16). */
 const OFFER_FILL = [0.35, 0.9] as const;
 
 /* A grey caps label whose ink fills in from its right end to its left as
