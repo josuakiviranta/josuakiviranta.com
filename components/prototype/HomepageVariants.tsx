@@ -830,7 +830,7 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
           <Bolded text={m.own.typical.replace("{n}", String(Math.round(typical)))} />
         </p>
         <p style={{ opacity: seg(p, 0.86, 0.95) }}>
-          <Bolded text={m.own.first.replace("{n}", String(Math.round(per100(counts[0])))).replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
+          <Bolded text={m.own.first.replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
         </p>
       </div>
     </figure>
@@ -856,7 +856,7 @@ const AvgRow = ({ m, rank, v, max }: { m: M; rank: number; v: number; max: numbe
       {/* The body's size like all plain text (owner, 2026-11-16); the place
           and the count bold (owner, 2026-11-15). */}
       <p className="tabular-nums leading-snug">
-        {(n === 1 ? m.own.liveOne : m.own.live).split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
+        {(n === 0 ? m.own.liveZero : n === 1 ? m.own.liveOne : m.own.live).split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
       </p>
       {/* 24 px squares as before (owner, 2026-11-19); 12 px on phones so
           place 1's row fits 360 px screens. The row is as wide as place 1's
@@ -1109,9 +1109,10 @@ const Sample = ({ c }: { c: Copy }) => {
 };
 
 /* The offer's steps, held while their label fills: the main page's priced
-   steps, or the elections page's own `lead` and `steps` with `after` (its
-   price, the do-it-for-you line and the button) under them. */
-const OfferSection = ({ c, lead, steps, after }: { c: Copy; lead?: string; steps?: { title: string; body: string; price?: string }[]; after?: ReactNode }) => {
+   steps, or the elections page's own `lead`, `label` and `steps` with
+   `below` (its price, the do-it-for-you line and the button) under the
+   held piece. */
+const OfferSection = ({ c, lead, label, steps, below }: { c: Copy; lead?: string; label?: string; steps?: { title: string; body: string; price?: string }[]; below?: ReactNode }) => {
   const s = c.visibility.sample;
   return (
     <section id={SERVICES_ID} data-track-section="offer" className={SECTION_GAP}>
@@ -1122,13 +1123,13 @@ const OfferSection = ({ c, lead, steps, after }: { c: Copy; lead?: string; steps
             {/* The label turns black from right to left while the steps
                 hold (owner, 2026-11-15). */}
             <div className="mt-4 mb-4 sm:mt-14 sm:mb-5">
-              <FillCaps f={seg(p, OFFER_FILL[0], OFFER_FILL[1])}>{s.weekly.label}</FillCaps>
+              <FillCaps f={seg(p, OFFER_FILL[0], OFFER_FILL[1])}>{label ?? s.weekly.label}</FillCaps>
             </div>
             <B3Steps items={steps ?? s.weekly.steps} />
-            {after}
           </>
         )}
       </Pinned>
+      {below}
     </section>
   );
 };
@@ -1269,16 +1270,24 @@ const B3Elections = ({ c }: { c: Copy }) => {
       <div className="flex min-h-[calc(100svh-9rem)] flex-col justify-center py-16">
         <section data-track-section="first-screen" className="text-center">
           {/* The deadline first, for urgency (owner, 2026-11-25). */}
-          <Caps className="block leading-relaxed !text-ink">{e.urgency}</Caps>
+          {/* Two lines on phones, one line split by a dot on wide screens
+              (review, 2026-11-25). */}
+          <Caps className="block leading-relaxed !text-ink">
+            {e.urgency.split(" · ").map((part, i) => (
+              <span key={part}>
+                {i > 0 && <span className="hidden sm:inline"> · </span>}
+                <span className="block sm:inline">{part}</span>
+              </span>
+            ))}
+          </Caps>
           <h1 className="mx-auto mt-4 max-w-[44rem] font-display text-[2.3em] font-bold leading-[1.08] sm:text-[3em]">{e.title}</h1>
           <p className="mx-auto mt-5 max-w-[34rem] text-[1.15em] leading-snug">{e.answer}</p>
           <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="first-screen" className="mt-6 inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
             {c.visibility.request?.label}&nbsp;→
           </a>
-          {/* The name beside the topic as a quiet byline (owner, 2026-11-25). */}
-          <p className="mt-4 text-[0.85em] text-muted">
-            Josua Kiviranta · {c.role.replace(/\.$/, "")} · {e.topic}
-          </p>
+          {/* The name beside the topic as a quiet byline (owner, 2026-11-25;
+              the company in place of the header's role, review 2026-11-25). */}
+          <p className="mt-4 text-[0.85em] text-muted">Josua Kiviranta · Sassosa Consulting · {e.topic}</p>
         </section>
       </div>
 
@@ -1290,9 +1299,10 @@ const B3Elections = ({ c }: { c: Copy }) => {
                 stays unshown (owner, 2026-11-25). */}
             <p className="mt-8 leading-snug sm:mt-10">{e.question.theme}</p>
             <p className="mt-4 leading-snug">{e.question.asked}</p>
-            <div className="mt-6 space-y-1 font-display text-[1.25em] font-bold leading-snug">
+            <p className="mt-6 leading-snug">{e.question.missedLead}</p>
+            <div className="mt-2 space-y-1 font-display text-[1.25em] font-bold leading-snug">
               {e.question.missed.map((line) => (
-                <p key={line}>{line}</p>
+                <p key={line}><KeepPct text={line} /></p>
               ))}
             </div>
           </section>
@@ -1314,17 +1324,22 @@ const B3Elections = ({ c }: { c: Copy }) => {
           <OfferSection
             c={c}
             lead={e.offer.lead}
+            label={e.offer.label}
             steps={e.offer.steps}
-            after={
+            // Only the header, label and steps are held, so the held piece
+            // fits the screen (review, 2026-11-25).
+            below={
               <>
                 <p className="mt-6 tabular-nums font-bold sm:mt-8">{e.offer.price}</p>
-                <p className="mx-auto mt-4 max-w-[34rem] leading-snug">{e.offer.extra}</p>
+                <p className="mx-auto mt-4 max-w-[34rem] leading-snug"><KeepPct text={e.offer.extra} /></p>
                 <BookButton offer={c.visibility} place="offer" />
               </>
             }
           />
 
-          <section data-track-section="independence" className={SECTION_GAP}>
+          {/* Closer to the offer, with a quiet label (review, 2026-11-25). */}
+          <section data-track-section="independence" className="mt-[6rem] sm:mt-[8rem]">
+            <Caps className="mb-4 block">{e.independenceLabel}</Caps>
             <ul className="space-y-2 font-display text-[1.1em] font-bold leading-snug">
               {e.independence.map((line) => (
                 <li key={line}>{line}</li>
