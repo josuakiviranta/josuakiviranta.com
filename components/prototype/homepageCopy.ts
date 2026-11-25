@@ -142,7 +142,7 @@ export const COPY: Record<Lang, Copy> = {
         { heading: "Contact", text: "If you email or call us, your data is used solely to handle your inquiry (Art. 6(1)(b) GDPR)." },
         { heading: "Your rights", text: "You have the right to access, correct or delete your personal data, to object to its processing, and to lodge a complaint with a supervisory authority." },
       ],
-      party: { heading: "Responsible party", lines: ["Sassosa Consulting (Josua Kiviranta)", "Business ID 3127895-3", "Helsinki – Florence", EMAIL.value] },
+      party: { heading: "Controller", lines: ["Sassosa Consulting (Josua Kiviranta)", "Business ID 3127895-3", "Helsinki – Florence", EMAIL.value] },
     },
     problem: "Before deciding, people ask AI.",
     offer: "I help you show up in AI answers.",
