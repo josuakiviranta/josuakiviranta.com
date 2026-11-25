@@ -239,10 +239,10 @@ const scrollToServices = () => {
 };
 
 /* The nav's link to the elections page, counted like the main page's
-   link line; underlined on that page itself (owner, 2026-11-25). */
+   link line; bold on that page itself, like the current language (owner, 2026-11-25). */
 const ElectionsNav = ({ c, lang, current, place, className }: { c: Copy; lang: Lang; current: boolean; place: string; className: string }) => (
   <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
-    <a data-track="elections-page" data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "underline underline-offset-4" : ""}`}>
+    <a data-track="elections-page" data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "font-bold" : ""}`}>
       {c.navElectionsPage}
     </a>
   </Link>
