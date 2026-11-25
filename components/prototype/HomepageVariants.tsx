@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { MAP_ASPECT, MAP_PINS } from "../officeMapLabels";
 import { COPY, LANGS, type Copy, type Lang, type OfferCopy } from "./homepageCopy";
+import { pageSlug } from "../SiteHead";
 
 const PHONE = { display: "+358 41 524 2441", href: "tel:+358415242441" };
 /* The owner's Google Calendar booking page (owner, 2026-11-12). */
@@ -24,8 +25,9 @@ const LangSwitch = ({ lang }: { lang: Lang }) => {
           <button
             data-track="lang"
             data-track-place={l}
-            // The same page in the other language's address ("/fi", "/fi/privacy"), where the reader is.
-            onClick={() => router.replace({ pathname: router.pathname, query: router.query }, undefined, { locale: l, scroll: false })}
+            // The same page in the other language's address ("/fi", "/fi/privacy",
+            // "/fi/eduskuntavaalit-2027"), where the reader is.
+            onClick={() => router.replace({ pathname: router.pathname, query: router.query }, pageSlug(l, router.pathname), { locale: l, scroll: false })}
             className={l === lang ? "font-bold" : "text-muted hover:text-ink"}
           >
             {l.toUpperCase()}
@@ -146,13 +148,16 @@ const Band = ({ children, tight, id, className = "" }: { children: ReactNode; ti
   <section id={id} className={`${tight ? "py-10" : "py-14"} ${className}`}>{children}</section>
 );
 
-const PAGES = ["home", "background", "case", "privacy"] as const;
+const PAGES = ["home", "background", "case", "privacy", "elections"] as const;
+/* The pages with their own address (pages/privacy.tsx,
+   pages/finnish-elections-2027.tsx). */
+type Route = "privacy" | "elections";
 type Page = (typeof PAGES)[number];
 
 /* The page shown: the privacy notice has its own address (`route`); the
    unlinked background and case pages are still views of Home chosen by
    ?page=. */
-const usePage = (route?: "privacy") => {
+const usePage = (route?: Route) => {
   const router = useRouter();
   const page: Page = route ?? ((["background", "case"] as readonly string[]).includes(router.query.page as string) ? (router.query.page as Page) : "home");
   // Drop what an old address's redirect left in the query (?lang=, ?page=privacy).
@@ -215,23 +220,18 @@ const useScrolledPast = (share = 0.6) => {
   return past;
 };
 
-/* Scrolls to the offer's section (owner, 2026-11-16: the nav's
-   "Palvelut"): its held piece centred, the section above out of sight under
-   the header, and the label not yet filling (`OFFER_FILL` starts after
-   `OFFER_LAND`, the furthest this stops into the hold). */
+/* The offer's section's anchor. */
 const SERVICES_ID = "palvelut-ja-hinnat";
-const scrollToServices = () => {
-  const sec = document.getElementById(SERVICES_ID);
-  if (!sec) return;
-  const sticky = sec.querySelector("div.sticky") as HTMLElement | null;
-  const head = (document.querySelector("[data-b3-header]") as HTMLElement | null)?.offsetHeight ?? 0;
-  const start = sticky ? parseFloat(sticky.style.top) : head;
-  const top = sec.getBoundingClientRect().top + window.scrollY - start;
-  const above = sec.previousElementSibling?.getBoundingClientRect().bottom;
-  const clear = above === undefined ? top : above + window.scrollY - head + 8;
-  const land = Math.min(Math.max(top, clear), top + OFFER_LAND * OFFER_HOLD * screenHeight());
-  window.scrollTo({ top: land, behavior: "smooth" });
-};
+
+/* The nav's link to the elections page, counted like the main page's
+   link line; underlined on that page itself (owner, 2026-11-25). */
+const ElectionsNav = ({ c, lang, current, place, className }: { c: Copy; lang: Lang; current: boolean; place: string; className: string }) => (
+  <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
+    <a data-track="elections-page" data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "underline underline-offset-4" : ""}`}>
+      {c.navElectionsPage}
+    </a>
+  </Link>
+);
 
 const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: (p: Page) => void }) => {
   // On phones, once scrolled, one compact row: photo, name, languages; the
@@ -255,13 +255,6 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
       setRoom(0);
     } else setRoom(Math.max(0, full.current - el.offsetHeight));
   }, [compact]);
-  const services = () => {
-    setMenu(false);
-    if (page !== "home") {
-      go("home");
-      setTimeout(scrollToServices, 400);
-    } else scrollToServices();
-  };
   return (
   /* Sticky while scrolling (owner, 2026-11-13); white so content passes under it.
      `data-b3-header`: Pinned centres held sections in the space below it. */
@@ -279,12 +272,10 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
       </span>
     </button>
     <div className="flex items-center gap-6">
-      {/* One link, to the offer (owner, 2026-11-16; "Eduskuntavaalit 2027"
-          and "Tausta" hidden, their pages kept). */}
+      {/* One link, to the elections page (owner, 2026-11-25; was "Palvelut",
+          to the offer, 2026-11-16; "Tausta" hidden, its page kept). */}
       <nav className="hidden gap-5 text-[0.9em] sm:flex">
-        <button onClick={services} className="hover:underline">
-          {c.navServices}
-        </button>
+        <ElectionsNav c={c} lang={lang} current={page === "elections"} place="nav" className="hover:underline" />
       </nav>
       {/* On phones the languages move into the menu, so the header keeps
           one row (2026-11-16). */}
@@ -303,9 +294,7 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
     </div>
     {menu && (
       <nav className="absolute inset-x-0 top-full border-b border-rule bg-white px-5 pb-5 pt-2 sm:hidden">
-        <button onClick={services} className="block py-2 font-display text-[1.3em] font-bold">
-          {c.navServices}
-        </button>
+        <ElectionsNav c={c} lang={lang} current={page === "elections"} place="menu" className="block py-2 font-display text-[1.3em] font-bold" />
         <div className="mt-3">
           <LangSwitch lang={lang} />
         </div>
@@ -825,7 +814,7 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
           <Bolded text={m.own.typical.replace("{n}", String(Math.round(typical)))} />
         </p>
         <p style={{ opacity: seg(p, 0.86, 0.95) }}>
-          <Bolded text={m.own.first.replace("{n}", String(Math.round(per100(counts[0])))).replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
+          <Bolded text={m.own.first.replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
         </p>
       </div>
     </figure>
@@ -851,7 +840,7 @@ const AvgRow = ({ m, rank, v, max }: { m: M; rank: number; v: number; max: numbe
       {/* The body's size like all plain text (owner, 2026-11-16); the place
           and the count bold (owner, 2026-11-15). */}
       <p className="tabular-nums leading-snug">
-        {(n === 1 ? m.own.liveOne : m.own.live).split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
+        {(n === 0 ? m.own.liveZero : n === 1 ? m.own.liveOne : m.own.live).split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
       </p>
       {/* 24 px squares as before (owner, 2026-11-19); 12 px on phones so
           place 1's row fits 360 px screens. The row is as wide as place 1's
@@ -909,6 +898,9 @@ const Measured = ({ c }: { c: Copy }) => {
             </>
           )}
         </Pinned>
+        {/* The elections page (owner, 2026-11-25: a line under the
+            election example; the nav stays one link). */}
+        <ElectionsLink c={c} />
       </section>
     </>
   );
@@ -969,21 +961,7 @@ const Sample = ({ c }: { c: Copy }) => {
           quiet label spaced like the next step's (owner, 2026-11-15). Its
           own held section, apart from the weekly example (owner, 2026-11-15;
           the example rose under the steps as one piece). */}
-      <section id={SERVICES_ID} data-track-section="offer" className={SECTION_GAP}>
-        <Pinned length={OFFER_HOLD}>
-          {(p) => (
-            <>
-              <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{s.weekly.lead}</h2>
-              {/* The label turns black from right to left while the steps
-                  hold (owner, 2026-11-15). */}
-              <div className="mt-4 mb-4 sm:mt-14 sm:mb-5">
-                <FillCaps f={seg(p, OFFER_FILL[0], OFFER_FILL[1])}>{s.weekly.label}</FillCaps>
-              </div>
-              <B3Steps items={s.weekly.steps} />
-            </>
-          )}
-        </Pinned>
-      </section>
+      <OfferSection c={c} />
 
       {/* The weekly example as its own section like the election example,
           the whole report open before its animations start (owner,
@@ -1114,6 +1092,32 @@ const Sample = ({ c }: { c: Copy }) => {
   );
 };
 
+/* The offer's steps, held while their label fills: the main page's priced
+   steps, or the elections page's own `lead`, `label` and `steps` with
+   `below` (its price, the do-it-for-you line and the button) under the
+   held piece. */
+const OfferSection = ({ c, lead, label, steps, below }: { c: Copy; lead?: string; label?: string; steps?: { title: string; body: string; price?: string }[]; below?: ReactNode }) => {
+  const s = c.visibility.sample;
+  return (
+    <section id={SERVICES_ID} data-track-section="offer" className={SECTION_GAP}>
+      <Pinned length={OFFER_HOLD}>
+        {(p) => (
+          <>
+            <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{lead ?? s.weekly.lead}</h2>
+            {/* The label turns black from right to left while the steps
+                hold (owner, 2026-11-15). */}
+            <div className="mt-4 mb-4 sm:mt-14 sm:mb-5">
+              <FillCaps f={seg(p, OFFER_FILL[0], OFFER_FILL[1])}>{label ?? s.weekly.label}</FillCaps>
+            </div>
+            <B3Steps items={steps ?? s.weekly.steps} />
+          </>
+        )}
+      </Pinned>
+      {below}
+    </section>
+  );
+};
+
 /* The weekly example's hold in screen heights: its bars draw, then its
    squares and labels (was 2.5 with the steps, the box's rise and its
    opening; the body alone had 1.15). */
@@ -1125,9 +1129,7 @@ const NEXT_HOLD = 0.7;
 
 /* The offer's hold in screen heights, the long tail's length. */
 const OFFER_HOLD = 0.7;
-/* How far into the offer's hold the nav link may stop, and when its label
-   fills (was 0.1–0.85; later so the link lands on a grey label, 2026-11-16). */
-const OFFER_LAND = 0.3;
+/* When the offer's label fills (was 0.1–0.85; later, 2026-11-16). */
 const OFFER_FILL = [0.35, 0.9] as const;
 
 /* A grey caps label whose ink fills in from its right end to its left as
@@ -1213,6 +1215,137 @@ const VisibilitySection = ({ c }: { c: Copy }) => {
   );
 };
 
+/* The line under the main page's election example that opens the elections
+   page in the reader's language (ticket 21). */
+const ElectionsLink = ({ c }: { c: Copy }) => {
+  const lang = (useRouter().locale ?? "en") as Lang;
+  return (
+    <p className="mt-8 sm:mt-12">
+      {/* No scroll here: the page opens at its top itself (B3Elections). */}
+      <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
+        <a data-track="elections-page" data-track-place="election" className="font-bold underline underline-offset-4 hover:no-underline">
+          {c.elections.link}&nbsp;→
+        </a>
+      </Link>
+    </p>
+  );
+};
+
+/* The Eduskuntavaalit 2027 page (ticket 21; the owner's words or approved
+   by the owner, 2026-11-25): the first screen with the deadline over the
+   question and the owner's answer under it, the most contested theme with
+   how many each AI left out, the main page's election example as it is, the candidates'
+   offer, independence, then Yhteystiedot. Laid out like Home's sales
+   section. */
+const B3Elections = ({ c }: { c: Copy }) => {
+  // Opened from the main page's link, start at the top at once: the page's
+  // smooth scrolling would pass every section on the way up, and the visit
+  // counter would count them all as read.
+  useBrowserLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, []);
+  const e = c.elections;
+  const m = c.visibility.measured;
+  const h2 = "font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]";
+  return (
+    <>
+      <div className="flex min-h-[calc(100svh-9rem)] flex-col justify-center py-16">
+        <section data-track-section="first-screen" className="text-center">
+          {/* The deadline first, for urgency (owner, 2026-11-25). */}
+          {/* Two lines on phones, one line split by a dot on wide screens
+              (review, 2026-11-25). */}
+          <Caps className="block leading-relaxed !text-ink">
+            {e.urgency.split(" · ").map((part, i) => (
+              <span key={part}>
+                {i > 0 && <span className="hidden sm:inline"> · </span>}
+                <span className="block sm:inline">{part}</span>
+              </span>
+            ))}
+          </Caps>
+          <h1 className="mx-auto mt-4 max-w-[44rem] font-display text-[2.3em] font-bold leading-[1.08] sm:text-[3em]">{e.title}</h1>
+          <p className="mx-auto mt-5 max-w-[34rem] text-[1.15em] leading-snug">{e.answer}</p>
+          <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="first-screen" className="mt-6 inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
+            {c.visibility.request?.label}&nbsp;→
+          </a>
+          {/* The name beside the topic as a quiet byline (owner, 2026-11-25;
+              the company in place of the header's role, review 2026-11-25). */}
+          <p className="mt-4 text-[0.85em] text-muted">Josua Kiviranta · Sassosa Consulting · {e.topic}</p>
+        </section>
+      </div>
+
+      <Band className="pb-24 sm:pb-32">
+        <div className="mx-auto max-w-[40rem] text-center">
+          <section data-track-section="question">
+            <h2 className={h2}>{e.question.title}</h2>
+            {/* The theme and how many each AI left out, the counts as big
+                figures out of the theme's candidates; no grey text (owner,
+                2026-11-25, picked from three styles). The questions' wording
+                stays unshown (owner, 2026-11-25). */}
+            <p className="mt-8 leading-snug sm:mt-10">{e.question.theme}</p>
+            <p className="mt-3 leading-snug">{e.question.asked}</p>
+            <Caps className="mt-10 block !text-ink">{e.question.missedLead}</Caps>
+            <div className="mt-4 grid grid-cols-2 gap-6 sm:gap-12">
+              {e.question.missed.map((r) => (
+                <div key={r.ai}>
+                  <p className="font-display font-bold leading-none tabular-nums">
+                    <span className="text-[3.5em] sm:text-[4.5em]">{r.n}</span>
+                    <span className="text-[1.25em]"> / {e.question.of}</span>
+                  </p>
+                  <p className="mt-2 leading-snug"><b>{r.ai}</b> {r.text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* The main page's election example as it is (owner, 2026-11-25). */}
+          <section data-track-section="election" className={SECTION_GAP}>
+            <Pinned length={STUDY.body}>
+              {(p) => (
+                <>
+                  <h2 className={h2}>{e.measured.title}</h2>
+                  <div className="mt-6 sm:mt-10">
+                    <StudyBody m={m} p={p} />
+                  </div>
+                </>
+              )}
+            </Pinned>
+          </section>
+
+          <OfferSection
+            c={c}
+            lead={e.offer.lead}
+            label={e.offer.label}
+            steps={e.offer.steps}
+            // Only the header, label and steps are held, so the held piece
+            // fits the screen (review, 2026-11-25).
+            below={
+              <>
+                <p className="mt-6 tabular-nums font-bold sm:mt-8">{e.offer.price}</p>
+                <p className="mx-auto mt-4 max-w-[34rem] leading-snug"><KeepPct text={e.offer.extra} /></p>
+                <BookButton offer={c.visibility} place="offer" />
+              </>
+            }
+          />
+
+          {/* Closer to the offer, with a quiet label (review, 2026-11-25). */}
+          <section data-track-section="independence" className="mt-[6rem] sm:mt-[8rem]">
+            <Caps className="mb-4 block">{e.independenceLabel}</Caps>
+            <ul className="space-y-2 font-display text-[1.1em] font-bold leading-snug">
+              {e.independence.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </Band>
+
+      <Band className="!pb-0">
+        <ContactCentred c={c} />
+      </Band>
+    </>
+  );
+};
+
 const B3Case = ({ c }: { c: Copy }) => {
   const cs = c.caseStudy;
   const client = c.clients.find((cl) => cl.findings);
@@ -1246,7 +1379,7 @@ const B3Case = ({ c }: { c: Copy }) => {
   );
 };
 
-const VariantB3 = ({ c, lang, route }: { c: Copy; lang: Lang; route?: "privacy" }) => {
+const VariantB3 = ({ c, lang, route }: { c: Copy; lang: Lang; route?: Route }) => {
   const { page, go } = usePage(route);
   return (
     <main className="mx-auto w-full max-w-[56rem] px-5 pb-32 sm:px-8">
@@ -1255,12 +1388,13 @@ const VariantB3 = ({ c, lang, route }: { c: Copy; lang: Lang; route?: "privacy" 
       {page === "background" && <B3Background c={c} />}
       {page === "case" && <B3Case c={c} />}
       {page === "privacy" && <B3Privacy c={c} />}
-      <Footer c={c} places close={page === "home"} />
+      {page === "elections" && <B3Elections c={c} />}
+      <Footer c={c} places close={page === "home" || page === "elections"} />
     </main>
   );
 };
 
-export const HomepageVariant = ({ variant, lang, route }: { variant: string; lang: Lang; route?: "privacy" }) => {
+export const HomepageVariant = ({ variant, lang, route }: { variant: string; lang: Lang; route?: Route }) => {
   const c = COPY[lang];
   return variant === "B3" ? <VariantB3 c={c} lang={lang} route={route} /> : null;
 };

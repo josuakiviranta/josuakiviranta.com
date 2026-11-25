@@ -36,6 +36,33 @@ export type Copy = {
      agent's translations. It must stay true to what
      components/VisitCounter.tsx and pages/api/hit.ts record. */
   privacy: { title: string; intro: string; sections: { heading: string; text: string }[]; party: { heading: string; lines: string[] } };
+  /* The Eduskuntavaalit 2027 page (/fi/eduskuntavaalit-2027,
+     /finnish-elections-2027, /it/elezioni-finlandesi-2027); the Finnish is
+     the owner's or approved by the owner (2026-11-25); EN and IT are the
+     agent's translations. `headTitle` opens the page's title; `lead` is its
+     search description (name and topic in one sentence); `urgency` the caps
+     line over the `h1`, `answer` the owner's answer under it; `topic` closes
+     the byline under the button. `question`'s counts: the Round of
+     2026-11-18, the candidates whose own pages name the theme and how many
+     of them each AI left unnamed in its answers to the theme's questions
+     (`missed`: the AI, its words and the count, shown as a big "n / of");
+     the questions' wording stays unshown (owner, 2026-11-25). `offer` replaces
+     the main page's priced steps (owner, 2026-11-25). `link` is the main
+     page's line under the election example. */
+  elections: {
+    headTitle: string;
+    lead: string;
+    urgency: string;
+    title: string;
+    answer: string;
+    topic: string;
+    question: { title: string; theme: string; asked: string; missedLead: string; of: number; missed: { ai: string; text: string; n: number }[] };
+    measured: { title: string };
+    offer: { lead: string; label: string; steps: { title: string; body: string }[]; price: string; extra: string };
+    independenceLabel: string;
+    independence: string[];
+    link: string;
+  };
   problem: string;
   offer: string;
   /* The services; the case page's line names the one with `case` (owner,
@@ -46,8 +73,9 @@ export type Copy = {
      with `findings` is the MP case (hidden, SHOW_CASE). */
   clients: { name: string; year: string; logo?: { src: string; href: string }; findings?: { label: string; text: string }[] }[];
   backgroundHeading: string;
-  /* The nav's one link, to the offer's section (owner, 2026-11-16). */
-  navServices: string;
+  /* The nav's one link, to the elections page (owner, 2026-11-25; was
+     `navServices`, to the offer). */
+  navElectionsPage: string;
   /* The sales section under the first screen (owner, 2026-11-13; was the
      AI-visibility service page). `request.label` is the booking button's
      label. For anyone, companies too. */
@@ -55,7 +83,7 @@ export type Copy = {
     summary: string;
     /* The numbers are in `MEASURED` in HomepageVariants.tsx. */
     measured: {
-      own: { /* The live sentence over the squares, "{rank}" = the ink column's place, "{n}" = its mentions per 100 answers (owner, 2026-11-14; per 100 since 2026-11-19). */ live: string; /* The same sentence when "{n}" rounds to 1 (singular). */ liveOne: string; /* From the middle place on, "{n}" = the typical (median) Candidate's mentions per 100 answers (owner, 2026-11-19). */ typical: string; /* Once the slide reaches place 1, "{n}" = place 1's mentions per 100 answers, "{x}" = that over the typical count, both rounded (owner, 2026-11-19). */ first: string; };
+      own: { /* The live sentence over the squares, "{rank}" = the ink column's place, "{n}" = its mentions per 100 answers (owner, 2026-11-14; per 100 since 2026-11-19). */ live: string; /* The same sentence when "{n}" rounds to 1 (singular). */ liveOne: string; /* The same sentence when "{n}" rounds to 0 (review, 2026-11-25: "0 kertaa" is not Finnish). */ liveZero: string; /* From the middle place on, "{n}" = the typical (median) Candidate's mentions per 100 answers (owner, 2026-11-19). */ typical: string; /* Once the slide reaches place 1, "{x}" = place 1's mentions over the typical count, rounded (owner, 2026-11-19; since 2026-11-25 without repeating place 1's count, which the live sentence shows). */ first: string; };
       /* The long-tail curve (owner, 2026-11-12): `y` the axis; `most` and
          `here` the two labels on the curve. */
       tail: { y: string; /* Under the axis's two ends (owner, 2026-11-14). */ left: string; right: string; /* Over the flat tail (owner, 2026-11-13). */ most: string; /* At the arrow to the striped head (owner, 2026-11-13). */ here: string };
@@ -144,6 +172,37 @@ export const COPY: Record<Lang, Copy> = {
       ],
       party: { heading: "Controller", lines: ["Sassosa Consulting (Josua Kiviranta)", "Business ID 3127895-3", "Helsinki – Florence", EMAIL.value] },
     },
+    elections: {
+      headTitle: "Finnish parliamentary elections 2027: candidate visibility in AI answers",
+      lead: "Josua Kiviranta measures how often ChatGPT and Claude name a 2027 Finnish parliamentary election candidate compared with others in their electoral district.",
+      urgency: "Election day 18 April 2027 · AI updates with a delay",
+      title: "Does AI name you when a voter asks about the candidates in your electoral district?",
+      answer: "Probably rarely, unless you are branded for AI, easy to find or otherwise well known.",
+      topic: "Finnish parliamentary elections 2027",
+      question: {
+        title: "Voters ask AI.",
+        theme: "Entrepreneurship is the most common theme among Helsinki candidates: 39 candidates raise it on their pages.",
+        asked: "AI was asked 5 questions about candidates who promote entrepreneurship, each in two different ways.",
+        missedLead: "Of these 39 candidates",
+        of: 39,
+        missed: [{ ai: "Claude", text: "never named", n: 24 }, { ai: "ChatGPT", text: "never named", n: 29 }],
+      },
+      measured: { title: "Measured: Helsinki electoral district, November 2026" },
+      offer: {
+        lead: "Weekly report: how you rise into AI answers before election day.",
+        label: "The report’s three parts · no commitment",
+        steps: [
+          { title: "Situation overview", body: "How often AI names you and your competitors on your own themes." },
+          { title: "Instructions for your helpers", body: "Weekly instructions for your helpers: what to publish on your own pages, and where others should write about you." },
+          { title: "Emerging election themes", body: "New themes where no one shows up yet, and chances to make your name on them in AI answers." },
+        ],
+        price: "€190 / month + VAT",
+        extra: "Want me to make the changes for you? I produce the material and the changes to your website at the consultation price of €90\u00a0/\u00a0hour\u00a0+\u00a0VAT.",
+      },
+      independenceLabel: "Independent",
+      independence: ["The same service and prices for candidates of every party.", "I am not a member of any party.", "My clients stay confidential."],
+      link: "Finnish parliamentary elections 2027: measurement in your electoral district",
+    },
     problem: "Before deciding, people ask AI.",
     offer: "I help you show up in AI answers.",
     moreServices: [
@@ -161,7 +220,7 @@ export const COPY: Record<Lang, Copy> = {
       },
     ],
     backgroundHeading: "Background",
-    navServices: "Services",
+    navElectionsPage: "Finnish elections 2027",
     visibility: {
       summary: "If AI can’t find you, it recommends your rival.",
       measured: {
@@ -169,7 +228,8 @@ export const COPY: Record<Lang, Copy> = {
           live: "The candidate in place {rank} is named on average {n} times in 100 answers.",
           liveOne: "The candidate in place {rank} is named on average {n} time in 100 answers.",
           typical: "The typical candidate is named **{n} times** in 100 answers.",
-          first: "The candidate in **place 1** is named **{n} times**: **{x} times as often**.",
+          liveZero: "The candidate in place {rank} is not named once in 100 answers.",
+          first: "**{x} times as often** as the typical candidate.",
         },
         tail: { y: "Mentions in AI answers", left: "Many mentions", right: "Few mentions", most: "Most options are rarely mentioned", here: "You want to be among the few options mentioned often" },
         study: { title: "Example: Finnish parliamentary elections 2027", bridge: "The same distribution can be measured in how candidates are named in elections.", players: "{n} candidates", intro: "ChatGPT and Claude were asked {n} questions about candidates in the Helsinki electoral district, and the questions named no candidate." },
@@ -257,6 +317,37 @@ export const COPY: Record<Lang, Copy> = {
       ],
       party: { heading: "Rekisterinpitäjä", lines: ["Sassosa Consulting (Josua Kiviranta)", "Y-tunnus 3127895-3", "Helsinki – Firenze", EMAIL.value] },
     },
+    elections: {
+      headTitle: "Eduskuntavaalit 2027: ehdokkaan näkyvyys tekoälyn vastauksissa",
+      lead: "Josua Kiviranta mittaa, kuinka usein ChatGPT ja Claude mainitsevat eduskuntavaalien 2027 ehdokkaan vaalipiirinsä muihin ehdokkaisiin verrattuna.",
+      urgency: "Vaalipäivä 18.4.2027 · Tekoäly päivittyy viiveellä",
+      title: "Mainitseeko tekoäly sinut, kun äänestäjä kysyy vaalipiirisi ehdokkaista?",
+      answer: "Todennäköisesti harvoin, ellet ole brändäytynyt tekoälylle, helposti löydettävä tai muuten tunnettu.",
+      topic: "eduskuntavaalit 2027",
+      question: {
+        title: "Äänestäjä kysyy tekoälyltä.",
+        theme: "Yrittäjyys on Helsingin ehdokkaiden yleisin teema: 39 ehdokasta nostaa sen esiin sivuillaan.",
+        asked: "Tekoälyltä kysyttiin 5 kysymystä yrittäjyyttä ajavista ehdokkaista, kukin kahdella eri tavalla.",
+        missedLead: "Näistä 39 ehdokkaasta",
+        of: 39,
+        missed: [{ ai: "Claude", text: "ei maininnut kertaakaan", n: 24 }, { ai: "ChatGPT", text: "ei maininnut kertaakaan", n: 29 }],
+      },
+      measured: { title: "Mitattu: Helsingin vaalipiiri, marraskuu 2026" },
+      offer: {
+        lead: "Viikoittainen raportti: näin nouset tekoälyn vastauksiin ennen vaalipäivää.",
+        label: "Raportin kolme osaa · ilman sitoutumista",
+        steps: [
+          { title: "Tilannekuva", body: "Kuinka usein tekoäly mainitsee sinut ja kilpailijasi omissa teemoissasi." },
+          { title: "Ohjeet avustajillesi", body: "Viikoittaiset ohjeet avustajillesi: mitä julkaista omilla sivuillasi ja missä muiden pitäisi kirjoittaa sinusta." },
+          { title: "Nousevat vaaliteemat", body: "Uudet teemat, joissa kukaan ei vielä näy, ja tilaisuudet profiloitua niiden edustajaksi tekoälyn vastauksissa." },
+        ],
+        price: "190 € / kk + alv",
+        extra: "Haluatko, että teen muutokset puolestasi? Tuotan aineiston ja sivustosi muutokset konsultointihinnalla 90\u00a0€\u00a0/\u00a0h\u00a0+\u00a0alv.",
+      },
+      independenceLabel: "Riippumaton",
+      independence: ["Sama palvelu ja samat hinnat kaikkien puolueiden ehdokkaille.", "En ole minkään puolueen jäsen.", "Asiakkaani pysyvät luottamuksellisina."],
+      link: "Eduskuntavaalit 2027: mittaus omassa vaalipiirissäsi",
+    },
     problem: "Ennen päätöstä kysytään tekoälyltä.",
     offer: "Autan sinua näkymään tekoälyn vastauksissa.",
     moreServices: [
@@ -274,7 +365,7 @@ export const COPY: Record<Lang, Copy> = {
       },
     ],
     backgroundHeading: "Tausta",
-    navServices: "Palvelut",
+    navElectionsPage: "Eduskuntavaalit 2027",
     visibility: {
       summary: "Jos tekoäly ei löydä sinua, se suosittelee kilpailijaasi.",
       measured: {
@@ -282,7 +373,8 @@ export const COPY: Record<Lang, Copy> = {
           live: "Sijalla {rank} oleva ehdokas mainitaan keskimäärin {n} kertaa 100 vastauksessa.",
           liveOne: "Sijalla {rank} oleva ehdokas mainitaan keskimäärin {n} kerran 100 vastauksessa.",
           typical: "Tyypillinen ehdokas mainitaan **{n} kertaa** 100 vastauksessa.",
-          first: "**Sijalla 1** oleva ehdokas mainitaan **{n} kertaa**: **{x} kertaa useammin**.",
+          liveZero: "Sijalla {rank} oleva ehdokas ei saa yhtään mainintaa 100 vastauksessa.",
+          first: "**{x} kertaa useammin** kuin tyypillinen ehdokas.",
         },
         tail: { y: "Maininnat tekoälyn vastauksissa", left: "Paljon mainintoja", right: "Vähän mainintoja", most: "Useimmat vaihtoehdot mainitaan harvoin", here: "Haluat kuulua harvoihin usein mainittuihin vaihtoehtoihin" },
         study: { title: "Esimerkki: Eduskuntavaalit 2027", bridge: "Sama jakauma voidaan mitata ehdokkaiden nimeämisessä vaaleissa.", players: "{n} ehdokasta", intro: "ChatGPT:ltä ja Claudelta kysyttiin {n} kysymystä Helsingin vaalipiirin ehdokkaista, ilman ehdokkaiden nimeämistä." },
@@ -370,6 +462,37 @@ export const COPY: Record<Lang, Copy> = {
       ],
       party: { heading: "Titolare del trattamento", lines: ["Sassosa Consulting (Josua Kiviranta)", "Codice identificativo d’impresa (Y-tunnus) 3127895-3", "Helsinki – Firenze", EMAIL.value] },
     },
+    elections: {
+      headTitle: "Elezioni parlamentari finlandesi 2027: visibilità dei candidati nelle risposte dell’IA",
+      lead: "Josua Kiviranta misura quanto spesso ChatGPT e Claude nominano un candidato alle elezioni parlamentari finlandesi 2027 rispetto agli altri della circoscrizione.",
+      urgency: "Elezioni il 18 aprile 2027 · L’IA si aggiorna con ritardo",
+      title: "L’IA ti nomina quando un elettore chiede dei candidati della tua circoscrizione?",
+      answer: "Probabilmente di rado, a meno che tu non sia riconoscibile per l’IA come marchio, facile da trovare o comunque noto.",
+      topic: "elezioni parlamentari finlandesi 2027",
+      question: {
+        title: "Gli elettori chiedono all’IA.",
+        theme: "L’imprenditorialità è il tema più comune tra i candidati di Helsinki: 39 candidati lo citano sulle proprie pagine.",
+        asked: "All’IA sono state poste 5 domande sui candidati che promuovono l’imprenditorialità, ciascuna in due modi diversi.",
+        missedLead: "Di questi 39 candidati",
+        of: 39,
+        missed: [{ ai: "Claude", text: "non ne ha mai nominati", n: 24 }, { ai: "ChatGPT", text: "non ne ha mai nominati", n: 29 }],
+      },
+      measured: { title: "Misurato: circoscrizione di Helsinki, novembre 2026" },
+      offer: {
+        lead: "Report settimanale: così entri nelle risposte dell’IA prima del giorno delle elezioni.",
+        label: "Le tre parti del report · senza impegno",
+        steps: [
+          { title: "Quadro della situazione", body: "Quanto spesso l’IA nomina te e i tuoi concorrenti sui tuoi temi." },
+          { title: "Istruzioni per i collaboratori", body: "Istruzioni settimanali per i tuoi collaboratori: cosa pubblicare sulle tue pagine e dove altri dovrebbero scrivere di te." },
+          { title: "Temi elettorali emergenti", body: "Nuovi temi dove nessuno compare ancora, e occasioni per farti riconoscere come loro rappresentante nelle risposte dell’IA." },
+        ],
+        price: "190 € / mese + IVA",
+        extra: "Vuoi che faccia io le modifiche? Produco il materiale e le modifiche al tuo sito al prezzo di consulenza di 90\u00a0€\u00a0/\u00a0ora\u00a0+\u00a0IVA.",
+      },
+      independenceLabel: "Indipendente",
+      independence: ["Lo stesso servizio e gli stessi prezzi per i candidati di ogni partito.", "Non sono iscritto ad alcun partito.", "I miei clienti restano riservati."],
+      link: "Elezioni parlamentari finlandesi 2027: misurazione nella tua circoscrizione",
+    },
     problem: "Prima di decidere, si chiede all’IA.",
     offer: "Ti aiuto a comparire nelle risposte dell’IA.",
     moreServices: [
@@ -387,7 +510,7 @@ export const COPY: Record<Lang, Copy> = {
       },
     ],
     backgroundHeading: "Formazione ed esperienza",
-    navServices: "Servizi",
+    navElectionsPage: "Elezioni finlandesi 2027",
     visibility: {
       summary: "Se l’IA non ti trova, raccomanda il tuo rivale.",
       measured: {
@@ -395,7 +518,8 @@ export const COPY: Record<Lang, Copy> = {
           live: "Il candidato al {rank}º posto è nominato in media {n} volte su 100 risposte.",
           liveOne: "Il candidato al {rank}º posto è nominato in media {n} volta su 100 risposte.",
           typical: "Il candidato tipico è nominato **{n} volte** su 100 risposte.",
-          first: "Il candidato al **1º posto** è nominato **{n} volte**: **{x} volte più spesso**.",
+          liveZero: "Il candidato al {rank}º posto non è nominato nemmeno una volta su 100 risposte.",
+          first: "**{x} volte più spesso** del candidato tipico.",
         },
         tail: { y: "Menzioni nelle risposte dell’IA", left: "Molte menzioni", right: "Poche menzioni", most: "La maggior parte delle opzioni è citata di rado", here: "Vuoi essere tra le poche opzioni citate spesso" },
         study: { title: "Esempio: elezioni parlamentari finlandesi 2027", bridge: "La stessa distribuzione si può misurare nel modo in cui vengono nominati i candidati alle elezioni.", players: "{n} candidati", intro: "A ChatGPT e Claude sono state poste {n} domande sui candidati della circoscrizione di Helsinki, senza nominare alcun candidato nelle domande." },

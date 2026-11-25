@@ -13,6 +13,13 @@ const old = (query, destination) =>
     permanent: true,
   }));
 
+// Pages whose address is translated (components/SiteHead.tsx, TRANSLATED):
+// the page file has the English path; each other language's address shows
+// it, and the English path under that language redirects to its own.
+const translated = [
+  { page: "/finnish-elections-2027", fi: "/eduskuntavaalit-2027", it: "/elezioni-finlandesi-2027" },
+];
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -27,7 +34,15 @@ const nextConfig = {
       ...old({ page: "privacy" }, "/privacy"),
       ...old({ lang: "fi" }, "/fi"),
       ...old({ lang: "it" }, "/it"),
+      ...translated.flatMap((t) =>
+        ["fi", "it"].map((l) => ({ source: `/${l}${t.page}`, destination: `/${l}${t[l]}`, locale: false, permanent: true })),
+      ),
     ];
+  },
+  async rewrites() {
+    return translated.flatMap((t) =>
+      ["fi", "it"].map((l) => ({ source: `/${l}${t[l]}`, destination: `/${l}${t.page}`, locale: false })),
+    );
   },
 }
 

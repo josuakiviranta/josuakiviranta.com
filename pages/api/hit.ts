@@ -77,6 +77,9 @@ export default async function hit(req: NextApiRequest, res: NextApiResponse) {
               ${header(req, "x-vercel-ip-city")}, ${browserOf(ua)}, ${osOf(ua)}, ${deviceOf(ua, sw)})`;
   } catch (e) {
     console.error("hit", e);
+  } finally {
+    // Every request gets its reply, also one dropped above: an unanswered
+    // one stalls, and enough of them block the browser's next page load.
+    res.status(204).end();
   }
-  res.status(204).end();
 }
