@@ -2,7 +2,8 @@ import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html lang="en">
+    // Next sets `lang` from the address's language (en, fi, it).
+    <Html>
       <Head>
         {/* Latin Modern Roman, self-hosted (see @font-face in globals.css). */}
         <link
