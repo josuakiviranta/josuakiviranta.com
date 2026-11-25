@@ -5,9 +5,22 @@ import { COPY, LANGS, type Lang } from "./prototype/homepageCopy";
 // redirects to www.
 export const SITE_URL = "https://www.josuakiviranta.com";
 
-// The address of `path` ("/" or "/privacy") in `lang`: English has no prefix.
-export const localePath = (lang: Lang, path: string) =>
-  lang === "en" ? path : path === "/" ? `/${lang}` : `/${lang}${path}`;
+export type PagePath = "/" | "/privacy" | "/finnish-elections-2027";
+
+// Pages whose address is translated (owner, 2026-11-25): the page file's
+// path is the English one; next.config.js rewrites the others to it.
+const TRANSLATED: Partial<Record<PagePath, Record<Lang, string>>> = {
+  "/finnish-elections-2027": { en: "/finnish-elections-2027", fi: "/eduskuntavaalit-2027", it: "/elezioni-finlandesi-2027" },
+};
+
+// The page's path in `lang` without the language prefix.
+export const pageSlug = (lang: Lang, path: string) => TRANSLATED[path as PagePath]?.[lang] ?? path;
+
+// The address of `path` in `lang`: English has no prefix.
+export const localePath = (lang: Lang, path: string) => {
+  const slug = pageSlug(lang, path);
+  return lang === "en" ? slug : slug === "/" ? `/${lang}` : `/${lang}${slug}`;
+};
 
 // The first screen's English words (owner, 2026-11-16) for link previews.
 const SHARE_DESCRIPTION =
@@ -61,11 +74,16 @@ const structuredData = (lang: Lang) => ({
 
 /* The head of every page: title, descriptions, the icons, the address of
    this page and its other languages, link previews and structured data. */
-export const SiteHead = ({ lang, path }: { lang: Lang; path: "/" | "/privacy" }) => {
+export const SiteHead = ({ lang, path }: { lang: Lang; path: PagePath }) => {
   const c = COPY[lang];
   const role = c.role.replace(/\.$/, "");
-  const title = path === "/" ? `Josua Kiviranta — ${role}` : `${c.privacy.title} — Josua Kiviranta`;
-  const description = path === "/" ? SEARCH_DESCRIPTION[lang] : c.privacy.intro;
+  // A page's own title opens with its frame words (page-writing rules).
+  const title = {
+    "/": `Josua Kiviranta — ${role}`,
+    "/privacy": `${c.privacy.title} — Josua Kiviranta`,
+    "/finnish-elections-2027": `${c.elections.headTitle} — Josua Kiviranta`,
+  }[path];
+  const description = { "/": SEARCH_DESCRIPTION[lang], "/privacy": c.privacy.intro, "/finnish-elections-2027": c.elections.lead }[path];
   const url = `${SITE_URL}${localePath(lang, path)}`;
   return (
     <Head>
@@ -75,7 +93,7 @@ export const SiteHead = ({ lang, path }: { lang: Lang; path: "/" | "/privacy" })
       {LANGS.map((l) => (
         <link key={l} rel="alternate" hrefLang={l} href={`${SITE_URL}${localePath(l, path)}`} />
       ))}
-      <link rel="alternate" hrefLang="x-default" href={`${SITE_URL}${path}`} />
+      <link rel="alternate" hrefLang="x-default" href={`${SITE_URL}${localePath("en", path)}`} />
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

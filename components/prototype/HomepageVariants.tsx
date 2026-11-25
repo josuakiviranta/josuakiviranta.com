@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { MAP_ASPECT, MAP_PINS } from "../officeMapLabels";
 import { COPY, LANGS, type Copy, type Lang, type OfferCopy } from "./homepageCopy";
+import { pageSlug } from "../SiteHead";
 
 const PHONE = { display: "+358 41 524 2441", href: "tel:+358415242441" };
 /* The owner's Google Calendar booking page (owner, 2026-11-12). */
@@ -24,8 +25,9 @@ const LangSwitch = ({ lang }: { lang: Lang }) => {
           <button
             data-track="lang"
             data-track-place={l}
-            // The same page in the other language's address ("/fi", "/fi/privacy"), where the reader is.
-            onClick={() => router.replace({ pathname: router.pathname, query: router.query }, undefined, { locale: l, scroll: false })}
+            // The same page in the other language's address ("/fi", "/fi/privacy",
+            // "/fi/eduskuntavaalit-2027"), where the reader is.
+            onClick={() => router.replace({ pathname: router.pathname, query: router.query }, pageSlug(l, router.pathname), { locale: l, scroll: false })}
             className={l === lang ? "font-bold" : "text-muted hover:text-ink"}
           >
             {l.toUpperCase()}
@@ -146,13 +148,16 @@ const Band = ({ children, tight, id, className = "" }: { children: ReactNode; ti
   <section id={id} className={`${tight ? "py-10" : "py-14"} ${className}`}>{children}</section>
 );
 
-const PAGES = ["home", "background", "case", "privacy"] as const;
+const PAGES = ["home", "background", "case", "privacy", "elections"] as const;
+/* The pages with their own address (pages/privacy.tsx,
+   pages/finnish-elections-2027.tsx). */
+type Route = "privacy" | "elections";
 type Page = (typeof PAGES)[number];
 
 /* The page shown: the privacy notice has its own address (`route`); the
    unlinked background and case pages are still views of Home chosen by
    ?page=. */
-const usePage = (route?: "privacy") => {
+const usePage = (route?: Route) => {
   const router = useRouter();
   const page: Page = route ?? ((["background", "case"] as readonly string[]).includes(router.query.page as string) ? (router.query.page as Page) : "home");
   // Drop what an old address's redirect left in the query (?lang=, ?page=privacy).
@@ -257,7 +262,7 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
   }, [compact]);
   const services = () => {
     setMenu(false);
-    if (page !== "home") {
+    if (page !== "home" && page !== "elections") {
       go("home");
       setTimeout(scrollToServices, 400);
     } else scrollToServices();
@@ -788,7 +793,10 @@ const seg = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a)
    on the right to the most mentioned on the left. The columns it has
    passed turn a darker grey; the sentence and the squares show the ink
    column's own mentions per 100 answers. No arrows. */
-const StudyBody = ({ m, p }: { m: M; p: number }) => {
+/* `intro` and `after` replace the intro and the two closing lines (the
+   elections page, ticket 21); `after`'s lines fade in one by one once the
+   ink column reaches place 1. */
+const StudyBody = ({ m, p, intro = m.study.intro, after }: { m: M; p: number; intro?: string; after?: string[] }) => {
   const counts = MEASURED.combined;
   const n = counts.length;
   const pos = (n - 1) * (1 - seg(p, 0.15, 0.85));
@@ -805,7 +813,7 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
       {/* In ink, unlike the quiet labels (owner, 2026-11-15). */}
       {/* Plain text (owner, 2026-11-16; was a black caps label). */}
       <p className="leading-snug">
-        <KeepPct text={m.study.intro.replace("{n}", String(ASKED))} />
+        <KeepPct text={intro.replace("{n}", String(ASKED))} />
       </p>
       <div className="pt-2">
         <Spread counts={counts} className="h-24 sm:h-28" shade={(i) => (i < at ? "fill-[#bdbdbd]" : i === at ? "fill-ink" : "fill-[#7a7a7a]")} />
@@ -820,6 +828,15 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
       {/* What the slide shows (owner, 2026-11-19): the typical Candidate as
           soon as the ink column reaches the middle place; then, once it
           reaches place 1, place 1's count and how many times the typical. */}
+      {after ? (
+        <div className="space-y-1 pt-4 tabular-nums leading-snug sm:pt-6">
+          {after.map((t, i) => (
+            <p key={i} style={{ opacity: seg(p, 0.86 + i * 0.04, 0.9 + i * 0.04) }}>
+              <Bolded text={t} />
+            </p>
+          ))}
+        </div>
+      ) : (
       <div className="space-y-1 pt-4 tabular-nums leading-snug sm:pt-6">
         <p style={{ opacity: seg(mid + 0.5 - pos, 0, 1.5) }}>
           <Bolded text={m.own.typical.replace("{n}", String(Math.round(typical)))} />
@@ -828,6 +845,7 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
           <Bolded text={m.own.first.replace("{n}", String(Math.round(per100(counts[0])))).replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
         </p>
       </div>
+      )}
     </figure>
   );
 };
@@ -909,6 +927,9 @@ const Measured = ({ c }: { c: Copy }) => {
             </>
           )}
         </Pinned>
+        {/* The elections page (owner, 2026-11-25: a line under the
+            election example; the nav stays one link). */}
+        <ElectionsLink c={c} />
       </section>
     </>
   );
@@ -969,21 +990,7 @@ const Sample = ({ c }: { c: Copy }) => {
           quiet label spaced like the next step's (owner, 2026-11-15). Its
           own held section, apart from the weekly example (owner, 2026-11-15;
           the example rose under the steps as one piece). */}
-      <section id={SERVICES_ID} data-track-section="offer" className={SECTION_GAP}>
-        <Pinned length={OFFER_HOLD}>
-          {(p) => (
-            <>
-              <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{s.weekly.lead}</h2>
-              {/* The label turns black from right to left while the steps
-                  hold (owner, 2026-11-15). */}
-              <div className="mt-4 mb-4 sm:mt-14 sm:mb-5">
-                <FillCaps f={seg(p, OFFER_FILL[0], OFFER_FILL[1])}>{s.weekly.label}</FillCaps>
-              </div>
-              <B3Steps items={s.weekly.steps} />
-            </>
-          )}
-        </Pinned>
-      </section>
+      <OfferSection c={c} />
 
       {/* The weekly example as its own section like the election example,
           the whole report open before its animations start (owner,
@@ -1114,6 +1121,30 @@ const Sample = ({ c }: { c: Copy }) => {
   );
 };
 
+/* The offer's three priced steps, held while their label fills; `button`
+   adds the free conversation's button under them (the elections page). */
+const OfferSection = ({ c, button }: { c: Copy; button?: string }) => {
+  const s = c.visibility.sample;
+  return (
+    <section id={SERVICES_ID} data-track-section="offer" className={SECTION_GAP}>
+      <Pinned length={OFFER_HOLD}>
+        {(p) => (
+          <>
+            <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{s.weekly.lead}</h2>
+            {/* The label turns black from right to left while the steps
+                hold (owner, 2026-11-15). */}
+            <div className="mt-4 mb-4 sm:mt-14 sm:mb-5">
+              <FillCaps f={seg(p, OFFER_FILL[0], OFFER_FILL[1])}>{s.weekly.label}</FillCaps>
+            </div>
+            <B3Steps items={s.weekly.steps} />
+            {button && <BookButton offer={c.visibility} place={button} />}
+          </>
+        )}
+      </Pinned>
+    </section>
+  );
+};
+
 /* The weekly example's hold in screen heights: its bars draw, then its
    squares and labels (was 2.5 with the steps, the box's rise and its
    opening; the body alone had 1.15). */
@@ -1213,6 +1244,114 @@ const VisibilitySection = ({ c }: { c: Copy }) => {
   );
 };
 
+/* The line under the main page's election example that opens the elections
+   page in the reader's language (ticket 21). */
+const ElectionsLink = ({ c }: { c: Copy }) => {
+  const lang = (useRouter().locale ?? "en") as Lang;
+  return (
+    <p className="mt-8 sm:mt-12">
+      {/* No scroll here: the page opens at its top itself (B3Elections). */}
+      <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
+        <a data-track="elections-page" data-track-place="election" className="font-bold underline underline-offset-4 hover:no-underline">
+          {c.elections.link}&nbsp;→
+        </a>
+      </Link>
+    </p>
+  );
+};
+
+/* The Eduskuntavaalit 2027 page (ticket 21; Finnish approved by the owner
+   2026-11-25): the first screen, a real question from the Round, the
+   measured election example with its own closing lines, what the same
+   measurement shows in the reader's district, the offer, independence,
+   then Yhteystiedot. Sections laid out like Home's sales section. */
+const B3Elections = ({ c }: { c: Copy }) => {
+  // Opened from the main page's link, start at the top at once: the page's
+  // smooth scrolling would pass every section on the way up, and the visit
+  // counter would count them all as read.
+  useBrowserLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, []);
+  const e = c.elections;
+  const m = c.visibility.measured;
+  const counts = MEASURED.combined;
+  const per100 = (v: number) => (v / PAGE_ANSWERS) * 100;
+  const mid = (counts.length - 1) / 2;
+  const typical = per100((counts[Math.floor(mid)] + counts[Math.ceil(mid)]) / 2);
+  const total = counts.reduce((a, b) => a + b, 0);
+  const fill = (t: string, v: Record<string, number>) => Object.entries(v).reduce((a, [k, n]) => a.split(`{${k}}`).join(String(n)), t);
+  const after = [
+    fill(e.measured.first, { n: Math.round(per100(counts[0])), typical: Math.round(typical) }),
+    fill(e.measured.few, { n: counts.filter((v) => per100(v) < 3).length, all: counts.length, zero: counts.filter((v) => v === 0).length }),
+    fill(e.measured.top, { pct: Math.round((counts.slice(0, 10).reduce((a, b) => a + b, 0) / total) * 100) }),
+  ];
+  const h2 = "font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]";
+  return (
+    <>
+      <div className="flex min-h-[calc(100svh-9rem)] flex-col justify-center py-16">
+        <section data-track-section="first-screen" className="text-center">
+          <Caps>{e.eyebrow}</Caps>
+          <h1 className="mx-auto mt-4 max-w-[44rem] font-display text-[2.3em] font-bold leading-[1.08] sm:text-[3em]">{e.title}</h1>
+          <p className="mx-auto mt-5 max-w-[34rem] text-[1.15em] leading-snug">{e.lead}</p>
+          <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="first-screen" className="mt-6 inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
+            {c.visibility.request?.label}&nbsp;→
+          </a>
+        </section>
+      </div>
+
+      <Band className="pb-24 sm:pb-32">
+        <div className="mx-auto max-w-[40rem] text-center">
+          <section data-track-section="question">
+            <h2 className={h2}>{e.question.title}</h2>
+            <p className="mt-8 sm:mt-10">{e.question.lead}</p>
+            <blockquote className="mt-3 border-x border-rule px-4 font-display text-[1.25em] font-bold leading-snug sm:px-8">“{e.question.example}”</blockquote>
+            <p className="mt-6 leading-snug">{e.question.answer}</p>
+          </section>
+
+          <section data-track-section="election" className={SECTION_GAP}>
+            <Pinned length={STUDY.body}>
+              {(p) => (
+                <>
+                  <h2 className={h2}>{e.measured.title}</h2>
+                  <div className="mt-6 sm:mt-10">
+                    <StudyBody m={m} p={p} intro={e.measured.intro} after={after} />
+                  </div>
+                </>
+              )}
+            </Pinned>
+          </section>
+
+          <section data-track-section="district" className={SECTION_GAP}>
+            <h2 className={h2}>{e.district.title}</h2>
+            <div className="mt-8 sm:mt-14">
+              <B3Steps items={e.district.steps} />
+            </div>
+            <p className="mt-10 leading-snug sm:mt-14">
+              {e.district.note.split(/(?<=\.) (?=[A-ZÄÖ])/).map((line) => (
+                <span key={line} className="block">{line}</span>
+              ))}
+            </p>
+          </section>
+
+          <OfferSection c={c} button="offer" />
+
+          <section data-track-section="independence" className={SECTION_GAP}>
+            <ul className="space-y-2 font-display text-[1.1em] font-bold leading-snug">
+              {e.independence.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </Band>
+
+      <Band className="!pb-0">
+        <ContactCentred c={c} />
+      </Band>
+    </>
+  );
+};
+
 const B3Case = ({ c }: { c: Copy }) => {
   const cs = c.caseStudy;
   const client = c.clients.find((cl) => cl.findings);
@@ -1246,7 +1385,7 @@ const B3Case = ({ c }: { c: Copy }) => {
   );
 };
 
-const VariantB3 = ({ c, lang, route }: { c: Copy; lang: Lang; route?: "privacy" }) => {
+const VariantB3 = ({ c, lang, route }: { c: Copy; lang: Lang; route?: Route }) => {
   const { page, go } = usePage(route);
   return (
     <main className="mx-auto w-full max-w-[56rem] px-5 pb-32 sm:px-8">
@@ -1255,12 +1394,13 @@ const VariantB3 = ({ c, lang, route }: { c: Copy; lang: Lang; route?: "privacy" 
       {page === "background" && <B3Background c={c} />}
       {page === "case" && <B3Case c={c} />}
       {page === "privacy" && <B3Privacy c={c} />}
-      <Footer c={c} places close={page === "home"} />
+      {page === "elections" && <B3Elections c={c} />}
+      <Footer c={c} places close={page === "home" || page === "elections"} />
     </main>
   );
 };
 
-export const HomepageVariant = ({ variant, lang, route }: { variant: string; lang: Lang; route?: "privacy" }) => {
+export const HomepageVariant = ({ variant, lang, route }: { variant: string; lang: Lang; route?: Route }) => {
   const c = COPY[lang];
   return variant === "B3" ? <VariantB3 c={c} lang={lang} route={route} /> : null;
 };
