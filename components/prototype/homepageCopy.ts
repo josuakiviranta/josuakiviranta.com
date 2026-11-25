@@ -44,7 +44,8 @@ export type Copy = {
      line over the `h1`, `answer` the owner's answer under it; `topic` closes
      the byline under the button. `question`'s counts: the Round of
      2026-11-18, the candidates whose own pages name the theme and how many
-     of them each AI left unnamed in its answers to the theme's questions;
+     of them each AI left unnamed in its answers to the theme's questions
+     (`missed`: the AI, its words and the count, shown as a big "n / of");
      the questions' wording stays unshown (owner, 2026-11-25). `offer` replaces
      the main page's priced steps (owner, 2026-11-25). `link` is the main
      page's line under the election example. */
@@ -55,7 +56,7 @@ export type Copy = {
     title: string;
     answer: string;
     topic: string;
-    question: { title: string; theme: string; asked: string; missedLead: string; missed: string[] };
+    question: { title: string; theme: string; asked: string; missedLead: string; of: number; missed: { ai: string; text: string; n: number }[] };
     measured: { title: string };
     offer: { lead: string; label: string; steps: { title: string; body: string }[]; price: string; extra: string };
     independenceLabel: string;
@@ -182,7 +183,8 @@ export const COPY: Record<Lang, Copy> = {
         theme: "Entrepreneurship is the most common theme among Helsinki candidates: 39 candidates raise it on their pages.",
         asked: "AI was asked 5 questions about candidates who promote entrepreneurship, each in two different ways.",
         missedLead: "Of these 39 candidates",
-        missed: ["Claude never named\u00a024.", "ChatGPT never named\u00a029."],
+        of: 39,
+        missed: [{ ai: "Claude", text: "never named", n: 24 }, { ai: "ChatGPT", text: "never named", n: 29 }],
       },
       measured: { title: "Measured: Helsinki electoral district, November 2026" },
       offer: {
@@ -326,7 +328,8 @@ export const COPY: Record<Lang, Copy> = {
         theme: "Yrittäjyys on Helsingin ehdokkaiden yleisin teema: 39 ehdokasta nostaa sen esiin sivuillaan.",
         asked: "Tekoälyltä kysyttiin 5 kysymystä yrittäjyyttä ajavista ehdokkaista, kukin kahdella eri tavalla.",
         missedLead: "Näistä 39 ehdokkaasta",
-        missed: ["Claude ei maininnut kertaakaan\u00a024:ää.", "ChatGPT ei maininnut kertaakaan\u00a029:ää."],
+        of: 39,
+        missed: [{ ai: "Claude", text: "ei maininnut kertaakaan", n: 24 }, { ai: "ChatGPT", text: "ei maininnut kertaakaan", n: 29 }],
       },
       measured: { title: "Mitattu: Helsingin vaalipiiri, marraskuu 2026" },
       offer: {
@@ -470,7 +473,8 @@ export const COPY: Record<Lang, Copy> = {
         theme: "L’imprenditorialità è il tema più comune tra i candidati di Helsinki: 39 candidati lo citano sulle proprie pagine.",
         asked: "All’IA sono state poste 5 domande sui candidati che promuovono l’imprenditorialità, ciascuna in due modi diversi.",
         missedLead: "Di questi 39 candidati",
-        missed: ["Claude non ne ha mai nominati\u00a024.", "ChatGPT non ne ha mai nominati\u00a029."],
+        of: 39,
+        missed: [{ ai: "Claude", text: "non ne ha mai nominati", n: 24 }, { ai: "ChatGPT", text: "non ne ha mai nominati", n: 29 }],
       },
       measured: { title: "Misurato: circoscrizione di Helsinki, novembre 2026" },
       offer: {

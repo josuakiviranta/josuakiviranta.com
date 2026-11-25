@@ -1295,14 +1295,22 @@ const B3Elections = ({ c }: { c: Copy }) => {
         <div className="mx-auto max-w-[40rem] text-center">
           <section data-track-section="question">
             <h2 className={h2}>{e.question.title}</h2>
-            {/* The theme and how many each AI left out; the questions' wording
+            {/* The theme and how many each AI left out, the counts as big
+                figures out of the theme's candidates; no grey text (owner,
+                2026-11-25, picked from three styles). The questions' wording
                 stays unshown (owner, 2026-11-25). */}
             <p className="mt-8 leading-snug sm:mt-10">{e.question.theme}</p>
-            <p className="mt-4 leading-snug">{e.question.asked}</p>
-            <p className="mt-6 leading-snug">{e.question.missedLead}</p>
-            <div className="mt-2 space-y-1 font-display text-[1.25em] font-bold leading-snug">
-              {e.question.missed.map((line) => (
-                <p key={line}><KeepPct text={line} /></p>
+            <p className="mt-3 leading-snug">{e.question.asked}</p>
+            <Caps className="mt-10 block !text-ink">{e.question.missedLead}</Caps>
+            <div className="mt-4 grid grid-cols-2 gap-6 sm:gap-12">
+              {e.question.missed.map((r) => (
+                <div key={r.ai}>
+                  <p className="font-display font-bold leading-none tabular-nums">
+                    <span className="text-[3.5em] sm:text-[4.5em]">{r.n}</span>
+                    <span className="text-[1.25em]"> / {e.question.of}</span>
+                  </p>
+                  <p className="mt-2 leading-snug"><b>{r.ai}</b> {r.text}</p>
+                </div>
               ))}
             </div>
           </section>
