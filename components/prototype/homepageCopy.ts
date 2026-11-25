@@ -118,7 +118,7 @@ export const COPY: Record<Lang, Copy> = {
   en: {
     role: "GEO and branding for AI.",
     places: "Helsinki – Florence",
-    problem: "People search for you with AI before deciding.",
+    problem: "Before deciding, people ask AI.",
     offer: "I help you show up in AI answers.",
     moreServices: [
       { title: "Situation overview and decisions", body: "I build a picture of your situation and help you decide what to focus on to reach your goals.", case: true },
@@ -217,7 +217,7 @@ export const COPY: Record<Lang, Copy> = {
   fi: {
     role: "GEO ja brändäys tekoälylle.",
     places: "Helsinki – Firenze",
-    problem: "Sinua etsitään tekoälyllä ennen päätöstä.",
+    problem: "Ennen päätöstä kysytään tekoälyltä.",
     offer: "Autan sinua näkymään tekoälyn vastauksissa.",
     moreServices: [
       { title: "Tilannekuva ja päätöksenteko", body: "Kokoan tilannekuvan ja autan päättämään, mihin sinun kannattaa keskittyä tavoitteidesi saavuttamiseksi.", case: true },
@@ -316,7 +316,7 @@ export const COPY: Record<Lang, Copy> = {
   it: {
     role: "GEO e branding per l’IA.",
     places: "Helsinki – Firenze",
-    problem: "Prima di decidere, ti cercano tramite l’IA.",
+    problem: "Prima di decidere, si chiede all’IA.",
     offer: "Ti aiuto a comparire nelle risposte dell’IA.",
     moreServices: [
       { title: "Quadro della situazione e decisioni", body: "Costruisco il quadro della situazione e ti aiuto a decidere su cosa concentrarti per raggiungere i tuoi obiettivi.", case: true },

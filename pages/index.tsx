@@ -10,7 +10,7 @@ const SITE_URL = "https://www.josuakiviranta.com";
 // The first screen's English words (owner, 2026-11-16); previews read the
 // page without ?lang=, so they are in English.
 const SHARE_DESCRIPTION =
-  "People search for you with AI before deciding. I help you show up in AI answers.";
+  "Before deciding, people ask AI. I help you show up in AI answers.";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -34,7 +34,7 @@ const Home: NextPage = () => {
         <meta property="og:image:height" content="630" />
         <meta
           property="og:image:alt"
-          content="The top of josuakiviranta.com: Josua Kiviranta, GEO and branding for AI. People search for you with AI before deciding."
+          content="The top of josuakiviranta.com: Josua Kiviranta, GEO and branding for AI. Before deciding, people ask AI."
         />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
