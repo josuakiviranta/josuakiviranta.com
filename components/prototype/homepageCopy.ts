@@ -30,10 +30,12 @@ export type Copy = {
      the privacy notice (?page=privacy). */
   legal: string;
   privacyLink: string;
-  /* The privacy notice: the owner approved the English 2026-11-25; FI and IT
-     are the agent's translations. Says what components/VisitCounter.tsx and
-     pages/api/hit.ts record. */
-  privacy: { title: string; sections: { heading: string; text: string }[] };
+  /* The privacy notice in the short legal style of ylonenconsulting.com
+     (owner, 2026-11-25): an opening line, paragraphs led by a bold heading,
+     and the responsible party. The English is the owner's; FI and IT are the
+     agent's translations. It must stay true to what
+     components/VisitCounter.tsx and pages/api/hit.ts record. */
+  privacy: { title: string; intro: string; sections: { heading: string; text: string }[]; party: { heading: string; lines: string[] } };
   problem: string;
   offer: string;
   /* The services; the case page's line names the one with `case` (owner,
@@ -133,14 +135,14 @@ export const COPY: Record<Lang, Copy> = {
     privacyLink: "Privacy",
     privacy: {
       title: "Privacy",
+      intro: "This website uses no cookies and stores nothing on your device.",
       sections: [
-        { heading: "Who", text: "Sassosa Consulting (Josua Kiviranta), business ID 3127895-3, josua.kiviranta@gmail.com." },
-        { heading: "What this site records", text: "The pages opened, the sections scrolled to, clicks on the booking, contact, language and Code of Conduct links, the referring website, approximate location (country, region, city), and browser, operating system and device type." },
-        { heading: "What it does not record", text: "No cookies, nothing stored on your device, no IP address. Visits from one day are grouped by a code made with a key that is deleted the next day, so no visitor can be traced back." },
-        { heading: "Why", text: "To see how many people visit and which parts of the site they read (legitimate interest, GDPR Art. 6(1)(f))." },
-        { heading: "Where and how long", text: "The site is hosted by Vercel Inc.; the data is stored by Neon (Databricks) in Frankfurt, EU, and deleted after 12 months." },
-        { heading: "Your rights", text: "You can ask what is stored and object to it by email, and complain to the Data Protection Ombudsman (tietosuoja.fi)." },
+        { heading: "Hosting", text: "This site is hosted by Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA. When you visit the site, Vercel automatically processes technical data such as your IP address and browser information in server logs for security and delivery purposes. Legal basis: legitimate interest in secure, reliable operation of the site (Art. 6(1)(f) GDPR). This may involve transfer of data to the USA; Vercel is certified under the EU–U.S. Data Privacy Framework and its data processing agreement applies." },
+        { heading: "Visitor statistics", text: "We keep anonymous usage statistics, such as pages viewed, approximate location and device type, to understand how the site is used. IP addresses are not stored. The statistics are stored in the EU and deleted after 12 months. Legal basis: legitimate interest (Art. 6(1)(f) GDPR)." },
+        { heading: "Contact", text: "If you email or call us, your data is used solely to handle your inquiry (Art. 6(1)(b) GDPR)." },
+        { heading: "Your rights", text: "You have the right to access, correct or delete your personal data, to object to its processing, and to lodge a complaint with a supervisory authority." },
       ],
+      party: { heading: "Responsible party", lines: ["Sassosa Consulting (Josua Kiviranta)", "Business ID 3127895-3", "Helsinki – Florence", EMAIL.value] },
     },
     problem: "Before deciding, people ask AI.",
     offer: "I help you show up in AI answers.",
@@ -246,14 +248,14 @@ export const COPY: Record<Lang, Copy> = {
     privacyLink: "Tietosuoja",
     privacy: {
       title: "Tietosuojaseloste",
+      intro: "Tämä sivusto ei käytä evästeitä eikä tallenna mitään laitteellesi.",
       sections: [
-        { heading: "Kuka", text: "Sassosa Consulting (Josua Kiviranta), Y-tunnus 3127895-3, josua.kiviranta@gmail.com." },
-        { heading: "Mitä sivusto tallentaa", text: "Avatut sivut, sivun osat, joihin asti on vieritetty, klikkaukset ajanvaraus-, yhteystieto-, kieli- ja periaatelinkkeihin, sivusto, jolta tultiin, likimääräinen sijainti (maa, alue, kaupunki) sekä selain, käyttöjärjestelmä ja laitetyyppi." },
-        { heading: "Mitä se ei tallenna", text: "Ei evästeitä, ei mitään laitteellesi tallennettua, ei IP-osoitetta. Saman päivän käynnit ryhmitellään koodilla, joka tehdään seuraavana päivänä poistettavalla avaimella, joten yksittäistä kävijää ei voi jäljittää." },
-        { heading: "Miksi", text: "Jotta näen, kuinka moni sivustolla käy ja mitä sen osia luetaan (oikeutettu etu, tietosuoja-asetuksen 6 artiklan 1 kohdan f alakohta)." },
-        { heading: "Missä ja kuinka kauan", text: "Sivuston palvelimet ovat Vercel Inc:n; tiedot säilyttää Neon (Databricks) Frankfurtissa EU:ssa, ja ne poistetaan 12 kuukauden jälkeen." },
-        { heading: "Oikeutesi", text: "Voit kysyä sähköpostilla, mitä on tallennettu, ja vastustaa käsittelyä. Voit tehdä valituksen tietosuojavaltuutetulle (tietosuoja.fi)." },
+        { heading: "Palvelintila", text: "Sivuston palvelintilan tarjoaa Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA. Kun vierailet sivustolla, Vercel käsittelee palvelinlokeissaan automaattisesti teknisiä tietoja, kuten IP-osoitettasi ja selaintietojasi tietoturvaa ja sivuston toimittamista varten. Käsittelyperuste: oikeutettu etu sivuston turvallisen ja luotettavan toiminnan varmistamiseen (yleisen tietosuoja-asetuksen 6 artiklan 1 kohdan f alakohta). Tietoja voidaan siirtää Yhdysvaltoihin; Vercel on sertifioitu EU:n ja Yhdysvaltojen välisen tietosuojakehyksen (Data Privacy Framework) mukaisesti, ja Vercelin tietojenkäsittelysopimusta sovelletaan." },
+        { heading: "Kävijätilastot", text: "Keräämme anonyymejä käyttötilastoja, kuten katsotut sivut, likimääräisen sijainnin ja laitetyypin, ymmärtääksemme, miten sivustoa käytetään. IP-osoitteita ei tallenneta. Tilastot säilytetään EU:ssa, ja ne poistetaan 12 kuukauden kuluttua. Käsittelyperuste: oikeutettu etu (yleisen tietosuoja-asetuksen 6 artiklan 1 kohdan f alakohta)." },
+        { heading: "Yhteydenotot", text: "Jos lähetät meille sähköpostia tai soitat, tietojasi käytetään ainoastaan yhteydenottosi käsittelyyn (yleisen tietosuoja-asetuksen 6 artiklan 1 kohdan b alakohta)." },
+        { heading: "Oikeutesi", text: "Sinulla on oikeus saada pääsy henkilötietoihisi, pyytää niiden oikaisemista tai poistamista, vastustaa niiden käsittelyä ja tehdä valitus valvontaviranomaiselle." },
       ],
+      party: { heading: "Rekisterinpitäjä", lines: ["Sassosa Consulting (Josua Kiviranta)", "Y-tunnus 3127895-3", "Helsinki – Firenze", EMAIL.value] },
     },
     problem: "Ennen päätöstä kysytään tekoälyltä.",
     offer: "Autan sinua näkymään tekoälyn vastauksissa.",
@@ -359,14 +361,14 @@ export const COPY: Record<Lang, Copy> = {
     privacyLink: "Privacy",
     privacy: {
       title: "Informativa sulla privacy",
+      intro: "Questo sito non usa cookie e non salva nulla sul tuo dispositivo.",
       sections: [
-        { heading: "Chi", text: "Sassosa Consulting (Josua Kiviranta), codice aziendale (Y-tunnus) 3127895-3, josua.kiviranta@gmail.com." },
-        { heading: "Cosa registra il sito", text: "Le pagine aperte, le sezioni raggiunte scorrendo, i clic sui link di prenotazione, contatto, lingua e Codice di condotta, il sito di provenienza, la posizione approssimativa (paese, regione, città), il browser, il sistema operativo e il tipo di dispositivo." },
-        { heading: "Cosa non registra", text: "Nessun cookie, nulla salvato sul tuo dispositivo, nessun indirizzo IP. Le visite di uno stesso giorno sono raggruppate con un codice creato con una chiave che viene cancellata il giorno dopo, quindi nessun visitatore può essere rintracciato." },
-        { heading: "Perché", text: "Per sapere quante persone visitano il sito e quali parti leggono (legittimo interesse, art. 6, par. 1, lett. f del GDPR)." },
-        { heading: "Dove e per quanto tempo", text: "Il sito è ospitato da Vercel Inc.; i dati sono conservati da Neon (Databricks) a Francoforte, UE, e cancellati dopo 12 mesi." },
-        { heading: "I tuoi diritti", text: "Puoi chiedere via email quali dati sono conservati e opporti al trattamento, e presentare reclamo al Garante finlandese per la protezione dei dati (tietosuoja.fi)." },
+        { heading: "Hosting", text: "Questo sito è ospitato da Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA. Quando visiti il sito, Vercel tratta automaticamente nei log del server dati tecnici come il tuo indirizzo IP e le informazioni sul browser, per finalità di sicurezza e di erogazione del sito. Base giuridica: legittimo interesse al funzionamento sicuro e affidabile del sito (art. 6, par. 1, lett. f) del GDPR). Ciò può comportare il trasferimento di dati negli Stati Uniti; Vercel è certificata ai sensi del Data Privacy Framework UE–USA e si applica il relativo accordo sul trattamento dei dati." },
+        { heading: "Statistiche delle visite", text: "Raccogliamo statistiche d’uso anonime, come le pagine visitate, la posizione approssimativa e il tipo di dispositivo, per capire come viene usato il sito. Gli indirizzi IP non vengono conservati. Le statistiche sono conservate nell’UE e cancellate dopo 12 mesi. Base giuridica: legittimo interesse (art. 6, par. 1, lett. f) del GDPR)." },
+        { heading: "Contatti", text: "Se ci scrivi un’email o ci telefoni, i tuoi dati sono usati solo per gestire la tua richiesta (art. 6, par. 1, lett. b) del GDPR)." },
+        { heading: "I tuoi diritti", text: "Hai il diritto di accedere ai tuoi dati personali, di chiederne la rettifica o la cancellazione, di opporti al loro trattamento e di proporre reclamo a un’autorità di controllo." },
       ],
+      party: { heading: "Titolare del trattamento", lines: ["Sassosa Consulting (Josua Kiviranta)", "Codice identificativo d’impresa (Y-tunnus) 3127895-3", "Helsinki – Firenze", EMAIL.value] },
     },
     problem: "Prima di decidere, si chiede all’IA.",
     offer: "Ti aiuto a comparire nelle risposte dell’IA.",

@@ -439,17 +439,22 @@ const ContactCentred = ({ c }: { c: Copy }) => {
 };
 
 
-/* The privacy notice (?page=privacy), linked from the footer's legal part
+/* The privacy notice (?page=privacy), linked from the footer's legal part;
+   short paragraphs led by a bold heading, as on ylonenconsulting.com
    (owner, 2026-11-25). */
 const B3Privacy = ({ c }: { c: Copy }) => (
-  <article className="max-w-[40rem] pt-12 pb-8">
-    <h1 className="mb-6 font-display text-[2.3em] font-bold leading-[1.1]">{c.privacy.title}</h1>
+  <article className="max-w-[40rem] space-y-5 pt-12 pb-8 leading-relaxed">
+    <h1 className="mb-8 font-display text-[2.3em] font-bold leading-[1.1]">{c.privacy.title}</h1>
+    <p>{c.privacy.intro}</p>
     {c.privacy.sections.map((s) => (
-      <Fragment key={s.heading}>
-        <h2 className="mt-8 mb-2 font-display text-[1.15em] font-bold">{s.heading}</h2>
-        <p className="leading-relaxed">{s.text}</p>
-      </Fragment>
+      <p key={s.heading}>
+        <strong>{s.heading}.</strong> {s.text}
+      </p>
     ))}
+    <div className="pt-4">
+      <h2 className="mb-2 font-display text-[1.15em] font-bold">{c.privacy.party.heading}</h2>
+      {c.privacy.party.lines.map((l) => <p key={l}>{l}</p>)}
+    </div>
   </article>
 );
 
