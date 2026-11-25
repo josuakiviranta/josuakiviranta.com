@@ -1,9 +1,10 @@
 /* PROTOTYPE (2026-11-09): layout B3 ("problem first") for the brand plan.
    Owner's notes: keep the current site's map,
-   simplicity and text size. Open with ?variant=B3 and ?lang=en|fi|it; the
+   simplicity and text size. Open at /, /fi or /it (was ?lang=); the
    earlier layouts B1 and B2 and the comparison switches were removed at
    the clean-up (owner, 2026-11-16). */
 
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { MAP_ASPECT, MAP_PINS } from "../officeMapLabels";
@@ -23,7 +24,8 @@ const LangSwitch = ({ lang }: { lang: Lang }) => {
           <button
             data-track="lang"
             data-track-place={l}
-            onClick={() => router.replace({ query: { ...router.query, lang: l } }, undefined, { shallow: true })}
+            // The same page in the other language's address ("/fi", "/fi/privacy"), where the reader is.
+            onClick={() => router.replace({ pathname: router.pathname, query: router.query }, undefined, { locale: l, scroll: false })}
             className={l === lang ? "font-bold" : "text-muted hover:text-ink"}
           >
             {l.toUpperCase()}
@@ -117,7 +119,7 @@ const placesLine = (c: Copy) =>
 
 /* `places`: B3 also shows the place and the business ID here, moved from
    Yhteystiedot (owner, 2026-11-15). */
-const Footer = ({ c, places, close, go }: { c: Copy; places?: boolean; close?: boolean; go: (p: Page) => void }) => (
+const Footer = ({ c, places, close }: { c: Copy; places?: boolean; close?: boolean }) => (
   <footer className={`${close ? "mt-8" : "mt-20"} border-t border-ink pt-5 text-[0.85em] text-muted`}>
     {/* One line, the places before the year (owner, 2026-11-15). */}
     <p>Josua Kiviranta · {c.role.replace(/\.$/, "")} · {places && `${placesLine(c)} · `}© 2026</p>
@@ -127,16 +129,10 @@ const Footer = ({ c, places, close, go }: { c: Copy; places?: boolean; close?: b
     <p className="mt-2 flex flex-wrap gap-x-2">
       <span className="whitespace-nowrap uppercase tracking-[0.12em]">{c.legal}</span>
       <span>·</span>
-      <a
-        href="?page=privacy"
-        onClick={(e) => {
-          e.preventDefault();
-          go("privacy");
-        }}
-        className="whitespace-nowrap underline underline-offset-2 hover:text-ink"
-      >
-        {c.privacyLink}
-      </a>
+      {/* The privacy notice's own address in this language (ticket 20). */}
+      <Link href="/privacy">
+        <a className="whitespace-nowrap underline underline-offset-2 hover:text-ink">{c.privacyLink}</a>
+      </Link>
       <span>·</span>
       <a href="/ai-code-of-conduct.pdf" target="_blank" rel="noopener" data-track="code-of-conduct-pdf" className="whitespace-nowrap underline underline-offset-2 hover:text-ink">{c.codeOfConduct}</a>
     </p>
@@ -153,12 +149,23 @@ const Band = ({ children, tight, id, className = "" }: { children: ReactNode; ti
 const PAGES = ["home", "background", "case", "privacy"] as const;
 type Page = (typeof PAGES)[number];
 
-const usePage = () => {
+/* The page shown: the privacy notice has its own address (`route`); the
+   unlinked background and case pages are still views of Home chosen by
+   ?page=. */
+const usePage = (route?: "privacy") => {
   const router = useRouter();
-  const page: Page = (PAGES as readonly string[]).includes(router.query.page as string) ? (router.query.page as Page) : "home";
+  const page: Page = route ?? ((["background", "case"] as readonly string[]).includes(router.query.page as string) ? (router.query.page as Page) : "home");
+  // Drop what an old address's redirect left in the query (?lang=, ?page=privacy).
+  useEffect(() => {
+    const { lang, page: p, ...rest } = router.query;
+    if (lang !== undefined || (p !== undefined && page !== p)) {
+      router.replace({ pathname: router.pathname, query: page === "home" || route ? rest : { ...rest, page } }, undefined, { shallow: true, scroll: false });
+    }
+  }, [router.isReady]); // eslint-disable-line react-hooks/exhaustive-deps
   const go = (p: Page) => {
     const { page: _drop, ...rest } = router.query;
-    router.replace({ query: p === "home" ? rest : { ...rest, page: p } }, undefined, { shallow: true });
+    if (route) router.push({ pathname: "/", query: p === "home" ? {} : { page: p } });
+    else router.replace({ query: p === "home" ? rest : { ...rest, page: p } }, undefined, { shallow: true });
     window.scrollTo(0, 0);
   };
   return { page, go };
@@ -448,7 +455,7 @@ const ContactCentred = ({ c }: { c: Copy }) => {
 };
 
 
-/* The privacy notice (?page=privacy), linked from the footer's legal part;
+/* The privacy notice (/privacy, /fi/privacy, /it/privacy), linked from the footer's legal part;
    short paragraphs led by a bold heading, as on ylonenconsulting.com
    (owner, 2026-11-25). */
 const B3Privacy = ({ c }: { c: Copy }) => (
@@ -1239,8 +1246,8 @@ const B3Case = ({ c }: { c: Copy }) => {
   );
 };
 
-const VariantB3 = ({ c, lang }: { c: Copy; lang: Lang }) => {
-  const { page, go } = usePage();
+const VariantB3 = ({ c, lang, route }: { c: Copy; lang: Lang; route?: "privacy" }) => {
+  const { page, go } = usePage(route);
   return (
     <main className="mx-auto w-full max-w-[56rem] px-5 pb-32 sm:px-8">
       <B3Header c={c} lang={lang} page={page} go={go} />
@@ -1248,12 +1255,12 @@ const VariantB3 = ({ c, lang }: { c: Copy; lang: Lang }) => {
       {page === "background" && <B3Background c={c} />}
       {page === "case" && <B3Case c={c} />}
       {page === "privacy" && <B3Privacy c={c} />}
-      <Footer c={c} places close={page === "home"} go={go} />
+      <Footer c={c} places close={page === "home"} />
     </main>
   );
 };
 
-export const HomepageVariant = ({ variant, lang }: { variant: string; lang: Lang }) => {
+export const HomepageVariant = ({ variant, lang, route }: { variant: string; lang: Lang; route?: "privacy" }) => {
   const c = COPY[lang];
-  return variant === "B3" ? <VariantB3 c={c} lang={lang} /> : null;
+  return variant === "B3" ? <VariantB3 c={c} lang={lang} route={route} /> : null;
 };

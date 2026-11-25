@@ -13,13 +13,21 @@ import { useRouter } from "next/router";
 
 type Hit = { t: "view" | "click" | "section"; name?: string; place?: string; ref?: string };
 
+// The page and language as the address gives them: "/fi/privacy" is page
+// "privacy", lang "fi" (ticket 20; were ?page= and ?lang=). The unlinked
+// background and case pages still come as ?page=.
+const where = () => {
+  const [, first, ...rest] = location.pathname.split("/");
+  const lang = first === "fi" || first === "it" ? first : "en";
+  const path = (lang === "en" ? [first, ...rest] : rest).join("/");
+  return { page: path || (new URLSearchParams(location.search).get("page") ?? ""), lang };
+};
+
 const send = (hit: Hit) => {
-  const q = new URLSearchParams(location.search);
   const body = JSON.stringify({
     ...hit,
     path: location.pathname,
-    page: q.get("page") ?? "",
-    lang: q.get("lang") ?? "en",
+    ...where(),
     sw: screen.width,
   });
   if (navigator.sendBeacon?.("/api/hit", new Blob([body], { type: "application/json" }))) return;
@@ -31,7 +39,8 @@ let firstView = true;
 
 export const VisitCounter = () => {
   const router = useRouter();
-  const page = typeof router.query.page === "string" ? router.query.page : "";
+  // A new page is a new view; the language switch alone is not.
+  const page = `${router.pathname}?${typeof router.query.page === "string" ? router.query.page : ""}`;
 
   // One view per page opened; sections are counted again on each view.
   useEffect(() => {
