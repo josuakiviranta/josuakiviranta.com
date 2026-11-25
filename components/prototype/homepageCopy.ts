@@ -24,6 +24,8 @@ export type OfferCopy = {
 export type Copy = {
   role: string;
   places: string;
+  /* The footer link to public/ai-code-of-conduct.pdf (owner, 2026-11-25). */
+  codeOfConduct: string;
   problem: string;
   offer: string;
   /* The services; the case page's line names the one with `case` (owner,
@@ -118,6 +120,7 @@ export const COPY: Record<Lang, Copy> = {
   en: {
     role: "GEO and branding for AI.",
     places: "Helsinki – Florence",
+    codeOfConduct: "AI Code of Conduct",
     problem: "Before deciding, people ask AI.",
     offer: "I help you show up in AI answers.",
     moreServices: [
@@ -217,6 +220,7 @@ export const COPY: Record<Lang, Copy> = {
   fi: {
     role: "GEO ja brändäys tekoälylle.",
     places: "Helsinki – Firenze",
+    codeOfConduct: "Tekoälyn käytön periaatteet",
     problem: "Ennen päätöstä kysytään tekoälyltä.",
     offer: "Autan sinua näkymään tekoälyn vastauksissa.",
     moreServices: [
@@ -316,6 +320,7 @@ export const COPY: Record<Lang, Copy> = {
   it: {
     role: "GEO e branding per l’IA.",
     places: "Helsinki – Firenze",
+    codeOfConduct: "Codice di condotta sull’IA",
     problem: "Prima di decidere, si chiede all’IA.",
     offer: "Ti aiuto a comparire nelle risposte dell’IA.",
     moreServices: [

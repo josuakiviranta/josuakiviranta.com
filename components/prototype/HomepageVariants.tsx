@@ -118,7 +118,10 @@ const placesLine = (c: Copy) =>
 const Footer = ({ c, places, close }: { c: Copy; places?: boolean; close?: boolean }) => (
   <footer className={`${close ? "mt-8" : "mt-20"} border-t border-ink pt-5 text-[0.85em] text-muted`}>
     {/* One line, the places before the year (owner, 2026-11-15). */}
-    Josua Kiviranta · {c.role.replace(/\.$/, "")} · {places && `${placesLine(c)} · `}© 2026
+    Josua Kiviranta · {c.role.replace(/\.$/, "")} · {places && `${placesLine(c)} · `}
+    {/* The AI Code of Conduct, one PDF in EN, FI and IT, built by
+        coc/generate-pdf.sh (owner, 2026-11-25). */}
+    <a href="/ai-code-of-conduct.pdf" target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-ink">{c.codeOfConduct}</a> · © 2026
   </footer>
 );
 
