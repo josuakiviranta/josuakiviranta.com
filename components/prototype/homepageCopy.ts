@@ -42,9 +42,10 @@ export type Copy = {
      agent's translations. `headTitle` opens the page's title; `lead` is its
      search description (name and topic in one sentence); `urgency` the caps
      line over the `h1`, `answer` the owner's answer under it; `topic` closes
-     the byline under the button. `question.answer`'s counts: the Round of
+     the byline under the button. `question`'s counts: the Round of
      2026-11-18, the candidates whose own pages name the theme and how many
-     of them the four answers (two wordings, two AIs) named. `offer` replaces
+     of them each AI left unnamed in its answers to the theme's questions;
+     the questions' wording stays unshown (owner, 2026-11-25). `offer` replaces
      the main page's priced steps (owner, 2026-11-25). `link` is the main
      page's line under the election example. */
   elections: {
@@ -54,7 +55,7 @@ export type Copy = {
     title: string;
     answer: string;
     topic: string;
-    question: { title: string; lead: string; example: string; answer: string };
+    question: { title: string; theme: string; asked: string; missed: string[] };
     measured: { title: string };
     offer: { lead: string; steps: { title: string; body: string }[]; price: string; extra: string };
     independence: string[];
@@ -173,26 +174,26 @@ export const COPY: Record<Lang, Copy> = {
       lead: "Josua Kiviranta measures how often ChatGPT and Claude name a 2027 Finnish parliamentary election candidate compared with others in their electoral district.",
       urgency: "Election day 18 April 2027 · AI answers change with a delay",
       title: "Does AI name you when a voter asks about the candidates in your electoral district?",
-      answer: "Probably not, unless you are already a candidate AI finds easily and knows as a brand, or otherwise well known.",
+      answer: "Probably rarely, unless you are branded for AI, easy to find or otherwise well known.",
       topic: "Finnish parliamentary elections 2027",
       question: {
         title: "Voters ask AI.",
-        lead: "For example:",
-        example: "Which candidate in the Helsinki electoral district supports entrepreneurship in the 2027 parliamentary elections?",
-        answer: "Entrepreneurship is the most common theme among Helsinki candidates: 39 candidates raise it on their own pages. ChatGPT and Claude named 10 of them. 29 candidates went unnamed on their own theme.",
+        theme: "Entrepreneurship is the most common theme among Helsinki candidates: 39 candidates raise it on their own pages.",
+        asked: "AI was asked 5 questions on entrepreneurship, each in two different ways.",
+        missed: ["Claude left 24 of them unnamed.", "ChatGPT left 29 of them unnamed."],
       },
       measured: { title: "Measured: Helsinki electoral district, November 2026" },
       offer: {
         lead: "Weekly report: how you rise into AI answers before election day.",
         steps: [
           { title: "Situation overview", body: "How often AI names you and your competitors on your own themes." },
-          { title: "GEO instructions", body: "Instructions you can give your helpers: what to publish and where, so AI finds you." },
+          { title: "Instructions for your team", body: "Weekly instructions you can give your helpers: what to publish on your own pages, and where others should write about you on the theme you want to be known for." },
           { title: "Emerging election themes", body: "New themes where no one shows up yet, and chances to get branded for AI as their representative." },
         ],
         price: "€190 / month + VAT",
-        extra: "Want me to do it for you? I produce the material meant for AI at the consultation price of €90 / hour + VAT.",
+        extra: "Want me to do it for you? I produce material optimised for AI and the changes to your website at the consultation price of €90 / hour + VAT.",
       },
-      independence: ["The same service and prices for candidates of every party.", "I am not a member of any party.", "My clients stay confidential.", "I do not promise a ranking in AI answers."],
+      independence: ["The same service and prices for candidates of every party.", "I am not a member of any party.", "My clients stay confidential."],
       link: "Finnish parliamentary elections 2027: measurement in your electoral district",
     },
     problem: "Before deciding, people ask AI.",
@@ -313,26 +314,26 @@ export const COPY: Record<Lang, Copy> = {
       lead: "Josua Kiviranta mittaa, kuinka usein ChatGPT ja Claude mainitsevat eduskuntavaalien 2027 ehdokkaan vaalipiirinsä muihin ehdokkaisiin verrattuna.",
       urgency: "Vaalipäivä 18.4.2027 · Tekoälyn vastaukset muuttuvat viiveellä",
       title: "Mainitseeko tekoäly sinut, kun äänestäjä kysyy vaalipiirisi ehdokkaista?",
-      answer: "Todennäköisesti ei, ellet ole jo valmiiksi tekoälyn helposti löydettävä ja tekoälylle brändäytynyt ehdokas tai muuten tunnettu.",
+      answer: "Todennäköisesti harvoin, ellet ole brändäytynyt tekoälylle, helposti löydettävä tai muuten tunnettu.",
       topic: "eduskuntavaalit 2027",
       question: {
         title: "Äänestäjä kysyy tekoälyltä.",
-        lead: "Esimerkiksi:",
-        example: "Kuka Helsingin vaalipiirin ehdokas tukee yrittäjyyttä eduskuntavaaleissa 2027?",
-        answer: "Yrittäjyys on Helsingin ehdokkaiden yleisin teema: 39 ehdokasta nostaa sen esiin omilla sivuillaan. ChatGPT ja Claude mainitsivat heistä 10. 29 ehdokasta jäi mainitsematta omassa teemassaan.",
+        theme: "Yrittäjyys on Helsingin ehdokkaiden yleisin teema: 39 ehdokasta nostaa sen esiin omilla sivuillaan.",
+        asked: "Tekoälyltä kysyttiin yrittäjyydestä 5 kysymystä, kukin kahdella eri tavalla.",
+        missed: ["Claude jätti mainitsematta 24 heistä.", "ChatGPT jätti mainitsematta 29."],
       },
       measured: { title: "Mitattu: Helsingin vaalipiiri, marraskuu 2026" },
       offer: {
         lead: "Viikoittainen raportti: näin nouset tekoälyn vastauksiin ennen vaalipäivää.",
         steps: [
           { title: "Tilannekuva", body: "Kuinka usein tekoäly mainitsee sinut ja kilpailijasi omissa teemoissasi." },
-          { title: "GEO-ohjeet", body: "Ohjeet, jotka voit antaa avustajillesi: mitä julkaista ja missä, jotta tekoäly löytää sinut." },
+          { title: "Ohjeet tiimillesi", body: "Viikoittaiset ohjeet, jotka voit antaa avustajillesi: mitä julkaista omilla sivuillasi ja missä muiden pitäisi kirjoittaa sinusta siinä aiheessa, josta haluat tulla tunnetuksi." },
           { title: "Nousevat vaaliteemat", body: "Uudet teemat, joissa kukaan ei vielä näy, ja tilaisuudet brändäytyä tekoälylle niiden edustajaksi." },
         ],
         price: "190 € / kk + alv",
-        extra: "Haluatko, että teen sen puolestasi? Tuotan tekoälylle tarkoitetun aineiston konsultointihinnalla 90 € / h + alv.",
+        extra: "Haluatko, että teen sen puolestasi? Tuotan tekoälylle optimoidun aineiston ja muutokset sivustollasi konsultointihinnalla 90 € / h + alv.",
       },
-      independence: ["Sama palvelu ja samat hinnat kaikkien puolueiden ehdokkaille.", "En ole minkään puolueen jäsen.", "Asiakkaani pysyvät luottamuksellisina.", "En lupaa sijoitusta tekoälyn vastauksissa."],
+      independence: ["Sama palvelu ja samat hinnat kaikkien puolueiden ehdokkaille.", "En ole minkään puolueen jäsen.", "Asiakkaani pysyvät luottamuksellisina."],
       link: "Eduskuntavaalit 2027: mittaus omassa vaalipiirissäsi",
     },
     problem: "Ennen päätöstä kysytään tekoälyltä.",
@@ -453,26 +454,26 @@ export const COPY: Record<Lang, Copy> = {
       lead: "Josua Kiviranta misura quanto spesso ChatGPT e Claude nominano un candidato alle elezioni parlamentari finlandesi 2027 rispetto agli altri della circoscrizione.",
       urgency: "Elezioni il 18 aprile 2027 · Le risposte dell’IA cambiano con ritardo",
       title: "L’IA ti nomina quando un elettore chiede dei candidati della tua circoscrizione?",
-      answer: "Probabilmente no, a meno che tu non sia già un candidato che l’IA trova facilmente e riconosce come marchio, o comunque noto.",
+      answer: "Probabilmente di rado, a meno che tu non sia riconoscibile per l’IA come marchio, facile da trovare o comunque noto.",
       topic: "elezioni parlamentari finlandesi 2027",
       question: {
         title: "Gli elettori chiedono all’IA.",
-        lead: "Per esempio:",
-        example: "Quale candidato della circoscrizione di Helsinki sostiene l’imprenditorialità alle elezioni parlamentari del 2027?",
-        answer: "L’imprenditorialità è il tema più comune tra i candidati di Helsinki: 39 candidati lo citano sulle proprie pagine. ChatGPT e Claude ne hanno nominati 10. 29 candidati non sono stati nominati sul proprio tema.",
+        theme: "L’imprenditorialità è il tema più comune tra i candidati di Helsinki: 39 candidati lo citano sulle proprie pagine.",
+        asked: "All’IA sono state poste 5 domande sull’imprenditorialità, ciascuna in due modi diversi.",
+        missed: ["Claude non ne ha nominati 24.", "ChatGPT non ne ha nominati 29."],
       },
       measured: { title: "Misurato: circoscrizione di Helsinki, novembre 2026" },
       offer: {
         lead: "Report settimanale: così entri nelle risposte dell’IA prima del giorno delle elezioni.",
         steps: [
           { title: "Quadro della situazione", body: "Quanto spesso l’IA nomina te e i tuoi concorrenti sui tuoi temi." },
-          { title: "Istruzioni GEO", body: "Istruzioni da dare ai tuoi collaboratori: cosa pubblicare e dove, perché l’IA ti trovi." },
+          { title: "Istruzioni per il tuo team", body: "Istruzioni settimanali da dare ai tuoi collaboratori: cosa pubblicare sulle tue pagine e dove altri dovrebbero scrivere di te sul tema per cui vuoi essere conosciuto." },
           { title: "Temi elettorali emergenti", body: "Nuovi temi dove nessuno compare ancora, e occasioni per farti riconoscere dall’IA come loro rappresentante." },
         ],
         price: "190 € / mese + IVA",
-        extra: "Vuoi che lo faccia io? Produco il materiale per l’IA al prezzo di consulenza di 90 € / ora + IVA.",
+        extra: "Vuoi che lo faccia io? Produco materiale ottimizzato per l’IA e le modifiche al tuo sito al prezzo di consulenza di 90 € / ora + IVA.",
       },
-      independence: ["Lo stesso servizio e gli stessi prezzi per i candidati di ogni partito.", "Non sono iscritto ad alcun partito.", "I miei clienti restano riservati.", "Non prometto una posizione nelle risposte dell’IA."],
+      independence: ["Lo stesso servizio e gli stessi prezzi per i candidati di ogni partito.", "Non sono iscritto ad alcun partito.", "I miei clienti restano riservati."],
       link: "Elezioni parlamentari finlandesi 2027: misurazione nella tua circoscrizione",
     },
     problem: "Prima di decidere, si chiede all’IA.",

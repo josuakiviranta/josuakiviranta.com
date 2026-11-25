@@ -1251,7 +1251,7 @@ const ElectionsLink = ({ c }: { c: Copy }) => {
 /* The Eduskuntavaalit 2027 page (ticket 21; the owner's words or approved
    by the owner, 2026-11-25): the first screen with the deadline over the
    question and the owner's answer under it, the most contested theme with
-   its counts, the main page's election example as it is, the candidates'
+   how many each AI left out, the main page's election example as it is, the candidates'
    offer, independence, then Yhteystiedot. Laid out like Home's sales
    section. */
 const B3Elections = ({ c }: { c: Copy }) => {
@@ -1286,9 +1286,15 @@ const B3Elections = ({ c }: { c: Copy }) => {
         <div className="mx-auto max-w-[40rem] text-center">
           <section data-track-section="question">
             <h2 className={h2}>{e.question.title}</h2>
-            <p className="mt-8 sm:mt-10">{e.question.lead}</p>
-            <blockquote className="mt-3 border-x border-rule px-4 font-display text-[1.25em] font-bold leading-snug sm:px-8">“{e.question.example}”</blockquote>
-            <p className="mt-6 leading-snug">{e.question.answer}</p>
+            {/* The theme and how many each AI left out; the questions' wording
+                stays unshown (owner, 2026-11-25). */}
+            <p className="mt-8 leading-snug sm:mt-10">{e.question.theme}</p>
+            <p className="mt-4 leading-snug">{e.question.asked}</p>
+            <div className="mt-6 space-y-1 font-display text-[1.25em] font-bold leading-snug">
+              {e.question.missed.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+            </div>
           </section>
 
           {/* The main page's election example as it is (owner, 2026-11-25). */}
