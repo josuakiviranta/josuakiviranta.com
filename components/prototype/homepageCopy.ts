@@ -43,7 +43,7 @@ export type Copy = {
     summary: string;
     /* The numbers are in `MEASURED` in HomepageVariants.tsx. */
     measured: {
-      own: { /* The live sentence over the squares, "{rank}" = the ink column's place, "{n}" = its mentions per 100 answers (owner, 2026-11-14; per 100 since 2026-11-19). */ live: string; /* From the middle place on, "{n}" = the typical (median) Candidate's mentions per 100 answers (owner, 2026-11-19). */ typical: string; /* Once the slide reaches place 1, "{n}" = place 1's mentions per 100 answers, "{x}" = that over the typical count, both rounded (owner, 2026-11-19). */ first: string; };
+      own: { /* The live sentence over the squares, "{rank}" = the ink column's place, "{n}" = its mentions per 100 answers (owner, 2026-11-14; per 100 since 2026-11-19). */ live: string; /* The same sentence when "{n}" rounds to 1 (singular). */ liveOne: string; /* From the middle place on, "{n}" = the typical (median) Candidate's mentions per 100 answers (owner, 2026-11-19). */ typical: string; /* Once the slide reaches place 1, "{n}" = place 1's mentions per 100 answers, "{x}" = that over the typical count, both rounded (owner, 2026-11-19). */ first: string; };
       /* The long-tail curve (owner, 2026-11-12): `y` the axis; `most` and
          `here` the two labels on the curve. */
       tail: { y: string; /* Under the axis's two ends (owner, 2026-11-14). */ left: string; right: string; /* Over the flat tail (owner, 2026-11-13). */ most: string; /* At the arrow to the striped head (owner, 2026-11-13). */ here: string };
@@ -137,15 +137,16 @@ export const COPY: Record<Lang, Copy> = {
     backgroundHeading: "Background",
     navServices: "Services",
     visibility: {
-      summary: "If AI can't find you, it recommends your rival.",
+      summary: "If AI can’t find you, it recommends your rival.",
       measured: {
         own: {
           live: "The candidate in place {rank} is named on average {n} times in 100 answers.",
+          liveOne: "The candidate in place {rank} is named on average {n} time in 100 answers.",
           typical: "The typical candidate is named **{n} times** in 100 answers.",
           first: "The candidate in **place 1** is named **{n} times**: **{x} times as often**.",
         },
         tail: { y: "Mentions in AI answers", left: "Many mentions", right: "Few mentions", most: "Most options are rarely mentioned", here: "You want to be among the few options mentioned often" },
-        study: { title: "Example: Finnish parliamentary elections 2027", bridge: "The same distribution can be measured in how candidates are named in elections.", players: "{n} candidates", intro: "ChatGPT and Claude were asked {n} questions about candidates in the Helsinki electoral district, without naming any candidate." },
+        study: { title: "Example: Finnish parliamentary elections 2027", bridge: "The same distribution can be measured in how candidates are named in elections.", players: "{n} candidates", intro: "ChatGPT and Claude were asked {n} questions about candidates in the Helsinki electoral district, and the questions named no candidate." },
       },
       sample: {
         label: "Weekly continuous measurement",
@@ -155,18 +156,18 @@ export const COPY: Record<Lang, Copy> = {
         ask: "Do you show up in the topics that matter to you?",
         legend: "For each topic, precisely defined questions are put to different AI models.",
         none: "No mention",
-        named: "You were named no. {n} in the answer",
+        named: "You were the {n}th name in the answer",
         questions: ["Topic 1", "Topic 2", "Topic 211"],
         guide: {
-          lead: "+ Weekly instructions based on personal analysis how to increase visibility:",
-          items: ["What you have to do.", "Where you should be.", "What should you add.", "What should you change."],
+          lead: "+ Weekly instructions based on a personal analysis, on how to increase your visibility:",
+          items: ["What you have to do.", "Where you should be.", "What you should add.", "What you should change."],
         },
         weekly: {
           label: "Services and prices, no commitment",
           lead: "I help you show up in AI answers.",
           steps: [
             { title: "Industry analysis", body: "After the first conversation, I count how often AI names you and your competitors.", price: "€90 / hour + VAT" },
-            { title: "Consultation", body: "Together we go through how you increase your visibility based on the analysis.", price: "€90 / hour + VAT" },
+            { title: "Consultation", body: "Together we go through how to increase your visibility based on the analysis.", price: "€90 / hour + VAT" },
             { title: "Continuous measurement", body: "Each week you see how your visibility and the competition change.", price: "€190 / month + VAT" },
           ],
         },
@@ -239,6 +240,7 @@ export const COPY: Record<Lang, Copy> = {
       measured: {
         own: {
           live: "Sijalla {rank} oleva ehdokas mainitaan keskimäärin {n} kertaa 100 vastauksessa.",
+          liveOne: "Sijalla {rank} oleva ehdokas mainitaan keskimäärin {n} kerran 100 vastauksessa.",
           typical: "Tyypillinen ehdokas mainitaan **{n} kertaa** 100 vastauksessa.",
           first: "**Sijalla 1** oleva ehdokas mainitaan **{n} kertaa**: **{x} kertaa useammin**.",
         },
@@ -337,11 +339,12 @@ export const COPY: Record<Lang, Copy> = {
       measured: {
         own: {
           live: "Il candidato al {rank}º posto è nominato in media {n} volte su 100 risposte.",
+          liveOne: "Il candidato al {rank}º posto è nominato in media {n} volta su 100 risposte.",
           typical: "Il candidato tipico è nominato **{n} volte** su 100 risposte.",
           first: "Il candidato al **1º posto** è nominato **{n} volte**: **{x} volte più spesso**.",
         },
         tail: { y: "Menzioni nelle risposte dell’IA", left: "Molte menzioni", right: "Poche menzioni", most: "La maggior parte delle opzioni è citata di rado", here: "Vuoi essere tra le poche opzioni citate spesso" },
-        study: { title: "Esempio: elezioni parlamentari finlandesi 2027", bridge: "La stessa distribuzione si può misurare nel modo in cui vengono nominati i candidati alle elezioni.", players: "{n} candidati", intro: "A ChatGPT e Claude sono state poste {n} domande sui candidati della circoscrizione di Helsinki, senza nominare alcun candidato." },
+        study: { title: "Esempio: elezioni parlamentari finlandesi 2027", bridge: "La stessa distribuzione si può misurare nel modo in cui vengono nominati i candidati alle elezioni.", players: "{n} candidati", intro: "A ChatGPT e Claude sono state poste {n} domande sui candidati della circoscrizione di Helsinki, senza nominare alcun candidato nelle domande." },
       },
       sample: {
         label: "Misurazione continua settimanale",
@@ -351,10 +354,10 @@ export const COPY: Record<Lang, Copy> = {
         ask: "Compari negli argomenti che contano per te?",
         legend: "Per ogni argomento si pongono domande ben definite a diversi modelli di IA.",
         none: "Nessuna menzione",
-        named: "Sei stato nominato come {n}º nella risposta",
+        named: "Sei il {n}º nome nella risposta",
         questions: ["Argomento 1", "Argomento 2", "Argomento 211"],
         guide: {
-          lead: "+ Istruzioni settimanali, basate su un'analisi personale, su come aumentare la tua visibilità:",
+          lead: "+ Istruzioni settimanali, basate su un’analisi personale, su come aumentare la tua visibilità:",
           items: ["Cosa devi fare.", "Dove devi essere.", "Cosa devi aggiungere.", "Cosa devi cambiare."],
         },
         weekly: {

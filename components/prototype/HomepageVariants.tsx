@@ -781,13 +781,14 @@ const Bolded = ({ text }: { text: string }) => (
    its number following the animation; no label, count or key (owner,
    2026-11-14). */
 const AvgRow = ({ m, rank, v, max }: { m: M; rank: number; v: number; max: number }) => {
-  const fill: Record<string, string> = { "{rank}": String(rank), "{n}": String(Math.round(v)) };
+  const n = Math.round(v);
+  const fill: Record<string, string> = { "{rank}": String(rank), "{n}": String(n) };
   return (
     <div className="space-y-3 pt-4 sm:pt-6">
       {/* The body's size like all plain text (owner, 2026-11-16); the place
           and the count bold (owner, 2026-11-15). */}
       <p className="tabular-nums leading-snug">
-        {m.own.live.split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
+        {(n === 1 ? m.own.liveOne : m.own.live).split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
       </p>
       {/* 24 px squares as before (owner, 2026-11-19); 12 px on phones so
           place 1's row fits 360 px screens. The row is as wide as place 1's
