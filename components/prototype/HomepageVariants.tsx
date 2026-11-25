@@ -793,10 +793,7 @@ const seg = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a)
    on the right to the most mentioned on the left. The columns it has
    passed turn a darker grey; the sentence and the squares show the ink
    column's own mentions per 100 answers. No arrows. */
-/* `intro` and `after` replace the intro and the two closing lines (the
-   elections page, ticket 21); `after`'s lines fade in one by one once the
-   ink column reaches place 1. */
-const StudyBody = ({ m, p, intro = m.study.intro, after }: { m: M; p: number; intro?: string; after?: string[] }) => {
+const StudyBody = ({ m, p }: { m: M; p: number }) => {
   const counts = MEASURED.combined;
   const n = counts.length;
   const pos = (n - 1) * (1 - seg(p, 0.15, 0.85));
@@ -813,7 +810,7 @@ const StudyBody = ({ m, p, intro = m.study.intro, after }: { m: M; p: number; in
       {/* In ink, unlike the quiet labels (owner, 2026-11-15). */}
       {/* Plain text (owner, 2026-11-16; was a black caps label). */}
       <p className="leading-snug">
-        <KeepPct text={intro.replace("{n}", String(ASKED))} />
+        <KeepPct text={m.study.intro.replace("{n}", String(ASKED))} />
       </p>
       <div className="pt-2">
         <Spread counts={counts} className="h-24 sm:h-28" shade={(i) => (i < at ? "fill-[#bdbdbd]" : i === at ? "fill-ink" : "fill-[#7a7a7a]")} />
@@ -828,15 +825,6 @@ const StudyBody = ({ m, p, intro = m.study.intro, after }: { m: M; p: number; in
       {/* What the slide shows (owner, 2026-11-19): the typical Candidate as
           soon as the ink column reaches the middle place; then, once it
           reaches place 1, place 1's count and how many times the typical. */}
-      {after ? (
-        <div className="space-y-1 pt-4 tabular-nums leading-snug sm:pt-6">
-          {after.map((t, i) => (
-            <p key={i} style={{ opacity: seg(p, 0.86 + i * 0.04, 0.9 + i * 0.04) }}>
-              <Bolded text={t} />
-            </p>
-          ))}
-        </div>
-      ) : (
       <div className="space-y-1 pt-4 tabular-nums leading-snug sm:pt-6">
         <p style={{ opacity: seg(mid + 0.5 - pos, 0, 1.5) }}>
           <Bolded text={m.own.typical.replace("{n}", String(Math.round(typical)))} />
@@ -845,7 +833,6 @@ const StudyBody = ({ m, p, intro = m.study.intro, after }: { m: M; p: number; in
           <Bolded text={m.own.first.replace("{n}", String(Math.round(per100(counts[0])))).replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
         </p>
       </div>
-      )}
     </figure>
   );
 };
@@ -1121,23 +1108,24 @@ const Sample = ({ c }: { c: Copy }) => {
   );
 };
 
-/* The offer's three priced steps, held while their label fills; `button`
-   adds the free conversation's button under them (the elections page). */
-const OfferSection = ({ c, button }: { c: Copy; button?: string }) => {
+/* The offer's steps, held while their label fills: the main page's priced
+   steps, or the elections page's own `lead` and `steps` with `after` (its
+   price, the do-it-for-you line and the button) under them. */
+const OfferSection = ({ c, lead, steps, after }: { c: Copy; lead?: string; steps?: { title: string; body: string; price?: string }[]; after?: ReactNode }) => {
   const s = c.visibility.sample;
   return (
     <section id={SERVICES_ID} data-track-section="offer" className={SECTION_GAP}>
       <Pinned length={OFFER_HOLD}>
         {(p) => (
           <>
-            <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{s.weekly.lead}</h2>
+            <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{lead ?? s.weekly.lead}</h2>
             {/* The label turns black from right to left while the steps
                 hold (owner, 2026-11-15). */}
             <div className="mt-4 mb-4 sm:mt-14 sm:mb-5">
               <FillCaps f={seg(p, OFFER_FILL[0], OFFER_FILL[1])}>{s.weekly.label}</FillCaps>
             </div>
-            <B3Steps items={s.weekly.steps} />
-            {button && <BookButton offer={c.visibility} place={button} />}
+            <B3Steps items={steps ?? s.weekly.steps} />
+            {after}
           </>
         )}
       </Pinned>
@@ -1260,11 +1248,12 @@ const ElectionsLink = ({ c }: { c: Copy }) => {
   );
 };
 
-/* The Eduskuntavaalit 2027 page (ticket 21; Finnish approved by the owner
-   2026-11-25): the first screen, a real question from the Round, the
-   measured election example with its own closing lines, what the same
-   measurement shows in the reader's district, the offer, independence,
-   then Yhteystiedot. Sections laid out like Home's sales section. */
+/* The Eduskuntavaalit 2027 page (ticket 21; the owner's words or approved
+   by the owner, 2026-11-25): the first screen with the deadline over the
+   question and the owner's answer under it, the most contested theme with
+   its counts, the main page's election example as it is, the candidates'
+   offer, independence, then Yhteystiedot. Laid out like Home's sales
+   section. */
 const B3Elections = ({ c }: { c: Copy }) => {
   // Opened from the main page's link, start at the top at once: the page's
   // smooth scrolling would pass every section on the way up, and the visit
@@ -1274,28 +1263,22 @@ const B3Elections = ({ c }: { c: Copy }) => {
   }, []);
   const e = c.elections;
   const m = c.visibility.measured;
-  const counts = MEASURED.combined;
-  const per100 = (v: number) => (v / PAGE_ANSWERS) * 100;
-  const mid = (counts.length - 1) / 2;
-  const typical = per100((counts[Math.floor(mid)] + counts[Math.ceil(mid)]) / 2);
-  const total = counts.reduce((a, b) => a + b, 0);
-  const fill = (t: string, v: Record<string, number>) => Object.entries(v).reduce((a, [k, n]) => a.split(`{${k}}`).join(String(n)), t);
-  const after = [
-    fill(e.measured.first, { n: Math.round(per100(counts[0])), typical: Math.round(typical) }),
-    fill(e.measured.few, { n: counts.filter((v) => per100(v) < 3).length, all: counts.length, zero: counts.filter((v) => v === 0).length }),
-    fill(e.measured.top, { pct: Math.round((counts.slice(0, 10).reduce((a, b) => a + b, 0) / total) * 100) }),
-  ];
   const h2 = "font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]";
   return (
     <>
       <div className="flex min-h-[calc(100svh-9rem)] flex-col justify-center py-16">
         <section data-track-section="first-screen" className="text-center">
-          <Caps>{e.eyebrow}</Caps>
+          {/* The deadline first, for urgency (owner, 2026-11-25). */}
+          <Caps className="block leading-relaxed !text-ink">{e.urgency}</Caps>
           <h1 className="mx-auto mt-4 max-w-[44rem] font-display text-[2.3em] font-bold leading-[1.08] sm:text-[3em]">{e.title}</h1>
-          <p className="mx-auto mt-5 max-w-[34rem] text-[1.15em] leading-snug">{e.lead}</p>
+          <p className="mx-auto mt-5 max-w-[34rem] text-[1.15em] leading-snug">{e.answer}</p>
           <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="first-screen" className="mt-6 inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
             {c.visibility.request?.label}&nbsp;→
           </a>
+          {/* The name beside the topic as a quiet byline (owner, 2026-11-25). */}
+          <p className="mt-4 text-[0.85em] text-muted">
+            Josua Kiviranta · {c.role.replace(/\.$/, "")} · {e.topic}
+          </p>
         </section>
       </div>
 
@@ -1308,32 +1291,32 @@ const B3Elections = ({ c }: { c: Copy }) => {
             <p className="mt-6 leading-snug">{e.question.answer}</p>
           </section>
 
+          {/* The main page's election example as it is (owner, 2026-11-25). */}
           <section data-track-section="election" className={SECTION_GAP}>
             <Pinned length={STUDY.body}>
               {(p) => (
                 <>
                   <h2 className={h2}>{e.measured.title}</h2>
                   <div className="mt-6 sm:mt-10">
-                    <StudyBody m={m} p={p} intro={e.measured.intro} after={after} />
+                    <StudyBody m={m} p={p} />
                   </div>
                 </>
               )}
             </Pinned>
           </section>
 
-          <section data-track-section="district" className={SECTION_GAP}>
-            <h2 className={h2}>{e.district.title}</h2>
-            <div className="mt-8 sm:mt-14">
-              <B3Steps items={e.district.steps} />
-            </div>
-            <p className="mt-10 leading-snug sm:mt-14">
-              {e.district.note.split(/(?<=\.) (?=[A-ZÄÖ])/).map((line) => (
-                <span key={line} className="block">{line}</span>
-              ))}
-            </p>
-          </section>
-
-          <OfferSection c={c} button="offer" />
+          <OfferSection
+            c={c}
+            lead={e.offer.lead}
+            steps={e.offer.steps}
+            after={
+              <>
+                <p className="mt-6 tabular-nums font-bold sm:mt-8">{e.offer.price}</p>
+                <p className="mx-auto mt-4 max-w-[34rem] leading-snug">{e.offer.extra}</p>
+                <BookButton offer={c.visibility} place="offer" />
+              </>
+            }
+          />
 
           <section data-track-section="independence" className={SECTION_GAP}>
             <ul className="space-y-2 font-display text-[1.1em] font-bold leading-snug">
