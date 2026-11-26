@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+/* Every value comes from styles/theme.css (ticket 24). */
+const color = (name) => `rgb(var(--color-${name}) / <alpha-value>)`;
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -7,15 +10,28 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        /* Document palette (2026-10-09): black on white, as printed. */
-        ink: "#111111", // text, rules, active nav
-        muted: "#767676", // inactive nav items
-        rule: "#d9d9d9", // hairlines behind active indicators
+        paper: color("paper"), // the page
+        ink: color("ink"), // text, rules, active nav
+        muted: color("muted"), // quiet text
+        rule: color("rule"), // hairlines
+        faint: color("faint"), // graph fills not reached, axis rules
+        passed: color("passed"), // graph columns passed
+        line: color("line"), // thin pointer lines
       },
       fontFamily: {
-        serif: ["LM Roman 10", "Latin Modern Roman", "Georgia", "serif"],
-        // Headings and title: the 12 pt bold optical size, as \Large\bfseries.
-        display: ["LM Roman 12", "LM Roman 10", "Georgia", "serif"],
+        body: ["var(--font-body)"],
+        display: ["var(--font-display)"],
+      },
+      fontWeight: {
+        strong: "var(--weight-strong)",
+      },
+      fontSize: {
+        small: "var(--size-small)",
+        nav: "var(--size-nav)",
+        lead: "var(--size-lead)",
+        h3: "var(--size-h3)",
+        sub: "var(--size-sub)",
+        figure: "var(--size-figure)",
       },
     },
   },

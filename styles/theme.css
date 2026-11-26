@@ -1,0 +1,80 @@
+/* The site's style values, one place for every page (ticket 24). Components
+   name roles (globals.css: .type-h1, .type-caps, .btn-primary …) and
+   Tailwind colours (tailwind.config.js: ink, muted, paper …); both read
+   these variables. Colours are "r g b" so Tailwind's /opacity works.
+
+   Look B1 (owner, 2026-11-26), from the comparison with ylonenconsulting.com
+   (map research/site-style-comparison.md): a sans drawn for screens,
+   medium-weight headings, one left edge, navy text on white. */
+
+/* Inter (SIL Open Font License), variable weight and optical size, subset
+   to Latin, from @fontsource-variable/inter 5. */
+@font-face {
+  font-family: 'Inter Variable';
+  src: url('/fonts/inter-latin-opsz-normal.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter Variable';
+  src: url('/fonts/inter-latin-opsz-italic.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Type */
+  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --weight-display: 500; /* headings */
+  --weight-strong: 600; /* bold words, buttons, the active language */
+  --tracking-display: -0.02em;
+  --tracking-caps: 0.2em;
+  --size-root: 17px;
+  --leading-body: 1.55;
+
+  /* Sizes, relative to the text around them */
+  --size-h1: 2.7em; /* the main page's headline */
+  --size-h1-long: 2.3em; /* a longer headline (elections) */
+  --size-title: 2.3em; /* a text page's title (privacy) */
+  --size-h2: 1.75em; /* section headers */
+  --size-sub: 1.3em; /* the phone menu's link, a text page's subheading */
+  --size-h3: 1.15em; /* step titles, list headings */
+  --size-lead: 1.15em; /* the line under a headline */
+  --size-small: 0.85em; /* caps labels, footer, byline */
+  --size-nav: 0.85em;
+  --size-figure: 3.5em; /* a big number */
+  --leading-h1: 1.08;
+  --leading-h2: 1.15;
+
+  /* Colour: navy text on white; each grey is a mix of the two */
+  --color-paper: 255 255 255;
+  --color-ink: 16 27 44; /* text, 17.3 : 1 */
+  --color-muted: 107 114 124; /* quiet text, 4.9 : 1 */
+  --color-rule: 214 216 219; /* hairlines */
+  --color-faint: 183 187 192; /* graph fills not reached, axis rules */
+  --color-passed: 112 118 128; /* graph columns passed */
+  --color-line: 145 150 158; /* thin pointer lines */
+  --logo-filter: brightness(0) invert(0.11); /* logos in the text's colour */
+  --image-filter: none;
+  --image-blend: multiply; /* white in images takes the page's colour */
+  color-scheme: light;
+
+  /* Alignment: one left edge (was centred) */
+  --align: left;
+  --block-inline: 0; /* auto centres blocks */
+  --justify: flex-start;
+  --items: flex-start;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --size-root: 18px;
+    --size-h1: 3.4em;
+    --size-h1-long: 3em;
+    --size-h2: 2.1em;
+    --size-figure: 4.5em;
+  }
+}

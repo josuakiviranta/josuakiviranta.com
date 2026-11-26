@@ -1,41 +1,5 @@
-/* Latin Modern Roman (GUST Font License), subset to Latin, in public/fonts.
-   Optical sizes as LaTeX uses them: 10 pt for text, 12 pt bold for
-   headings and the title. */
-@font-face {
-  font-family: 'LM Roman 10';
-  src: url('/fonts/lmroman10-regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'LM Roman 10';
-  src: url('/fonts/lmroman10-italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'LM Roman 10';
-  src: url('/fonts/lmroman10-bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'LM Roman 10';
-  src: url('/fonts/lmroman10-bolditalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'LM Roman 12';
-  src: url('/fonts/lmroman12-bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+/* The site's roles, built only from styles/theme.css's variables: a change
+   of look is a change there, never here or in a component. */
 
 @tailwind base;
 @tailwind components;
@@ -49,21 +13,14 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'LM Roman 10', 'Latin Modern Roman', 'Computer Modern Serif', Georgia, serif;
-  font-size: 17px;
-  line-height: 1.45;
-  background-color: #ffffff;
-  color: #111111;
+  font-family: var(--font-body);
+  font-size: var(--size-root);
+  line-height: var(--leading-body);
+  background-color: rgb(var(--color-paper));
+  color: rgb(var(--color-ink));
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-}
-
-@media (min-width: 640px) {
-  html,
-  body {
-    font-size: 18px;
-  }
 }
 
 a {
@@ -75,7 +32,68 @@ a {
   box-sizing: border-box;
 }
 
+@layer base {
+  b,
+  strong {
+    font-weight: var(--weight-strong);
+  }
+}
+
 @layer components {
+  /* Headings: one face, weight and tracking; each role its size. */
+  .type-display,
+  .type-h1,
+  .type-h1-long,
+  .type-title,
+  .type-h2,
+  .type-sub,
+  .type-h3 {
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    letter-spacing: var(--tracking-display);
+  }
+  .type-h1 {
+    font-size: var(--size-h1);
+    line-height: var(--leading-h1);
+  }
+  .type-h1-long {
+    font-size: var(--size-h1-long);
+    line-height: var(--leading-h1);
+  }
+  .type-title {
+    font-size: var(--size-title);
+    line-height: 1.1;
+  }
+  .type-h2 {
+    font-size: var(--size-h2);
+    line-height: var(--leading-h2);
+  }
+  .type-sub {
+    font-size: var(--size-sub);
+  }
+  .type-h3 {
+    font-size: var(--size-h3);
+  }
+
+  /* Caps labels; the colour is the caller's (muted or ink). */
+  .type-caps {
+    font-size: var(--size-small);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  /* The booking button. */
+  .btn-primary {
+    display: inline-block;
+    background-color: rgb(var(--color-ink));
+    color: rgb(var(--color-paper));
+    padding: 0.75rem 1.25rem;
+    font-weight: var(--weight-strong);
+  }
+  .btn-primary:hover {
+    background-color: rgb(var(--color-ink) / 0.9);
+  }
+
   /* Dash list: an em dash hangs in the margin of each item. */
   .dashes > li {
     position: relative;
@@ -92,14 +110,39 @@ a {
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
-    text-decoration-color: rgba(17, 17, 17, 0.35);
+    text-decoration-color: rgb(var(--color-ink) / 0.35);
     transition: text-decoration-color 0.2s ease;
   }
   .doc-link:hover {
     text-decoration-color: currentColor;
   }
+
+  /* Logos and the office map drawn in the page's colours. */
+  .logo-mono {
+    filter: var(--logo-filter);
+  }
+  .image-mono {
+    filter: var(--image-filter);
+    mix-blend-mode: var(--image-blend);
+  }
 }
 
+@layer utilities {
+  /* The page's alignment (theme.css --align …): text, blocks, rows. */
+  .align-page {
+    text-align: var(--align);
+  }
+  .mx-page {
+    margin-left: var(--block-inline);
+    margin-right: var(--block-inline);
+  }
+  .justify-page {
+    justify-content: var(--justify);
+  }
+  .items-page {
+    align-items: var(--items);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html {
