@@ -3,22 +3,22 @@
      public/og-card.png by generate-card.sh. Design "D, the page": the top of
      the site as a sheet on a grey desk, cropped at the bottom. Keep the text
      in step with the English copy in components/prototype/homepageCopy.ts
-     (role, problem, offer, the booking button). -->
+     (role, problem, offer, the booking button), and the look in step with
+     styles/theme.css (look B1: Inter, navy on white, one left edge). -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <style>
-  @font-face { font-family: "LM Roman 10"; font-weight: 400; src: url("../public/fonts/lmroman10-regular.woff2") format("woff2"); }
-  @font-face { font-family: "LM Roman 12"; font-weight: 700; src: url("../public/fonts/lmroman12-bold.woff2") format("woff2"); }
+  @font-face { font-family: "Inter Variable"; font-weight: 100 900; src: url("../public/fonts/inter-latin-opsz-normal.woff2") format("woff2-variations"); }
 
   html, body { margin: 0; }
   body {
     width: 1200px;
     height: 630px;
     overflow: hidden;
-    background: #e7e7e4;
-    color: #111111;
-    font-family: "LM Roman 10", Georgia, serif;
+    background: rgb(231 233 236);
+    color: rgb(16 27 44);
+    font-family: "Inter Variable", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
   .page {
@@ -29,18 +29,19 @@
     height: 800px;
     box-sizing: border-box;
     padding: 40px 64px;
-    background: #ffffff;
+    background: rgb(255 255 255);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08), 0 18px 50px rgba(0, 0, 0, 0.12);
   }
-  .bold { font-family: "LM Roman 12", "LM Roman 10", Georgia, serif; font-weight: 700; }
+  .display { font-weight: 500; letter-spacing: -0.02em; }
+  .strong { font-weight: 600; }
   .head { display: flex; align-items: center; gap: 22px; }
   .head img { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; object-position: 50% 35%; }
   .name { font-size: 36px; line-height: 1.15; }
-  .role { font-size: 27px; color: #767676; }
-  .hero { margin-top: 44px; text-align: center; }
+  .role { font-size: 27px; color: rgb(107 114 124); }
+  .hero { margin-top: 44px; }
   .problem { font-size: 66px; line-height: 1.08; }
   .offer { margin-top: 18px; font-size: 32px; }
-  .button { display: inline-block; margin-top: 26px; padding: 16px 28px; background: #111111; color: #ffffff; font-size: 30px; }
+  .button { display: inline-block; margin-top: 26px; padding: 16px 28px; background: rgb(16 27 44); color: rgb(255 255 255); font-size: 28px; }
 </style>
 </head>
 <body>
@@ -48,14 +49,14 @@
     <div class="head">
       <img src="../public/profile-photo.jpg" alt="">
       <div>
-        <div class="name bold">Josua Kiviranta</div>
+        <div class="name display">Josua Kiviranta</div>
         <div class="role">GEO and branding for AI</div>
       </div>
     </div>
     <div class="hero">
-      <div class="problem bold">Before deciding,<br>people ask AI.</div>
+      <div class="problem display">Before deciding,<br>people ask AI.</div>
       <div class="offer">I help you show up in AI answers.</div>
-      <div class="button bold">Book a free conversation&nbsp;→</div>
+      <div class="button strong">Book a free call&nbsp;→</div>
     </div>
   </div>
 </body>
