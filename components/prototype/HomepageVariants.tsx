@@ -805,19 +805,49 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
           sentence always names a place (owner, 2026-11-14). */}
       {/* The server's HTML names place 1, not place 78's "0 kertaa"
           (ticket 20). */}
-      <AvgRow m={m} rank={(mounted ? at : 0) + 1} v={per100(counts[mounted ? at : 0])} max={per100(counts[0])} />
-      {/* What the slide shows (owner, 2026-11-19): the typical Candidate as
-          soon as the ink column reaches the middle place; then, once it
-          reaches place 1, place 1's count and how many times the typical. */}
-      <div className="space-y-1 pt-4 tabular-nums leading-snug sm:pt-6">
-        <p style={{ opacity: seg(mid + 0.5 - pos, 0, 1.5) }}>
-          <Bolded text={m.own.typical.replace("{n}", String(Math.round(typical)))} />
-        </p>
-        <p style={{ opacity: seg(p, 0.86, 0.95) }}>
-          <Bolded text={m.own.first.replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
-        </p>
-      </div>
+      <AvgRow m={m} rank={(mounted ? at : 0) + 1} v={per100(counts[mounted ? at : 0])} max={per100(counts[0])}>
+        {/* What the slide shows (owner, 2026-11-19): the typical Candidate as
+            soon as the ink column reaches the middle place; then, once it
+            reaches place 1, how many times the typical. Between the live
+            sentence and its squares, "{x} kertaa useammin" first (owner,
+            2026-11-26; was under the squares, typical first). Each line opens
+            its own room as it fades in, pushing the lines under it down, one
+            line spacing apart (owner, 2026-11-26). */}
+        <div className="tabular-nums leading-snug">
+          <Reveal f={seg(p, 0.86, 0.95)}>
+            <p className="pt-2">
+              <Bolded text={m.own.first.replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
+            </p>
+          </Reveal>
+          <Reveal f={seg(mid + 0.5 - pos, 0, 1.5)}>
+            <p className="pt-2">
+              <Bolded text={m.own.typical.replace("{n}", String(Math.round(typical)))} />
+            </p>
+          </Reveal>
+        </div>
+      </AvgRow>
     </figure>
+  );
+};
+
+/* Its content at `f` (0 to 1) of its height and opacity, so it opens its
+   own room as it appears and closes it again when scrolled back. */
+const Reveal = ({ f, children }: { f: number; children: ReactNode }) => {
+  const inner = useRef<HTMLDivElement>(null);
+  const [h, setH] = useState(0);
+  useBrowserLayoutEffect(() => {
+    const el = inner.current;
+    if (!el) return;
+    const measure = () => setH(el.offsetHeight);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <div className="overflow-hidden" style={{ height: h ? f * h : f ? undefined : 0, opacity: f }}>
+      <div ref={inner}>{children}</div>
+    </div>
   );
 };
 
@@ -832,16 +862,20 @@ const Bolded = ({ text }: { text: string }) => (
    was 10 grey squares filled in ink). One sentence over it says the same,
    its number following the animation; no label, count or key (owner,
    2026-11-14). */
-const AvgRow = ({ m, rank, v, max }: { m: M; rank: number; v: number; max: number }) => {
+const AvgRow = ({ m, rank, v, max, children }: { m: M; rank: number; v: number; max: number; children?: ReactNode }) => {
   const n = Math.round(v);
   const fill: Record<string, string> = { "{rank}": String(rank), "{n}": String(n) };
   return (
     <div className="space-y-3 pt-4 sm:pt-6">
       {/* The body's size like all plain text (owner, 2026-11-16); the place
           and the count bold (owner, 2026-11-15). */}
-      <p className="tabular-nums leading-snug">
-        {(n === 0 ? m.own.liveZero : n === 1 ? m.own.liveOne : m.own.live).split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
-      </p>
+      {/* The lines under it (`children`) follow at their own spacing. */}
+      <div>
+        <p className="tabular-nums leading-snug">
+          {(n === 0 ? m.own.liveZero : n === 1 ? m.own.liveOne : m.own.live).split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
+        </p>
+        {children}
+      </div>
       {/* 24 px squares as before (owner, 2026-11-19); 12 px on phones so
           place 1's row fits 360 px screens. The row is as wide as place 1's
           ink, its last square cut to the fraction, so place 1's full row
@@ -873,43 +907,40 @@ const Measured = ({ c }: { c: Copy }) => {
               {/* The threat as the long-tail section's header (owner, 2026-11-13). */}
               <h2 className="type-h2">{c.visibility.summary}</h2>
               <div className="mt-8">
-                <TailCurve m={m} p={p} />
+                <TailCurve m={m} p={Math.min(1, (p * STUDY.curve) / STUDY.curveAnim)} />
               </div>
             </>
           )}
         </Pinned>
       </section>
 
-      <section data-track-section="election" className={SECTION_GAP}>
+      {/* Close under the curve (owner, 2026-11-26; was SECTION_GAP): it rises
+          under the still curve, then pushes it up and holds centred. */}
+      <section data-track-section="election" className="mt-12 sm:mt-16">
         <Pinned length={STUDY.body}>
           {(p) => (
             <>
               {/* Its own header, the size of the others (owner, 2026-11-15;
                   was the title of a box that opened under the curve). */}
               <h2 className="type-h2">{m.study.title}</h2>
-              {/* Ties the curve to the elections, a black caps label
-                  (owner, 2026-11-16; was plain text). */}
-              <div className="mt-4 sm:mt-10">
-                <Caps className="block leading-relaxed !text-ink">{m.study.bridge}</Caps>
-              </div>
-              <div className="mt-4 sm:mt-6">
+              <div className="mt-6 sm:mt-10">
                 <StudyBody m={m} p={p} />
               </div>
             </>
           )}
         </Pinned>
-        {/* The elections page (owner, 2026-11-25: a line under the
-            election example; the nav stays one link). */}
-        <ElectionsLink c={c} />
       </section>
     </>
   );
 };
 
-/* The two held pieces' lengths in screen heights: the curve's timeline
-   (done at TAIL_DONE of it) and the election example's slide (StudyBody). */
+/* The two held pieces' lengths in screen heights: the curve's hold, its
+   timeline within it (done at TAIL_DONE of it) and the still part after it,
+   while the election example rises under the curve (owner, 2026-11-26);
+   and the election example's slide (StudyBody). */
 const STUDY = {
-  curve: 0.7,
+  curve: 0.8,
+  curveAnim: 0.7,
   body: 1.5,
 } as const;
 
@@ -1212,22 +1243,6 @@ const VisibilitySection = ({ c }: { c: Copy }) => {
       <Sample c={c} />
       </div>
     </Band>
-  );
-};
-
-/* The line under the main page's election example that opens the elections
-   page in the reader's language (ticket 21). */
-const ElectionsLink = ({ c }: { c: Copy }) => {
-  const lang = (useRouter().locale ?? "en") as Lang;
-  return (
-    <p className="mt-8 sm:mt-12">
-      {/* No scroll here: the page opens at its top itself (B3Elections). */}
-      <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
-        <a data-track="elections-page" data-track-place="election" className="font-strong underline underline-offset-4 hover:no-underline">
-          {c.elections.link}&nbsp;→
-        </a>
-      </Link>
-    </p>
   );
 };
 

@@ -61,7 +61,6 @@ export type Copy = {
     offer: { lead: string; label: string; steps: { title: string; body: string }[]; price: string; extra: string };
     independenceLabel: string;
     independence: string[];
-    link: string;
   };
   problem: string;
   offer: string;
@@ -89,7 +88,7 @@ export type Copy = {
       tail: { y: string; /* Under the axis's two ends (owner, 2026-11-14). */ left: string; right: string; /* Over the flat tail (owner, 2026-11-13). */ most: string; /* At the arrow to the striped head (owner, 2026-11-13). */ here: string };
       /* The election example; `players`: the axis unit under its graph
          (owner, 2026-11-13). */
-      study: { title: string; /* The line under the header that ties the curve to the elections (owner, 2026-11-15). */ bridge: string; players: string; /* The box's sentence; owner's wording, 2026-11-14. */ intro: string };
+      study: { title: string; players: string; /* The box's sentence; owner's wording, 2026-11-14. */ intro: string };
     };
     /* The weekly example, names hidden. The numbers are in `SAMPLE` in
        HomepageVariants.tsx; `questions` match its rows in order. */
@@ -201,7 +200,6 @@ export const COPY: Record<Lang, Copy> = {
       },
       independenceLabel: "Independent",
       independence: ["The same service and prices for candidates of every party.", "I am not a member of any party.", "My clients stay confidential."],
-      link: "Finnish parliamentary elections 2027: measurement in your electoral district",
     },
     problem: "Before deciding, people ask AI.",
     offer: "I help you show up in AI answers.",
@@ -232,7 +230,7 @@ export const COPY: Record<Lang, Copy> = {
           first: "**{x} times as often** as the typical candidate.",
         },
         tail: { y: "Mentions in AI answers", left: "Many mentions", right: "Few mentions", most: "Most options are rarely mentioned", here: "You want to be among the few options mentioned often" },
-        study: { title: "Example: Finnish parliamentary elections 2027", bridge: "The same distribution can be measured in how candidates are named in elections.", players: "{n} candidates", intro: "ChatGPT and Claude were asked {n} questions about candidates in the Helsinki electoral district, and the questions named no candidate." },
+        study: { title: "Example: Finnish parliamentary elections 2027", players: "{n} measured candidates", intro: "ChatGPT and Claude were asked {n} questions about candidates in the Helsinki electoral district, and the questions named no candidate." },
       },
       sample: {
         label: "Weekly continuous measurement",
@@ -346,7 +344,6 @@ export const COPY: Record<Lang, Copy> = {
       },
       independenceLabel: "Riippumaton",
       independence: ["Sama palvelu ja samat hinnat kaikkien puolueiden ehdokkaille.", "En ole minkään puolueen jäsen.", "Asiakkaani pysyvät luottamuksellisina."],
-      link: "Eduskuntavaalit 2027: mittaus omassa vaalipiirissäsi",
     },
     problem: "Ennen päätöstä kysytään tekoälyltä.",
     offer: "Autan sinua näkymään tekoälyn vastauksissa.",
@@ -377,7 +374,7 @@ export const COPY: Record<Lang, Copy> = {
           first: "**{x} kertaa useammin** kuin tyypillinen ehdokas.",
         },
         tail: { y: "Maininnat tekoälyn vastauksissa", left: "Paljon mainintoja", right: "Vähän mainintoja", most: "Useimmat vaihtoehdot mainitaan harvoin", here: "Haluat kuulua harvoihin usein mainittuihin vaihtoehtoihin" },
-        study: { title: "Esimerkki: Eduskuntavaalit 2027", bridge: "Sama jakauma voidaan mitata ehdokkaiden nimeämisessä vaaleissa.", players: "{n} ehdokasta", intro: "ChatGPT:ltä ja Claudelta kysyttiin {n} kysymystä Helsingin vaalipiirin ehdokkaista, ilman ehdokkaiden nimeämistä." },
+        study: { title: "Esimerkki: Eduskuntavaalit 2027", players: "{n} mitattua ehdokasta", intro: "ChatGPT:ltä ja Claudelta kysyttiin {n} kysymystä Helsingin vaalipiirin ehdokkaista, ilman ehdokkaiden nimeämistä." },
       },
       sample: {
         label: "Viikoittainen jatkuva mittaus",
@@ -491,7 +488,6 @@ export const COPY: Record<Lang, Copy> = {
       },
       independenceLabel: "Indipendente",
       independence: ["Lo stesso servizio e gli stessi prezzi per i candidati di ogni partito.", "Non sono iscritto ad alcun partito.", "I miei clienti restano riservati."],
-      link: "Elezioni parlamentari finlandesi 2027: misurazione nella tua circoscrizione",
     },
     problem: "Prima di decidere, si chiede all’IA.",
     offer: "Ti aiuto a comparire nelle risposte dell’IA.",
@@ -522,7 +518,7 @@ export const COPY: Record<Lang, Copy> = {
           first: "**{x} volte più spesso** del candidato tipico.",
         },
         tail: { y: "Menzioni nelle risposte dell’IA", left: "Molte menzioni", right: "Poche menzioni", most: "La maggior parte delle opzioni è citata di rado", here: "Vuoi essere tra le poche opzioni citate spesso" },
-        study: { title: "Esempio: elezioni parlamentari finlandesi 2027", bridge: "La stessa distribuzione si può misurare nel modo in cui vengono nominati i candidati alle elezioni.", players: "{n} candidati", intro: "A ChatGPT e Claude sono state poste {n} domande sui candidati della circoscrizione di Helsinki, senza nominare alcun candidato nelle domande." },
+        study: { title: "Esempio: elezioni parlamentari finlandesi 2027", players: "{n} candidati misurati", intro: "A ChatGPT e Claude sono state poste {n} domande sui candidati della circoscrizione di Helsinki, senza nominare alcun candidato nelle domande." },
       },
       sample: {
         label: "Misurazione continua settimanale",
