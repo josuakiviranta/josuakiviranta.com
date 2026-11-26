@@ -227,7 +227,7 @@ const SERVICES_ID = "palvelut-ja-hinnat";
    link line; underlined on that page itself (owner, 2026-11-25). */
 const ElectionsNav = ({ c, lang, current, place, className }: { c: Copy; lang: Lang; current: boolean; place: string; className: string }) => (
   <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
-    <a data-track="elections-page" data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "underline underline-offset-4" : ""}`}>
+    <a data-track="elections-page" data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "text-ink underline underline-offset-4" : "text-muted hover:text-ink"}`}>
       {c.navElectionsPage}
     </a>
   </Link>
@@ -275,7 +275,7 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
       {/* One link, to the elections page (owner, 2026-11-25; was "Palvelut",
           to the offer, 2026-11-16; "Tausta" hidden, its page kept). */}
       <nav className="hidden gap-5 text-nav sm:flex">
-        <ElectionsNav c={c} lang={lang} current={page === "elections"} place="nav" className="hover:underline" />
+        <ElectionsNav c={c} lang={lang} current={page === "elections"} place="nav" className="" />
       </nav>
       {/* On phones the languages move into the menu, so the header keeps
           one row (2026-11-16). */}
@@ -436,7 +436,7 @@ const ContactCentred = ({ c }: { c: Copy }) => {
           </Fragment>
         ))}
       </div>
-      <div className="mx-page mt-12 max-w-[40rem]">
+      <div className="mx-page mt-12 w-column">
         <OfficeMapOutline c={c} />
       </div>
     </section>
@@ -1184,7 +1184,7 @@ const VisibilitySection = ({ c }: { c: Copy }) => {
   return (
     <Band id="palvelut" className="pb-24 sm:pb-32">
       {/* Text centred like the first screen (owner, 2026-11-13). */}
-      <div className="mx-page max-w-[40rem] align-page">
+      <div className="mx-page w-column align-page">
       <Measured c={c} />
 
       <section data-track-section="next-step" className={SECTION_GAP}>
@@ -1274,7 +1274,7 @@ const B3Elections = ({ c }: { c: Copy }) => {
       </div>
 
       <Band className="pb-24 sm:pb-32">
-        <div className="mx-page max-w-[40rem] align-page">
+        <div className="mx-page w-column align-page">
           <section data-track-section="question">
             <h2 className={h2}>{e.question.title}</h2>
             {/* The theme and how many each AI left out, the counts as big
@@ -1382,7 +1382,7 @@ const B3Case = ({ c }: { c: Copy }) => {
 const VariantB3 = ({ c, lang, route }: { c: Copy; lang: Lang; route?: Route }) => {
   const { page, go } = usePage(route);
   return (
-    <main className="mx-auto w-full max-w-[56rem] px-5 pb-32 sm:px-8">
+    <main className="mx-auto w-full w-frame px-5 pb-32 sm:px-8">
       <B3Header c={c} lang={lang} page={page} go={go} />
       {page === "home" && <B3Home c={c} go={go} />}
       {page === "background" && <B3Background c={c} />}

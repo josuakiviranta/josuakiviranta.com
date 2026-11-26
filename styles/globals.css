@@ -142,6 +142,17 @@ a {
   .items-page {
     align-items: var(--items);
   }
+  /* Widths (theme.css --width-*): the frame, the sections' column and the
+     lines of text inside it. */
+  .w-frame {
+    max-width: var(--width-frame);
+  }
+  .w-column {
+    max-width: var(--width-column);
+  }
+  .w-column :where(p, h2, h3) {
+    max-width: var(--width-text);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

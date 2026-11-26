@@ -67,6 +67,14 @@
   --block-inline: 0; /* auto centres blocks */
   --justify: flex-start;
   --items: flex-start;
+
+  /* Widths: the page's frame (header to footer); the sections' column, which
+     graphs fill to the nav's right edge; and the lines of text inside the
+     column, kept to a reading length (owner, 2026-11-26: look B, was a
+     40rem column) */
+  --width-frame: 56rem;
+  --width-column: 56rem;
+  --width-text: 42rem;
 }
 
 @media (min-width: 640px) {
