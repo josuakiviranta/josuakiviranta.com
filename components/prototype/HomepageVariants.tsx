@@ -6,7 +6,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { MAP_ASPECT, MAP_PINS } from "../officeMapLabels";
 import { COPY, LANGS, type Copy, type Lang, type OfferCopy } from "./homepageCopy";
 import { pageSlug } from "../SiteHead";
@@ -18,7 +18,7 @@ const BOOKING = "https://calendar.app.google/vQtX41PcY1mnrfJZ6";
 const LangSwitch = ({ lang }: { lang: Lang }) => {
   const router = useRouter();
   return (
-    <div className="text-[0.85em] tracking-[0.08em]">
+    <div className="text-small tracking-[0.08em]">
       {LANGS.map((l, i) => (
         <span key={l}>
           {i > 0 && <span className="mx-1.5 text-muted">·</span>}
@@ -28,7 +28,7 @@ const LangSwitch = ({ lang }: { lang: Lang }) => {
             // The same page in the other language's address ("/fi", "/fi/privacy",
             // "/fi/eduskuntavaalit-2027"), where the reader is.
             onClick={() => router.replace({ pathname: router.pathname, query: router.query }, pageSlug(l, router.pathname), { locale: l, scroll: false })}
-            className={l === lang ? "font-bold" : "text-muted hover:text-ink"}
+            className={l === lang ? "font-strong" : "text-muted hover:text-ink"}
           >
             {l.toUpperCase()}
           </button>
@@ -68,11 +68,11 @@ const MapPins = ({ c }: { c: Copy }) => (
       <Fragment key={o.name}>
         <span
           aria-hidden="true"
-          className="absolute w-px bg-[#9a9a9a]"
+          className="absolute w-px bg-line"
           style={{ left: `${o.x}%`, top: o.down ? `${o.y}%` : `calc(${o.y}% - var(--line))`, height: "var(--line)" }}
         />
         <span
-          className="absolute whitespace-nowrap pl-2 text-[0.85em] uppercase tracking-[0.2em] text-ink"
+          className="absolute whitespace-nowrap pl-2 type-caps text-ink"
           style={{
             left: `${o.x}%`,
             top: o.down ? `calc(${o.y}% + var(--line))` : `calc(${o.y}% - var(--line))`,
@@ -83,7 +83,7 @@ const MapPins = ({ c }: { c: Copy }) => (
         </span>
         <span
           aria-hidden="true"
-          className="absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-ink"
+          className="absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-paper bg-ink"
           style={{ left: `${o.x}%`, top: `${o.y}%` }}
         />
       </Fragment>
@@ -92,7 +92,7 @@ const MapPins = ({ c }: { c: Copy }) => (
 );
 const OfficeMapOutline = ({ c }: { c: Copy }) => (
   <figure className="relative w-full [--line:1.25rem] sm:[--line:2.5rem]" style={{ aspectRatio: `${MAP_ASPECT}` }}>
-    <img src="/office-map-outline.png" alt="" className="absolute inset-0 h-full w-full" />
+    <img src="/office-map-outline.png" alt="" className="image-mono absolute inset-0 h-full w-full" />
     <MapPins c={c} />
   </figure>
 );
@@ -122,7 +122,7 @@ const placesLine = (c: Copy) =>
 /* `places`: B3 also shows the place and the business ID here, moved from
    Yhteystiedot (owner, 2026-11-15). */
 const Footer = ({ c, places, close }: { c: Copy; places?: boolean; close?: boolean }) => (
-  <footer className={`${close ? "mt-8" : "mt-20"} border-t border-ink pt-5 text-[0.85em] text-muted`}>
+  <footer className={`${close ? "mt-8" : "mt-20"} border-t border-ink pt-5 text-small text-muted`}>
     {/* One line, the places before the year (owner, 2026-11-15). */}
     <p>Josua Kiviranta · {c.role.replace(/\.$/, "")} · {places && `${placesLine(c)} · `}© 2026</p>
     {/* Its own legal part: the privacy notice and the AI Code of Conduct,
@@ -148,10 +148,10 @@ const Band = ({ children, tight, id, className = "" }: { children: ReactNode; ti
   <section id={id} className={`${tight ? "py-10" : "py-14"} ${className}`}>{children}</section>
 );
 
-const PAGES = ["home", "background", "case", "privacy", "elections"] as const;
+const PAGES = ["home", "background", "case", "privacy", "elections", "services"] as const;
 /* The pages with their own address (pages/privacy.tsx,
-   pages/finnish-elections-2027.tsx). */
-type Route = "privacy" | "elections";
+   pages/finnish-elections-2027.tsx, pages/services-and-prices.tsx). */
+type Route = "privacy" | "elections" | "services";
 type Page = (typeof PAGES)[number];
 
 /* The page shown: the privacy notice has its own address (`route`); the
@@ -223,14 +223,24 @@ const useScrolledPast = (share = 0.6) => {
 /* The offer's section's anchor. */
 const SERVICES_ID = "palvelut-ja-hinnat";
 
-/* The nav's link to the elections page, counted like the main page's
-   link line; underlined on that page itself (owner, 2026-11-25). */
-const ElectionsNav = ({ c, lang, current, place, className }: { c: Copy; lang: Lang; current: boolean; place: string; className: string }) => (
-  <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
-    <a data-track="elections-page" data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "underline underline-offset-4" : ""}`}>
-      {c.navElectionsPage}
+/* A nav link to one of the site's own pages, grey until hovered and navy,
+   underlined, on that page itself (owner, 2026-11-25/26). A click counts as
+   `track` × `place` (nav, menu). */
+const PageNav = ({ path, label, track, lang, current, place, className }: { path: string; label: string; track: string; lang: Lang; current: boolean; place: string; className: string }) => (
+  <Link href={path} as={pageSlug(lang, path)} scroll={false}>
+    <a data-track={track} data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "text-ink underline underline-offset-4" : "text-muted hover:text-ink"}`}>
+      {label}
     </a>
   </Link>
+);
+
+/* The nav's links: the elections page, then services and prices (owner,
+   2026-11-26). */
+const NavLinks = ({ c, lang, page, place, className }: { c: Copy; lang: Lang; page: Page; place: string; className: string }) => (
+  <>
+    <PageNav path="/finnish-elections-2027" label={c.navElectionsPage} track="elections-page" lang={lang} current={page === "elections"} place={place} className={className} />
+    <PageNav path="/services-and-prices" label={c.navServicesPage} track="services-page" lang={lang} current={page === "services"} place={place} className={className} />
+  </>
 );
 
 const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: (p: Page) => void }) => {
@@ -262,20 +272,21 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
     ref={ref}
     data-b3-header
     style={{ marginBottom: room }}
-    className={`sticky top-0 z-30 -mx-5 flex flex-wrap items-center justify-between gap-x-8 gap-y-4 bg-white px-5 sm:-mx-8 sm:px-8 sm:py-6 ${compact ? "py-3" : "py-6"}`}
+    className={`sticky top-0 z-30 -mx-5 flex flex-wrap items-center justify-between gap-x-8 gap-y-4 bg-paper px-5 sm:-mx-8 sm:px-8 sm:py-6 ${compact ? "py-3" : "py-6"}`}
   >
     <button onClick={() => go("home")} className="flex items-center gap-3 text-left">
       <Photo className={`shrink-0 rounded-full sm:h-11 sm:w-11 sm:text-[0.45em] ${compact ? "h-8 w-8 text-[0.35em]" : "h-11 w-11 text-[0.45em]"}`} />
       <span className="leading-tight">
-        <span className="block font-bold">Josua Kiviranta</span>
-        <span className={`${phoneHide} text-[0.85em] text-muted`}>{c.role.replace(/\.$/, "")}</span>
+        <span className="block font-strong">Josua Kiviranta</span>
+        <span className={`${phoneHide} text-small text-muted`}>{c.role.replace(/\.$/, "")}</span>
       </span>
     </button>
     <div className="flex items-center gap-6">
-      {/* One link, to the elections page (owner, 2026-11-25; was "Palvelut",
-          to the offer, 2026-11-16; "Tausta" hidden, its page kept). */}
-      <nav className="hidden gap-5 text-[0.9em] sm:flex">
-        <ElectionsNav c={c} lang={lang} current={page === "elections"} place="nav" className="hover:underline" />
+      {/* The elections page and services and prices (owner, 2026-11-26; was
+          the elections page alone, 2026-11-25; "Palvelut" to the offer,
+          2026-11-16; "Tausta" hidden, its page kept). */}
+      <nav className="hidden gap-6 text-nav sm:flex">
+        <NavLinks c={c} lang={lang} page={page} place="nav" className="" />
       </nav>
       {/* On phones the languages move into the menu, so the header keeps
           one row (2026-11-16). */}
@@ -285,16 +296,16 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
       <button onClick={() => setMenu(!menu)} aria-expanded={menu} aria-label="Menu" className="-mr-1 p-1 sm:hidden">
         <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden>
           {menu ? (
-            <path d="M5 5 L17 17 M17 5 L5 17" stroke="#111111" strokeWidth="1.6" />
+            <path d="M5 5 L17 17 M17 5 L5 17" className="stroke-ink" strokeWidth="1.6" />
           ) : (
-            <path d="M3 6 H19 M3 11 H19 M3 16 H19" stroke="#111111" strokeWidth="1.6" />
+            <path d="M3 6 H19 M3 11 H19 M3 16 H19" className="stroke-ink" strokeWidth="1.6" />
           )}
         </svg>
       </button>
     </div>
     {menu && (
-      <nav className="absolute inset-x-0 top-full border-b border-rule bg-white px-5 pb-5 pt-2 sm:hidden">
-        <ElectionsNav c={c} lang={lang} current={page === "elections"} place="menu" className="block py-2 font-display text-[1.3em] font-bold" />
+      <nav className="absolute inset-x-0 top-full border-b border-rule bg-paper px-5 pb-5 pt-2 sm:hidden">
+        <NavLinks c={c} lang={lang} page={page} place="menu" className="block py-2 type-sub" />
         <div className="mt-3">
           <LangSwitch lang={lang} />
         </div>
@@ -306,7 +317,7 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
 
 const Caps = ({ children, className = "" }: { children: ReactNode; className?: string }) => (
   // Bigger, every caps text the same (owner, 2026-11-15; was 0.72em).
-  <span className={`text-[0.85em] uppercase tracking-[0.2em] text-muted ${className}`}>{children}</span>
+  <span className={`type-caps text-muted ${className}`}>{children}</span>
 );
 
 /* The MP case's link on the first screen, hidden (owner, 2026-11-16); its
@@ -320,10 +331,10 @@ const RefSection = ({ c, go }: { c: Copy; go: (p: Page) => void }) => {
   const logoClient = c.clients.find((cl) => cl.logo);
   const caseClient = c.clients.find((cl) => cl.findings);
   const logo = logoClient?.logo ? (
-    <img src={logoClient.logo.src} alt={logoClient.name} style={{ height: "1.5em" }} className="w-auto shrink-0 [filter:brightness(0)]" />
+    <img src={logoClient.logo.src} alt={logoClient.name} style={{ height: "1.5em" }} className="logo-mono w-auto shrink-0" />
   ) : null;
   return (
-    <section className="pt-14 text-center">
+    <section className="pt-14 align-page">
       <Caps>{c.clientsHeading}</Caps>
       {SHOW_CASE && caseClient ? (
         // Equal side columns keep the divider exactly under the label.
@@ -332,15 +343,15 @@ const RefSection = ({ c, go }: { c: Copy; go: (p: Page) => void }) => {
           <span aria-hidden="true" className="h-8 w-px bg-rule" />
           <div className="flex justify-start">
             <button onClick={() => go("case")} className="group text-left">
-              <span className="block font-display font-bold leading-tight">{caseClient.name}</span>
-              <span className="block text-[0.85em] text-muted">
+              <span className="block type-display leading-tight">{caseClient.name}</span>
+              <span className="block text-small text-muted">
                 <span className="tabular-nums">{caseClient.year}</span> · <span className="group-hover:underline">{c.caseStudy.cardLink}</span>
               </span>
             </button>
           </div>
         </div>
       ) : (
-        <div className="mt-5 flex justify-center">{logo}</div>
+        <div className="mt-5 flex justify-page">{logo}</div>
       )}
     </section>
   );
@@ -363,14 +374,15 @@ const B3Steps = ({ items }: { items: { title: string; body: string; price?: stri
         <div className="flex flex-col sm:self-stretch">
           {/* Phones put the number beside the title, so held pieces fit
               the screen (owner, 2026-11-16). */}
-          <div className="flex items-baseline justify-center gap-[0.5em] sm:block">
+          <div className="flex items-baseline justify-page gap-[0.5em] sm:block">
             <div className="text-muted tabular-nums">{String(i + 1).padStart(2, "0")}</div>
-            <div className="font-display text-[1.1em] font-bold sm:mt-1">{s.title}</div>
+            <div className="type-h3 sm:mt-1">{s.title}</div>
           </div>
           <p className="mt-1 leading-snug">{s.body}</p>
           {/* The offer's steps carry their price, on one shared line on wide
               screens (owner, 2026-11-15). */}
-          {s.price && <p className="mt-2 whitespace-nowrap tabular-nums sm:mt-auto sm:pt-2">{s.price}</p>}
+          {/* Bold (owner, 2026-11-26). */}
+          {s.price && <p className="mt-2 whitespace-nowrap font-strong tabular-nums sm:mt-auto sm:pt-2">{s.price}</p>}
         </div>
       </Fragment>
     ))}
@@ -383,12 +395,12 @@ const B3Home = ({ c, go }: { c: Copy; go: (p: Page) => void }) => {
     {/* First screen (owner, 2026-11-10): headline, offer, phone and the
         references as one group, centred in the space under the navbar. */}
     <div className="flex min-h-[calc(100svh-9rem)] flex-col justify-center py-16">
-      <section className="text-center">
+      <section className="align-page">
         {/* Bigger (owner, 2026-11-13; was 2.3em). */}
-        <h1 className="mx-auto max-w-[44rem] font-display text-[2.7em] font-bold leading-[1.08] sm:text-[3.4em]">{c.problem}</h1>
-        <p className="mx-auto mt-4 max-w-[32rem] text-[1.15em]">{c.offer}</p>
+        <h1 className="mx-page max-w-[44rem] type-h1">{c.problem}</h1>
+        <p className="mx-page mt-4 max-w-[32rem] text-lead">{c.offer}</p>
         {/* The free conversation in place of the phone link (owner, 2026-11-15). */}
-        <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="first-screen" className="mt-5 inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
+        <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="first-screen" className="btn-primary mt-5">
           {c.visibility.request?.label}&nbsp;→
         </a>
       </section>
@@ -420,14 +432,14 @@ const contactKind = (href?: string) =>
 const ContactCentred = ({ c }: { c: Copy }) => {
   const links = c.facts.filter((f) => f.href);
   return (
-    <section data-track-section="contact" className="text-center">
-      <h2 className="font-display text-[2.1em] font-bold leading-[1.15]">{c.contactHeading}</h2>
-      <Photo className="mx-auto mt-10 aspect-[4/5] w-40" />
-      <div className="mt-10 flex flex-col items-center gap-5 sm:flex-row sm:items-start sm:justify-center sm:gap-x-8">
+    <section data-track-section="contact" className="align-page">
+      <h2 className="type-h2">{c.contactHeading}</h2>
+      <Photo className="mx-page mt-10 aspect-[4/5] w-40" />
+      <div className="mt-10 flex flex-col items-page gap-5 sm:flex-row sm:items-start sm:justify-page sm:gap-x-8">
         {links.map((f, i) => (
           <Fragment key={f.label}>
             {i > 0 && <span aria-hidden="true" className="hidden h-8 w-px self-center bg-rule sm:block" />}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-page">
               <Caps>{f.label}</Caps>
               <a className="doc-link mt-1 whitespace-nowrap" href={f.href} data-track="contact" data-track-place={contactKind(f.href)}>
                 {f.value}
@@ -436,7 +448,7 @@ const ContactCentred = ({ c }: { c: Copy }) => {
           </Fragment>
         ))}
       </div>
-      <div className="mx-auto mt-12 max-w-[40rem]">
+      <div className="mx-page mt-12 w-text">
         <OfficeMapOutline c={c} />
       </div>
     </section>
@@ -449,7 +461,7 @@ const ContactCentred = ({ c }: { c: Copy }) => {
    (owner, 2026-11-25). */
 const B3Privacy = ({ c }: { c: Copy }) => (
   <article className="max-w-[40rem] space-y-5 pt-12 pb-8 leading-relaxed">
-    <h1 className="mb-8 font-display text-[2.3em] font-bold leading-[1.1]">{c.privacy.title}</h1>
+    <h1 className="mb-8 type-title">{c.privacy.title}</h1>
     <p>{c.privacy.intro}</p>
     {c.privacy.sections.map((s) => (
       <p key={s.heading}>
@@ -457,7 +469,7 @@ const B3Privacy = ({ c }: { c: Copy }) => (
       </p>
     ))}
     <div className="pt-4">
-      <h2 className="mb-2 font-display text-[1.15em] font-bold">{c.privacy.party.heading}</h2>
+      <h2 className="mb-2 type-display text-lead">{c.privacy.party.heading}</h2>
       {c.privacy.party.lines.map((l) => <p key={l}>{l}</p>)}
     </div>
   </article>
@@ -465,7 +477,7 @@ const B3Privacy = ({ c }: { c: Copy }) => (
 
 const B3Background = ({ c }: { c: Copy }) => (
   <section className="pt-12 pb-8">
-    <h1 className="mb-8 font-display text-[2.3em] font-bold leading-[1.1]">{c.backgroundHeading}</h1>
+    <h1 className="mb-8 type-title">{c.backgroundHeading}</h1>
     <div className="max-w-[40rem]"><Dashes items={backgroundItems(c)} /></div>
   </section>
 );
@@ -486,7 +498,7 @@ const Prose = ({ text }: { text: string }) => (
 
 /* Section heading on the case and service pages. */
 const PageH2 = ({ children }: { children: ReactNode }) => (
-  <h2 className="mt-12 mb-4 font-display text-[1.3em] font-bold">{children}</h2>
+  <h2 className="mt-12 mb-4 type-sub">{children}</h2>
 );
 
 /* The offer block (owner, 2026-11-11): a dark block with the question, a line
@@ -495,38 +507,38 @@ const PageH2 = ({ children }: { children: ReactNode }) => (
 const Offer = ({ c, offer, centred }: { c: Copy; offer: OfferCopy; centred?: boolean }) => {
   const email = c.facts.find((f) => f.href?.startsWith("mailto:"));
   return (
-    <section className={`mt-14 bg-ink px-6 py-8 text-white sm:px-10 sm:py-10 ${centred ? "text-center" : ""}`}>
-      <p className="font-display text-[1.5em] font-bold leading-tight">{offer.cta}</p>
-      <p className="mt-2 text-white/75">{offer.urgency}</p>
+    <section className={`mt-14 bg-ink px-6 py-8 text-paper sm:px-10 sm:py-10 ${centred ? "text-center" : ""}`}>
+      <p className="type-display text-[1.5em] leading-tight">{offer.cta}</p>
+      <p className="mt-2 text-paper/75">{offer.urgency}</p>
       {offer.terms.length > 0 ? (
         <dl className={`mt-6 grid gap-x-6 gap-y-1 ${centred ? "mx-auto w-fit grid-cols-[auto_auto] text-left" : "grid-cols-[auto_1fr]"}`}>
           {offer.terms.map((t) => (
             <div key={t.label} className="contents">
-              <dt className="text-white/60">{t.label}</dt>
-              <dd className="whitespace-nowrap font-bold tabular-nums">{t.value}</dd>
+              <dt className="text-paper/60">{t.label}</dt>
+              <dd className="whitespace-nowrap font-strong tabular-nums">{t.value}</dd>
             </div>
           ))}
         </dl>
       ) : (
-        <p className="mt-6 border border-dashed border-white/40 px-4 py-3 italic text-white/60">{offer.termsPending}</p>
+        <p className="mt-6 border border-dashed border-paper/40 px-4 py-3 italic text-paper/60">{offer.termsPending}</p>
       )}
-      {offer.assurance && <p className="mt-4 text-white/75">{offer.assurance}</p>}
+      {offer.assurance && <p className="mt-4 text-paper/75">{offer.assurance}</p>}
       {offer.request ? (
         <div className={`mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 ${centred ? "justify-center" : ""}`}>
-          <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="case" className="bg-white px-5 py-3 font-bold text-ink hover:bg-white/90">
+          <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="case" className="bg-paper px-5 py-3 font-strong text-ink hover:bg-paper/90">
             {offer.request.label}&nbsp;→
           </a>
-          <a href={PHONE.href} className="text-white/75 underline underline-offset-4 hover:text-white">
+          <a href={PHONE.href} className="text-paper/75 underline underline-offset-4 hover:text-paper">
             {offer.callLabel} {PHONE.display}
           </a>
         </div>
       ) : (
         <div className="mt-8 flex flex-wrap gap-3">
-          <a href={PHONE.href} className="bg-white px-5 py-3 font-bold text-ink hover:bg-white/90">
+          <a href={PHONE.href} className="bg-paper px-5 py-3 font-strong text-ink hover:bg-paper/90">
             {offer.callLabel} {PHONE.display} →
           </a>
           {email && (
-            <a href={email.href} className="border border-white/60 px-5 py-3 hover:border-white">
+            <a href={email.href} className="border border-paper/60 px-5 py-3 hover:border-paper">
               {offer.emailLabel} →
             </a>
           )}
@@ -620,18 +632,18 @@ const TailCurve = ({ m, p }: { m: M; p: number }) => {
     { tx: 80, low: 80, draw: seg(p, 0.1, 0.7), words: seg(p, 0.2, TAIL_DONE), text: m.tail.here },
   ] as const;
   return (
-    <figure className="text-left text-[0.8em] text-muted">
+    <figure className="text-left text-muted">
       {/* Axis words in black, spelled out; "Harvat" / "Useimmat" dropped (owner, 2026-11-13). */}
       {/* "↑": up means more mentions (owner, 2026-11-13). */}
       {/* Grey like the election example's axis (owner, 2026-11-15; was black). */}
       {/* Grey caps (owner, 2026-11-16; were plain words). */}
-      <span className="text-[1.0625em] uppercase tracking-[0.2em]">↑ {m.tail.y}</span>
+      <span className="block type-caps">↑ {m.tail.y}</span>
       <div className="relative mt-1">
         {/* Taller on phones so the two wrapped labels have room (2026-11-14; 17.5 rem since the caps grew, 2026-11-15). */}
         <svg viewBox={`0 0 ${W} ${H}`} className="block h-[17.5rem] w-full sm:h-auto" preserveAspectRatio="none" aria-hidden>
           <defs>
             <pattern id="tail-stripes" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <line x1="0" y1="0" x2="0" y2="9" stroke="#111111" strokeWidth="2.5" />
+              <line x1="0" y1="0" x2="0" y2="9" className="stroke-ink" strokeWidth="2.5" />
             </pattern>
             <clipPath id="tail-reveal">
               <rect
@@ -646,15 +658,15 @@ const TailCurve = ({ m, p }: { m: M; p: number }) => {
           <path d={area} fill="url(#tail-stripes)" clipPath="url(#tail-reveal)" />
           {/* The line grey, ink only over the striped area, moving with it
               (owner, 2026-11-15). */}
-          <path d={line} fill="none" stroke="#bdbdbd" strokeWidth={2} vectorEffect="non-scaling-stroke" />
-          <path d={line} fill="none" stroke="#111111" strokeWidth={2} vectorEffect="non-scaling-stroke" clipPath="url(#tail-reveal)" />
+          <path d={line} fill="none" className="stroke-faint" strokeWidth={2} vectorEffect="non-scaling-stroke" />
+          <path d={line} fill="none" className="stroke-ink" strokeWidth={2} vectorEffect="non-scaling-stroke" clipPath="url(#tail-reveal)" />
           {labels.map((a) => (
             <path
               key={a.text}
               d={`M${a.tx},${a.low + 3} L${a.tx},${y(a.tx)}`}
               pathLength={1}
               fill="none"
-              stroke="#9a9a9a"
+              className="stroke-line"
               strokeWidth={0.9}
               strokeDasharray="1"
               style={{ strokeDashoffset: 1 - a.draw }}
@@ -666,7 +678,7 @@ const TailCurve = ({ m, p }: { m: M; p: number }) => {
             key={a.text}
             /* Plain text at the body's size, in ink (owner, 2026-11-16;
                were black caps); both wrap. */
-            className="absolute max-w-[55%] pl-2 text-[1.25em] leading-snug text-ink sm:max-w-[50%]"
+            className="absolute max-w-[55%] pl-2 leading-snug text-ink sm:max-w-[50%]"
             style={{ left: `${(a.tx / W) * 100}%`, top: `${(a.low / H) * 100}%`, transform: "translate(-0.5rem, -100%)", opacity: a.words }}
           >
             {a.text}
@@ -675,13 +687,13 @@ const TailCurve = ({ m, p }: { m: M; p: number }) => {
         {dots.map((x) => (
           <span
             key={x}
-            className={`absolute h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full ${x >= clipX - 1 && x <= clipX + clipW + 1 ? "bg-ink" : "bg-[#bdbdbd]"}`}
+            className={`absolute h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full ${x >= clipX - 1 && x <= clipX + clipW + 1 ? "bg-ink" : "bg-faint"}`}
             style={{ left: `${(x / W) * 100}%`, top: `${(y(x) / H) * 100}%` }}
           />
         ))}
       </div>
       {/* Words at both ends (owner, 2026-11-14; was one line on the right). */}
-      <div className="flex justify-between border-t border-[#bdbdbd] pt-2 text-[1.0625em] uppercase tracking-[0.2em]">
+      <div className="flex justify-between border-t border-faint pt-2 type-caps">
         <span>{m.tail.left}</span>
         <span>{m.tail.right}</span>
       </div>
@@ -797,27 +809,57 @@ const StudyBody = ({ m, p }: { m: M; p: number }) => {
         <KeepPct text={m.study.intro.replace("{n}", String(ASKED))} />
       </p>
       <div className="pt-2">
-        <Spread counts={counts} className="h-24 sm:h-28" shade={(i) => (i < at ? "fill-[#bdbdbd]" : i === at ? "fill-ink" : "fill-[#7a7a7a]")} />
+        <Spread counts={counts} className="h-24 sm:h-28" shade={(i) => (i < at ? "fill-faint" : i === at ? "fill-ink" : "fill-passed")} />
         {/* Grey caps like the long tail's axis words (owner, 2026-11-16). */}
-        <div className="mt-1 border-t border-[#bdbdbd] pt-2 text-center"><Caps>{m.study.players.replace("{n}", String(n))}</Caps></div>
+        <div className="mt-1 border-t border-faint pt-2 text-center"><Caps>{m.study.players.replace("{n}", String(n))}</Caps></div>
       </div>
       {/* The ink column waits on the last place through the stop, so the
           sentence always names a place (owner, 2026-11-14). */}
       {/* The server's HTML names place 1, not place 78's "0 kertaa"
           (ticket 20). */}
-      <AvgRow m={m} rank={(mounted ? at : 0) + 1} v={per100(counts[mounted ? at : 0])} max={per100(counts[0])} />
-      {/* What the slide shows (owner, 2026-11-19): the typical Candidate as
-          soon as the ink column reaches the middle place; then, once it
-          reaches place 1, place 1's count and how many times the typical. */}
-      <div className="space-y-1 pt-4 tabular-nums leading-snug sm:pt-6">
-        <p style={{ opacity: seg(mid + 0.5 - pos, 0, 1.5) }}>
-          <Bolded text={m.own.typical.replace("{n}", String(Math.round(typical)))} />
-        </p>
-        <p style={{ opacity: seg(p, 0.86, 0.95) }}>
-          <Bolded text={m.own.first.replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
-        </p>
-      </div>
+      <AvgRow m={m} rank={(mounted ? at : 0) + 1} v={per100(counts[mounted ? at : 0])} max={per100(counts[0])}>
+        {/* What the slide shows (owner, 2026-11-19): the typical Candidate as
+            soon as the ink column reaches the middle place; then, once it
+            reaches place 1, how many times the typical. Between the live
+            sentence and its squares, "{x} kertaa useammin" first (owner,
+            2026-11-26; was under the squares, typical first). Each line opens
+            its own room as it fades in, pushing the lines under it down, one
+            line spacing apart (owner, 2026-11-26). */}
+        <div className="tabular-nums leading-snug">
+          <Reveal f={seg(p, 0.86, 0.95)}>
+            <p className="pt-2">
+              <Bolded text={m.own.first.replace("{x}", String(Math.round(per100(counts[0]) / typical)))} />
+            </p>
+          </Reveal>
+          <Reveal f={seg(mid + 0.5 - pos, 0, 1.5)}>
+            <p className="pt-2">
+              <Bolded text={m.own.typical.replace("{n}", String(Math.round(typical)))} />
+            </p>
+          </Reveal>
+        </div>
+      </AvgRow>
     </figure>
+  );
+};
+
+/* Its content at `f` (0 to 1) of its height and opacity, so it opens its
+   own room as it appears and closes it again when scrolled back. */
+const Reveal = ({ f, children }: { f: number; children: ReactNode }) => {
+  const inner = useRef<HTMLDivElement>(null);
+  const [h, setH] = useState(0);
+  useBrowserLayoutEffect(() => {
+    const el = inner.current;
+    if (!el) return;
+    const measure = () => setH(el.offsetHeight);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <div className="overflow-hidden" style={{ height: h ? f * h : f ? undefined : 0, opacity: f }}>
+      <div ref={inner}>{children}</div>
+    </div>
   );
 };
 
@@ -832,21 +874,25 @@ const Bolded = ({ text }: { text: string }) => (
    was 10 grey squares filled in ink). One sentence over it says the same,
    its number following the animation; no label, count or key (owner,
    2026-11-14). */
-const AvgRow = ({ m, rank, v, max }: { m: M; rank: number; v: number; max: number }) => {
+const AvgRow = ({ m, rank, v, max, children }: { m: M; rank: number; v: number; max: number; children?: ReactNode }) => {
   const n = Math.round(v);
   const fill: Record<string, string> = { "{rank}": String(rank), "{n}": String(n) };
   return (
     <div className="space-y-3 pt-4 sm:pt-6">
       {/* The body's size like all plain text (owner, 2026-11-16); the place
           and the count bold (owner, 2026-11-15). */}
-      <p className="tabular-nums leading-snug">
-        {(n === 0 ? m.own.liveZero : n === 1 ? m.own.liveOne : m.own.live).split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
-      </p>
+      {/* The lines under it (`children`) follow at their own spacing. */}
+      <div>
+        <p className="tabular-nums leading-snug">
+          {(n === 0 ? m.own.liveZero : n === 1 ? m.own.liveOne : m.own.live).split(/(\{rank\}|\{n\})/).map((part, i) => (part in fill ? <b key={i}>{fill[part]}</b> : part))}
+        </p>
+        {children}
+      </div>
       {/* 24 px squares as before (owner, 2026-11-19); 12 px on phones so
           place 1's row fits 360 px screens. The row is as wide as place 1's
           ink, its last square cut to the fraction, so place 1's full row
           ends centred (owner, 2026-11-19). */}
-      <div className="mx-auto flex w-fit gap-[2px] [--sq:12px] sm:gap-[3px] sm:[--sq:24px]">
+      <div className="mx-page flex w-fit gap-[2px] [--sq:12px] sm:gap-[3px] sm:[--sq:24px]">
         {Array.from({ length: Math.ceil(max) }, (_, i) => (
           <span key={i} className="relative h-[var(--sq)]" style={{ width: `calc(var(--sq) * ${Math.min(1, max - i)})` }}>
             <span className="absolute inset-y-0 left-0 bg-ink" style={{ width: `${(Math.min(1, Math.max(0, v - i)) / Math.min(1, max - i)) * 100}%` }} />
@@ -871,62 +917,61 @@ const Measured = ({ c }: { c: Copy }) => {
           {(p) => (
             <>
               {/* The threat as the long-tail section's header (owner, 2026-11-13). */}
-              <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{c.visibility.summary}</h2>
+              <h2 className="type-h2">{c.visibility.summary}</h2>
               <div className="mt-8">
-                <TailCurve m={m} p={p} />
+                <TailCurve m={m} p={Math.min(1, (p * STUDY.curve) / STUDY.curveAnim)} />
               </div>
             </>
           )}
         </Pinned>
       </section>
 
-      <section data-track-section="election" className={SECTION_GAP}>
+      {/* Close under the curve (owner, 2026-11-26; was SECTION_GAP): it rises
+          under the still curve, then pushes it up and holds centred. */}
+      <section data-track-section="election" className="mt-12 sm:mt-16">
         <Pinned length={STUDY.body}>
           {(p) => (
             <>
               {/* Its own header, the size of the others (owner, 2026-11-15;
                   was the title of a box that opened under the curve). */}
-              <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{m.study.title}</h2>
-              {/* Ties the curve to the elections, a black caps label
-                  (owner, 2026-11-16; was plain text). */}
-              <div className="mt-4 sm:mt-10">
-                <Caps className="block leading-relaxed !text-ink">{m.study.bridge}</Caps>
-              </div>
-              <div className="mt-4 sm:mt-6">
+              <h2 className="type-h2">{m.study.title}</h2>
+              <div className="mt-6 sm:mt-10">
                 <StudyBody m={m} p={p} />
               </div>
             </>
           )}
         </Pinned>
-        {/* The elections page (owner, 2026-11-25: a line under the
-            election example; the nav stays one link). */}
-        <ElectionsLink c={c} />
       </section>
     </>
   );
 };
 
-/* The two held pieces' lengths in screen heights: the curve's timeline
-   (done at TAIL_DONE of it) and the election example's slide (StudyBody). */
+/* The two held pieces' lengths in screen heights: the curve's hold, its
+   timeline within it (done at TAIL_DONE of it) and the still part after it,
+   while the election example rises under the curve (owner, 2026-11-26);
+   and the election example's slide (StudyBody). */
 const STUDY = {
-  curve: 0.7,
+  curve: 0.8,
+  curveAnim: 0.7,
   body: 1.5,
 } as const;
 
 /* The questions behind `MEASURED.combined`, each asked in 2 wordings, so
-   `PAGE_ANSWERS` answers per AI. Both examples show `ASKED`: the election
-   example's "{n} kysymystä" and the weekly example's "Näkyvyytesi {n}
-   vastauksessa" (owner, 2026-11-15; 2026-11-19: "keep it simple"). */
+   `PAGE_ANSWERS` answers per AI. The election example's "{n} kysymystä"
+   (owner, 2026-11-15; 2026-11-19: "keep it simple"). */
 const ASKED = 211;
 
 /* The weekly example (owner, 2026-11-15: tie it to the election example):
    the rivals are places 1–3 of `MEASURED.combined` and "Sinä" place 24,
-   each rounded. `questions`: per square, 0 = not named, n = place among
-   the names in the answer; the last row follows a "⋮". */
+   each per 100 answers like the election example, rounded (owner,
+   2026-11-26: "Näkyvyytesi 100 vastauksessa"; was out of 211).
+   `questions`: per square, 0 = not named, n = named (its place among the
+   names, no longer shown); the last row follows a "⋮". */
+const per100 = (i: number) => Math.round((MEASURED.combined[i] / PAGE_ANSWERS) * 100);
 const SAMPLE = {
-  answers: PAGE_ANSWERS,
-  top: [90, 70, 58],
-  you: { rank: 24, count: 14 },
+  answers: 100,
+  top: [per100(0), per100(1), per100(2)],
+  you: { rank: 24, count: per100(23) },
   questions: [
     [0, 0, 0, 0],
     [1, 4, 2, 2],
@@ -934,20 +979,18 @@ const SAMPLE = {
   ],
 };
 
-/* What a measurement looks like, under the offer's three steps. Held with
-   the header and the steps as one piece, like the long tail and the election
-   box (owner, 2026-11-15): the box rises closed under the still steps, the
-   piece moves up until the box is centred, the box opens, its bars draw one
-   by one, then it grows to show the questions, whose named squares turn
-   ink. Each bar is its count out of `SAMPLE.answers` (owner, 2026-11-13). */
+/* What a measurement looks like, under the offer's three steps on the
+   services page (owner, 2026-11-26; was on Home): held while its bars draw
+   one by one, then the questions' named squares turn ink. Each bar is its
+   count out of `SAMPLE.answers` (owner, 2026-11-13). */
 const Sample = ({ c }: { c: Copy }) => {
   const s = c.visibility.sample;
   const rows = SAMPLE.top.length + 1;
   const Row = ({ rank, name, count, you, grow }: { rank: number; name: string; count: number; you?: boolean; grow: number }) => (
-    <li className={`grid grid-cols-[2.2rem_minmax(0,7rem)_1fr_2.5rem] items-center gap-3 px-2 py-1 transition-colors duration-150 motion-reduce:transition-none ${you ? "font-bold" : ""} ${you && grow > 0 ? "bg-rule/50" : ""}`}>
+    <li className={`grid grid-cols-[2.2rem_minmax(0,7rem)_1fr_2.5rem] items-center gap-3 px-2 py-1 transition-colors duration-150 motion-reduce:transition-none ${you ? "font-strong" : ""} ${you && grow > 0 ? "bg-rule/50" : ""}`}>
       <span className="tabular-nums text-muted">{rank}.</span>
       <span className="truncate">{name}</span>
-      <span className="h-2 bg-[#bdbdbd]">
+      <span className="h-2 bg-faint">
         <span className="block h-2 bg-ink" style={{ width: `${(count / SAMPLE.answers) * 100 * grow}%` }} />
       </span>
       <span className="text-right tabular-nums">{count}</span>
@@ -957,30 +1000,26 @@ const Sample = ({ c }: { c: Copy }) => {
   const hits = SAMPLE.questions.flat().filter(Boolean).length;
   return (
     <>
-      {/* The three things Josua does, under the section's header and a
-          quiet label spaced like the next step's (owner, 2026-11-15). Its
-          own held section, apart from the weekly example (owner, 2026-11-15;
-          the example rose under the steps as one piece). */}
-      <OfferSection c={c} />
-
       {/* The weekly example as its own section like the election example,
           the whole report open before its animations start (owner,
           2026-11-15; was a box that rose under the steps and opened). */}
-      <section data-track-section="weekly" className={SECTION_GAP}>
+      <section data-track-section="weekly">
         <Pinned length={WEEKLY_HOLD}>
           {(p) => {
-            const p1 = seg(p, 0.1, 0.45);
-            const p2 = seg(p, 0.55, 0.95);
+            // The bars, the topics' squares, then the instructions one by one.
+            const p1 = seg(p, 0.1, 0.35);
+            const p2 = seg(p, 0.4, 0.7);
+            const p3 = seg(p, 0.75, 0.97);
             let k = 0;
             return (
               <>
-              <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{s.label}</h2>
+              <h2 className="type-h2">{s.label}</h2>
               {/* A thin line on each side, so the body reads as a report
                   (owner, 2026-11-15). */}
               <div className="mt-8 border-x border-rule px-3 sm:mt-14 sm:px-6">
                 <figure>
                   {/* Black caps (owner, 2026-11-15; was a grey line). */}
-                  <Caps className="block !text-ink">{s.basis.replace("{n}", String(ASKED))}</Caps>
+                  <Caps className="block !text-ink">{s.basis.replace("{n}", String(SAMPLE.answers))}</Caps>
                   <ol className="mt-4 text-left">
                     {SAMPLE.top.map((n, i) => (
                       <Row key={i} rank={i + 1} name={s.rivals[i]} count={n} grow={seg(p1, i / rows, (i + 1) / rows)} />
@@ -1004,28 +1043,20 @@ const Sample = ({ c }: { c: Copy }) => {
                         {SAMPLE.questions.map((qs, i) => {
                           const named = qs.some(Boolean);
                           // The first unnamed row gets "Ei mainintaa"; the
-                          // first named row's highest place gets "Mainittiin
-                          // {n}. nimenä"; the other rows get no label.
+                          // other rows get no label ("Sinut mainittiin {n}.
+                          // nimenä" dropped, owner 2026-11-26).
                           const first = !named && SAMPLE.questions.findIndex((q) => !q.some(Boolean)) === i;
-                          const at = qs.indexOf(Math.max(...qs));
-                          const label = first
-                            ? { sq: 0, text: s.none, room: 1, wraps: false, draw: seg(p2, 0, 0.2), words: seg(p2, 0.15, 0.3) }
-                            : i === SAMPLE.questions.findIndex((q) => q.some(Boolean))
-                              ? // Opens its own room first, so its row starts
-                                // close under "Aihe 1" (owner, 2026-11-15).
-                                { sq: at, text: s.named.replace("{n}", String(qs[at])), room: seg(p2, 0.62, 0.74), wraps: true, draw: seg(p2, 0.72, 0.86), words: seg(p2, 0.82, 1) }
-                              : null;
+                          const label = first ? { sq: 0, text: s.none, draw: seg(p2, 0, 0.2), words: seg(p2, 0.15, 0.3) } : null;
                           return (
                             <Fragment key={i}>
-                              {/* "⋮" before the last row, "Aihe 211" (owner, 2026-11-15). */}
+                              {/* "⋮" before the last row, "Aihe 100" (owner, 2026-11-15; 211 until 2026-11-26). */}
                               {i > 0 && i === SAMPLE.questions.length - 1 && <li className="text-muted">⋮</li>}
                               <li>
                                 {/* Labels like the long tail's: plain black text over
                                     their square, a thin grey line dropping
                                     to touch it, no arrows (owner, 2026-11-15; plain text, 2026-11-16). */}
                                 {label && (
-                                  // Taller on phones for the long label, whose words wrap to two lines there.
-                                  <div className={`relative ${label.wraps ? "h-[calc(var(--room)*3.4rem)]" : "h-[calc(var(--room)*2.25rem)]"} sm:h-[calc(var(--room)*2.25rem)]`} style={{ "--room": label.room } as CSSProperties}>
+                                  <div className="relative h-[2.25rem]">
                                     <span
                                       className="absolute bottom-[0.9rem] right-0 pl-2 leading-snug text-ink sm:right-auto sm:whitespace-nowrap"
                                       style={{ left: `calc(${label.sq} * (1.25rem + 3px) + 0.625rem - 0.5rem)`, opacity: label.words }}
@@ -1033,22 +1064,21 @@ const Sample = ({ c }: { c: Copy }) => {
                                       {label.text}
                                     </span>
                                     <span
-                                      className="absolute bottom-0 h-[0.75rem] w-px origin-top bg-[#9a9a9a]"
+                                      className="absolute bottom-0 h-[0.75rem] w-px origin-top bg-line"
                                       style={{ left: `calc(${label.sq} * (1.25rem + 3px) + 0.625rem)`, transform: `scaleY(${label.draw})` }}
                                     />
                                   </div>
                                 )}
-                                {/* The squares and the topic on one row (owner, 2026-11-15). */}
+                                {/* The squares and the topic on one row (owner, 2026-11-15);
+                                    the squares carry no numbers (owner, 2026-11-26). */}
                                 <div className="flex items-center gap-[3px]">
                                   {qs.map((h, j) => {
-                                    const ink = h > 0 && p2 >= 0.3 + (++k / hits) * 0.3;
+                                    const ink = h > 0 && p2 >= 0.3 + (++k / hits) * 0.6;
                                     return (
                                       <span
                                         key={j}
-                                        className={`flex h-5 w-5 items-center justify-center text-[0.7em] font-bold tabular-nums transition-colors duration-150 motion-reduce:transition-none ${ink ? "bg-ink text-white" : "bg-[#bdbdbd] text-transparent"}`}
-                                      >
-                                        {h || ""}
-                                      </span>
+                                        className={`h-5 w-5 transition-colors duration-150 motion-reduce:transition-none ${ink ? "bg-ink" : "bg-faint"}`}
+                                      />
                                     );
                                   })}
                                   <span className="ml-3">{s.questions[i]}</span>
@@ -1062,6 +1092,22 @@ const Sample = ({ c }: { c: Copy }) => {
                         })}
                       </ul>
                     </div>
+                    {/* The instructions as the report's third part, after
+                        the measures (owner, 2026-11-26, picked "A" on a
+                        throwaway switch; was a list under the report),
+                        then a grey note on who can carry them out. */}
+                    <div className="pt-8 sm:pt-12">
+                      <Caps className="block leading-relaxed !text-ink">{s.guide.lead}</Caps>
+                      <ol className="mt-4 space-y-2 text-left">
+                        {s.guide.items.map((it, i) => (
+                          <li key={it} className="flex items-baseline gap-3" style={{ opacity: seg(p3, i / 5, (i + 1.5) / 5) }}>
+                            <span className="w-6 shrink-0 tabular-nums text-muted">{String(i + 1).padStart(2, "0")}</span>
+                            <span>{it}</span>
+                          </li>
+                        ))}
+                      </ol>
+                      <p className="mt-4 leading-snug text-muted" style={{ opacity: seg(p3, 0.8, 1) }}>{s.guide.note}</p>
+                    </div>
                 </figure>
               </div>
               </>
@@ -1071,19 +1117,9 @@ const Sample = ({ c }: { c: Copy }) => {
         {/* What comes with the report, before the button (owner,
             2026-11-17), as far from the report as the button was (owner,
             2026-11-16). */}
-        <div className="mt-12 sm:mt-20">
-          {/* Black caps over numbered bold lines, like the next step's
-              label and topics (owner, 2026-11-17). */}
-          <Caps className="block leading-relaxed !text-ink">{s.guide.lead}</Caps>
-          <ol className="mt-5 flex flex-col gap-3">
-            {s.guide.items.map((it, i) => (
-              <li key={it} className="flex items-baseline justify-center gap-[0.5em]">
-                <span className="text-muted tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                <span className="font-display text-[1.1em] font-bold">{it}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
+        {/* The do-it-for-you line before the button, as on the elections
+            page (owner, 2026-11-26). */}
+        <p className="mt-12 max-w-[34rem] leading-snug sm:mt-20"><KeepPct text={s.guide.doForYou} /></p>
         {/* The free conversation again once the reader has seen the
             prices and the report (owner, 2026-11-15). */}
         <BookButton offer={c.visibility} place="weekly" />
@@ -1103,7 +1139,7 @@ const OfferSection = ({ c, lead, label, steps, below }: { c: Copy; lead?: string
       <Pinned length={OFFER_HOLD}>
         {(p) => (
           <>
-            <h2 className="font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">{lead ?? s.weekly.lead}</h2>
+            <h2 className="type-h2">{lead ?? s.weekly.lead}</h2>
             {/* The label turns black from right to left while the steps
                 hold (owner, 2026-11-15). */}
             <div className="mt-4 mb-4 sm:mt-14 sm:mb-5">
@@ -1119,9 +1155,9 @@ const OfferSection = ({ c, lead, label, steps, below }: { c: Copy; lead?: string
 };
 
 /* The weekly example's hold in screen heights: its bars draw, then its
-   squares and labels (was 2.5 with the steps, the box's rise and its
-   opening; the body alone had 1.15). */
-const WEEKLY_HOLD = 1.2;
+   squares and labels, then the instructions (1.6 since they joined the
+   report, 2026-11-26; was 1.2). */
+const WEEKLY_HOLD = 1.6;
 
 /* The next step's hold in screen heights while its header fills black
    (owner, 2026-11-16; the label filled before, now it is black at once). */
@@ -1139,7 +1175,7 @@ const OFFER_FILL = [0.35, 0.9] as const;
 const FillH2 = ({ f, children }: { f: number; children: ReactNode }) => {
   const mounted = useMounted();
   return (
-    <h2 className="relative font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]">
+    <h2 className="relative type-h2">
       <span className="text-muted">{children}</span>
       {mounted && (
         <span aria-hidden className="absolute inset-0" style={{ clipPath: `inset(0 0 0 ${(1 - f) * 100}%)` }}>
@@ -1170,7 +1206,7 @@ const FillCaps = ({ f, children }: { f: number; children: ReactNode }) => {
    2026-11-14). */
 const BookButton = ({ offer, place }: { offer: Pick<OfferCopy, "request">; place: string }) => (
   <div className="mt-6 sm:mt-12">
-    <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place={place} className="inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
+    <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place={place} className="btn-primary">
       {offer.request?.label}&nbsp;→
     </a>
   </div>
@@ -1184,7 +1220,7 @@ const VisibilitySection = ({ c }: { c: Copy }) => {
   return (
     <Band id="palvelut" className="pb-24 sm:pb-32">
       {/* Text centred like the first screen (owner, 2026-11-13). */}
-      <div className="mx-auto max-w-[40rem] text-center">
+      <div className="mx-page w-column align-page">
       <Measured c={c} />
 
       <section data-track-section="next-step" className={SECTION_GAP}>
@@ -1209,25 +1245,8 @@ const VisibilitySection = ({ c }: { c: Copy }) => {
         </Pinned>
       </section>
 
-      <Sample c={c} />
       </div>
     </Band>
-  );
-};
-
-/* The line under the main page's election example that opens the elections
-   page in the reader's language (ticket 21). */
-const ElectionsLink = ({ c }: { c: Copy }) => {
-  const lang = (useRouter().locale ?? "en") as Lang;
-  return (
-    <p className="mt-8 sm:mt-12">
-      {/* No scroll here: the page opens at its top itself (B3Elections). */}
-      <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
-        <a data-track="elections-page" data-track-place="election" className="font-bold underline underline-offset-4 hover:no-underline">
-          {c.elections.link}&nbsp;→
-        </a>
-      </Link>
-    </p>
   );
 };
 
@@ -1246,11 +1265,11 @@ const B3Elections = ({ c }: { c: Copy }) => {
   }, []);
   const e = c.elections;
   const m = c.visibility.measured;
-  const h2 = "font-display text-[1.75em] font-bold leading-[1.15] sm:text-[2.1em]";
+  const h2 = "type-h2";
   return (
     <>
       <div className="flex min-h-[calc(100svh-9rem)] flex-col justify-center py-16">
-        <section data-track-section="first-screen" className="text-center">
+        <section data-track-section="first-screen" className="align-page">
           {/* The deadline first, for urgency (owner, 2026-11-25). */}
           {/* Two lines on phones, one line split by a dot on wide screens
               (review, 2026-11-25). */}
@@ -1262,19 +1281,19 @@ const B3Elections = ({ c }: { c: Copy }) => {
               </span>
             ))}
           </Caps>
-          <h1 className="mx-auto mt-4 max-w-[44rem] font-display text-[2.3em] font-bold leading-[1.08] sm:text-[3em]">{e.title}</h1>
-          <p className="mx-auto mt-5 max-w-[34rem] text-[1.15em] leading-snug">{e.answer}</p>
-          <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="first-screen" className="mt-6 inline-block bg-ink px-5 py-3 font-bold text-white hover:bg-ink/90">
+          <h1 className="mx-page mt-4 max-w-[44rem] type-h1-long">{e.title}</h1>
+          <p className="mx-page mt-5 max-w-[34rem] text-lead leading-snug">{e.answer}</p>
+          <a href={BOOKING} target="_blank" rel="noopener noreferrer" data-track="book-call" data-track-place="first-screen" className="btn-primary mt-6">
             {c.visibility.request?.label}&nbsp;→
           </a>
           {/* The name beside the topic as a quiet byline (owner, 2026-11-25;
               the company in place of the header's role, review 2026-11-25). */}
-          <p className="mt-4 text-[0.85em] text-muted">Josua Kiviranta · Sassosa Consulting · {e.topic}</p>
+          <p className="mt-4 text-small text-muted">Josua Kiviranta · Sassosa Consulting · {e.topic}</p>
         </section>
       </div>
 
       <Band className="pb-24 sm:pb-32">
-        <div className="mx-auto max-w-[40rem] text-center">
+        <div className="mx-page w-column align-page">
           <section data-track-section="question">
             <h2 className={h2}>{e.question.title}</h2>
             {/* The theme and how many each AI left out, the counts as big
@@ -1287,8 +1306,8 @@ const B3Elections = ({ c }: { c: Copy }) => {
             <div className="mt-4 grid grid-cols-2 gap-6 sm:gap-12">
               {e.question.missed.map((r) => (
                 <div key={r.ai}>
-                  <p className="font-display font-bold leading-none tabular-nums">
-                    <span className="text-[3.5em] sm:text-[4.5em]">{r.n}</span>
+                  <p className="type-display leading-none tabular-nums">
+                    <span className="text-figure">{r.n}</span>
                     <span className="text-[1.25em]"> / {e.question.of}</span>
                   </p>
                   <p className="mt-2 leading-snug"><b>{r.ai}</b> {r.text}</p>
@@ -1320,8 +1339,8 @@ const B3Elections = ({ c }: { c: Copy }) => {
             // fits the screen (review, 2026-11-25).
             below={
               <>
-                <p className="mt-6 tabular-nums font-bold sm:mt-8">{e.offer.price}</p>
-                <p className="mx-auto mt-4 max-w-[34rem] leading-snug"><KeepPct text={e.offer.extra} /></p>
+                <p className="mt-6 tabular-nums font-strong sm:mt-8">{e.offer.price}</p>
+                <p className="mx-page mt-4 max-w-[34rem] leading-snug"><KeepPct text={e.offer.extra} /></p>
                 <BookButton offer={c.visibility} place="offer" />
               </>
             }
@@ -1330,12 +1349,48 @@ const B3Elections = ({ c }: { c: Copy }) => {
           {/* Closer to the offer, with a quiet label (review, 2026-11-25). */}
           <section data-track-section="independence" className="mt-[6rem] sm:mt-[8rem]">
             <Caps className="mb-4 block">{e.independenceLabel}</Caps>
-            <ul className="space-y-2 font-display text-[1.1em] font-bold leading-snug">
+            <ul className="space-y-2 type-h3 leading-snug">
               {e.independence.map((line) => (
                 <li key={line}>{line}</li>
               ))}
             </ul>
           </section>
+        </div>
+      </Band>
+
+      <Band className="!pb-0">
+        <ContactCentred c={c} />
+      </Band>
+    </>
+  );
+};
+
+/* Services and prices (owner, 2026-11-26; was the offer and the weekly
+   example on Home): the offer as a still first screen, its header the
+   page's h1 and its caps label black at once; then the weekly example,
+   held while it animates, the weekly instructions and the button; then
+   Yhteystiedot. */
+const B3Services = ({ c }: { c: Copy }) => {
+  // Opened from the nav, start at the top at once (as B3Elections).
+  useBrowserLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, []);
+  const w = c.visibility.sample.weekly;
+  return (
+    <>
+      <div className="flex min-h-[calc(100svh-9rem)] flex-col justify-center py-16">
+        <section id={SERVICES_ID} data-track-section="first-screen" className="mx-page w-column align-page">
+          <h1 className="type-h1-long">{w.lead}</h1>
+          <div className="mt-6 mb-4 sm:mt-14 sm:mb-5">
+            <Caps className="!text-ink">{w.label}</Caps>
+          </div>
+          <B3Steps items={w.steps} />
+        </section>
+      </div>
+
+      <Band className="pb-24 sm:pb-32">
+        <div className="mx-page w-column align-page">
+          <Sample c={c} />
         </div>
       </Band>
 
@@ -1359,8 +1414,8 @@ const B3Case = ({ c }: { c: Copy }) => {
           {client.name} · <span className="tabular-nums">{client.year}</span>
         </p>
       )}
-      <h1 className="mt-2 font-display text-[2.1em] font-bold leading-[1.15]">{cs.title}</h1>
-      {cs.summary && <p className="mt-4 text-[1.15em] leading-snug text-muted">{cs.summary}</p>}
+      <h1 className="mt-2 type-h2">{cs.title}</h1>
+      {cs.summary && <p className="mt-4 text-lead leading-snug text-muted">{cs.summary}</p>}
 
       <PageH2>{cs.situation.heading}</PageH2>
       {cs.situation.text ? <Prose text={cs.situation.text} /> : <Pending label={cs.pendingLabel} text={cs.situation.pending} />}
@@ -1382,14 +1437,15 @@ const B3Case = ({ c }: { c: Copy }) => {
 const VariantB3 = ({ c, lang, route }: { c: Copy; lang: Lang; route?: Route }) => {
   const { page, go } = usePage(route);
   return (
-    <main className="mx-auto w-full max-w-[56rem] px-5 pb-32 sm:px-8">
+    <main className="mx-auto w-full w-frame px-5 pb-32 sm:px-8">
       <B3Header c={c} lang={lang} page={page} go={go} />
       {page === "home" && <B3Home c={c} go={go} />}
       {page === "background" && <B3Background c={c} />}
       {page === "case" && <B3Case c={c} />}
       {page === "privacy" && <B3Privacy c={c} />}
       {page === "elections" && <B3Elections c={c} />}
-      <Footer c={c} places close={page === "home" || page === "elections"} />
+      {page === "services" && <B3Services c={c} />}
+      <Footer c={c} places close={page === "home" || page === "elections" || page === "services"} />
     </main>
   );
 };

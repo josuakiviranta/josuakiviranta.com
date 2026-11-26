@@ -5,17 +5,10 @@ export default function Document() {
     // Next sets `lang` from the address's language (en, fi, it).
     <Html>
       <Head>
-        {/* Latin Modern Roman, self-hosted (see @font-face in globals.css). */}
+        {/* Inter, self-hosted (see @font-face in styles/theme.css). */}
         <link
           rel="preload"
-          href="/fonts/lmroman10-regular.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/lmroman12-bold.woff2"
+          href="/fonts/inter-latin-opsz-normal.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"

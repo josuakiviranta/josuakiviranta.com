@@ -47,8 +47,7 @@ export type Copy = {
      of them each AI left unnamed in its answers to the theme's questions
      (`missed`: the AI, its words and the count, shown as a big "n / of");
      the questions' wording stays unshown (owner, 2026-11-25). `offer` replaces
-     the main page's priced steps (owner, 2026-11-25). `link` is the main
-     page's line under the election example. */
+     the main page's priced steps (owner, 2026-11-25). */
   elections: {
     headTitle: string;
     lead: string;
@@ -61,7 +60,6 @@ export type Copy = {
     offer: { lead: string; label: string; steps: { title: string; body: string }[]; price: string; extra: string };
     independenceLabel: string;
     independence: string[];
-    link: string;
   };
   problem: string;
   offer: string;
@@ -76,6 +74,10 @@ export type Copy = {
   /* The nav's one link, to the elections page (owner, 2026-11-25; was
      `navServices`, to the offer). */
   navElectionsPage: string;
+  /* The nav's link to the services page and that page's head (owner,
+     2026-11-26); its words are `visibility.sample` (weekly, guide). */
+  navServicesPage: string;
+  services: { headTitle: string; lead: string };
   /* The sales section under the first screen (owner, 2026-11-13; was the
      AI-visibility service page). `request.label` is the booking button's
      label. For anyone, companies too. */
@@ -89,7 +91,7 @@ export type Copy = {
       tail: { y: string; /* Under the axis's two ends (owner, 2026-11-14). */ left: string; right: string; /* Over the flat tail (owner, 2026-11-13). */ most: string; /* At the arrow to the striped head (owner, 2026-11-13). */ here: string };
       /* The election example; `players`: the axis unit under its graph
          (owner, 2026-11-13). */
-      study: { title: string; /* The line under the header that ties the curve to the elections (owner, 2026-11-15). */ bridge: string; players: string; /* The box's sentence; owner's wording, 2026-11-14. */ intro: string };
+      study: { title: string; players: string; /* The box's sentence; owner's wording, 2026-11-14. */ intro: string };
     };
     /* The weekly example, names hidden. The numbers are in `SAMPLE` in
        HomepageVariants.tsx; `questions` match its rows in order. */
@@ -102,9 +104,8 @@ export type Copy = {
       ask: string;
       /* The grey line under `ask`: what a set of questions is (owner, 2026-11-15). */
       legend: string;
-      /* Arrow labels on the squares (owner, 2026-11-13: like the study box's arrow): `none` at an unnamed row, `named` under the named row's highest place, `{n}` the place. */
+      /* The label over the first unnamed row's squares (owner, 2026-11-13; the named row's label dropped 2026-11-26). */
       none: string;
-      named: string;
       questions: string[];
       /* The block before the sample that sells the offer: a header and the
          three things Josua does, laid out like the next step's topics
@@ -114,7 +115,10 @@ export type Copy = {
       /* What comes with the weekly report, under it and before the button
          (owner, 2026-11-17): a caps line over numbered lines, the numbers
          drawn by the page. */
-      guide: { lead: string; items: string[] };
+      /* The instructions as the report's third part (owner, 2026-11-26):
+         `note` the grey line at the report's end, `doForYou` the line
+         before the button. */
+      guide: { lead: string; items: string[]; note: string; doForYou: string };
     };
     /* The next step before the offer (owner, 2026-11-12): `lead` the
        header, `body` the label over the three topics. */
@@ -174,34 +178,33 @@ export const COPY: Record<Lang, Copy> = {
     },
     elections: {
       headTitle: "Finnish parliamentary elections 2027: candidate visibility in AI answers",
-      lead: "Josua Kiviranta measures how often ChatGPT and Claude name a 2027 Finnish parliamentary election candidate compared with others in their electoral district.",
-      urgency: "Election day 18 April 2027 · AI updates with a delay",
+      lead: "Josua Kiviranta measures how often ChatGPT and Claude name a candidate in the 2027 Finnish parliamentary elections compared with others in their district.",
+      urgency: "Election day 18 April 2027 · AI updates with a lag",
       title: "Does AI name you when a voter asks about the candidates in your electoral district?",
       answer: "Probably rarely, unless you are branded for AI, easy to find or otherwise well known.",
       topic: "Finnish parliamentary elections 2027",
       question: {
         title: "Voters ask AI.",
-        theme: "Entrepreneurship is the most common theme among Helsinki candidates: 39 candidates raise it on their pages.",
-        asked: "AI was asked 5 questions about candidates who promote entrepreneurship, each in two different ways.",
+        theme: "Entrepreneurship is the most common theme among Helsinki candidates: 39 candidates feature it on their pages.",
+        asked: "AI was asked 5 questions about candidates who champion entrepreneurship, each asked in two different ways.",
         missedLead: "Of these 39 candidates",
         of: 39,
         missed: [{ ai: "Claude", text: "never named", n: 24 }, { ai: "ChatGPT", text: "never named", n: 29 }],
       },
       measured: { title: "Measured: Helsinki electoral district, November 2026" },
       offer: {
-        lead: "Weekly report: how you rise into AI answers before election day.",
+        lead: "Weekly report: how you get into AI answers before election day.",
         label: "The report’s three parts · no commitment",
         steps: [
           { title: "Situation overview", body: "How often AI names you and your competitors on your own themes." },
-          { title: "Instructions for your helpers", body: "Weekly instructions for your helpers: what to publish on your own pages, and where others should write about you." },
-          { title: "Emerging election themes", body: "New themes where no one shows up yet, and chances to make your name on them in AI answers." },
+          { title: "Instructions for your campaign team", body: "Weekly instructions for your campaign team: what to publish on your own pages, and where others should write about you." },
+          { title: "Emerging election themes", body: "New themes where no one shows up yet, and openings to position yourself as their champion in AI answers." },
         ],
         price: "€190 / month + VAT",
-        extra: "Want me to make the changes for you? I produce the material and the changes to your website at the consultation price of €90\u00a0/\u00a0hour\u00a0+\u00a0VAT.",
+        extra: "Want me to make the changes for you? I produce the material and make the changes to your website at the consulting rate of €90\u00a0/\u00a0hour\u00a0+\u00a0VAT.",
       },
       independenceLabel: "Independent",
       independence: ["The same service and prices for candidates of every party.", "I am not a member of any party.", "My clients stay confidential."],
-      link: "Finnish parliamentary elections 2027: measurement in your electoral district",
     },
     problem: "Before deciding, people ask AI.",
     offer: "I help you show up in AI answers.",
@@ -210,7 +213,7 @@ export const COPY: Record<Lang, Copy> = {
       // Held back for now (owner, 2026-11-12):
       // { title: "Run your own site", body: "I teach you to update your site, optimised for AI search, without a webmaster." },
     ],
-    clientsHeading: "References",
+    clientsHeading: "Clients",
     clients: [
       { name: "Haka-Wood", year: "2026", logo: { src: "/hakawood-logo.svg", href: "https://www.haka-wood.fi/" } },
       {
@@ -221,53 +224,59 @@ export const COPY: Record<Lang, Copy> = {
     ],
     backgroundHeading: "Background",
     navElectionsPage: "Finnish elections 2027",
+    navServicesPage: "Services and prices",
+    services: {
+      headTitle: "Services and prices: GEO and visibility in AI answers",
+      lead: "Josua Kiviranta: industry analysis and consulting €90 / hour + VAT, continuous measurement of visibility in AI answers €190 / month + VAT.",
+    },
     visibility: {
-      summary: "If AI can’t find you, it recommends your rival.",
+      summary: "If AI can’t find you, it recommends your competitor.",
       measured: {
         own: {
-          live: "The candidate in place {rank} is named on average {n} times in 100 answers.",
-          liveOne: "The candidate in place {rank} is named on average {n} time in 100 answers.",
+          live: "The candidate in position {rank} is named on average {n} times in 100 answers.",
+          liveOne: "The candidate in position {rank} is named on average {n} time in 100 answers.",
           typical: "The typical candidate is named **{n} times** in 100 answers.",
-          liveZero: "The candidate in place {rank} is not named once in 100 answers.",
+          liveZero: "The candidate in position {rank} is not named once in 100 answers.",
           first: "**{x} times as often** as the typical candidate.",
         },
         tail: { y: "Mentions in AI answers", left: "Many mentions", right: "Few mentions", most: "Most options are rarely mentioned", here: "You want to be among the few options mentioned often" },
-        study: { title: "Example: Finnish parliamentary elections 2027", bridge: "The same distribution can be measured in how candidates are named in elections.", players: "{n} candidates", intro: "ChatGPT and Claude were asked {n} questions about candidates in the Helsinki electoral district, and the questions named no candidate." },
+        study: { title: "Example: Finnish parliamentary elections 2027", players: "{n} candidates measured", intro: "ChatGPT and Claude were asked {n} questions about candidates in the Helsinki electoral district; none of the questions named a candidate." },
       },
       sample: {
-        label: "Weekly continuous measurement",
+        label: "Example: Continuous measurement and guidelines",
         basis: "Your visibility in {n} answers.",
         rivals: ["Competitor A", "Competitor B", "Competitor C"],
         you: "You",
         ask: "Do you show up in the topics that matter to you?",
         legend: "For each topic, precisely defined questions are put to different AI models.",
         none: "No mention",
-        named: "You were the {n}th name in the answer",
-        questions: ["Topic 1", "Topic 2", "Topic 211"],
+        questions: ["Topic 1", "Topic 2", "Topic 100"],
         guide: {
-          lead: "+ Weekly instructions based on a personal analysis, on how to increase your visibility:",
-          items: ["What you have to do.", "Where you should be.", "What you should add.", "What you should change."],
+          lead: "Monthly guidelines based on a closer analysis of the competitive field",
+          note: "You can give these to an AI or to your staff to carry out.",
+          doForYou: "Want me to make the changes for you? I produce the material and make the changes to your website at the consulting rate of €90\u00a0/\u00a0hour\u00a0+\u00a0VAT.",
+          items: ["What to add or change on your own pages.", "Where others should mention you.", "What to publish next, and on which topic.", "Where your competitors are overtaking you now."],
         },
         weekly: {
-          label: "Services and prices, no commitment",
+          label: "Services and prices · no commitment",
           lead: "I help you show up in AI answers.",
           steps: [
             { title: "Industry analysis", body: "After the first conversation, I count how often AI names you and your competitors.", price: "€90 / hour + VAT" },
-            { title: "Consultation", body: "Together we go through how to increase your visibility based on the analysis.", price: "€90 / hour + VAT" },
-            { title: "Continuous measurement", body: "Each week you see how your visibility and the competition change.", price: "€190 / month + VAT" },
+            { title: "Consulting", body: "Based on the analysis, we go through together how to increase your visibility. If you wish, I also help you take charge of your own brand using AI.", price: "€90 / hour + VAT" },
+            { title: "Continuous measurement and guidelines", body: "Each month you see how your visibility and the competition change, with guidelines on how to keep your visibility high.", price: "€190 / month + VAT" },
           ],
         },
       },
       next: {
-        lead: "Let’s clarify how your brand gains visibility in AI answers.",
+        lead: "Let’s find out how your brand can gain visibility in AI answers.",
         body: "In our first conversation we go through",
         steps: [
-          { title: "Your goal", body: "Which buyers and enquiries do you want to reach?" },
+          { title: "Your goal", body: "Which buyers and enquiries do you want to attract?" },
           { title: "Your current situation", body: "Where do your brand, website and sources stand today?" },
           { title: "Your competitors", body: "Which players in your field do you compete with for visibility?" },
         ],
       },
-      request: { label: "Book a free conversation" },
+      request: { label: "Book a free call" },
     },
     caseStudy: {
       cardLink: "Read the case →",
@@ -319,7 +328,7 @@ export const COPY: Record<Lang, Copy> = {
     },
     elections: {
       headTitle: "Eduskuntavaalit 2027: ehdokkaan näkyvyys tekoälyn vastauksissa",
-      lead: "Josua Kiviranta mittaa, kuinka usein ChatGPT ja Claude mainitsevat eduskuntavaalien 2027 ehdokkaan vaalipiirinsä muihin ehdokkaisiin verrattuna.",
+      lead: "Josua Kiviranta mittaa, kuinka usein ChatGPT ja Claude mainitsevat eduskuntavaalien 2027 ehdokkaan saman vaalipiirin muihin ehdokkaisiin verrattuna.",
       urgency: "Vaalipäivä 18.4.2027 · Tekoäly päivittyy viiveellä",
       title: "Mainitseeko tekoäly sinut, kun äänestäjä kysyy vaalipiirisi ehdokkaista?",
       answer: "Todennäköisesti harvoin, ellet ole brändäytynyt tekoälylle, helposti löydettävä tai muuten tunnettu.",
@@ -342,11 +351,10 @@ export const COPY: Record<Lang, Copy> = {
           { title: "Nousevat vaaliteemat", body: "Uudet teemat, joissa kukaan ei vielä näy, ja tilaisuudet profiloitua niiden edustajaksi tekoälyn vastauksissa." },
         ],
         price: "190 € / kk + alv",
-        extra: "Haluatko, että teen muutokset puolestasi? Tuotan aineiston ja sivustosi muutokset konsultointihinnalla 90\u00a0€\u00a0/\u00a0h\u00a0+\u00a0alv.",
+        extra: "Haluatko, että teen muutokset puolestasi? Tuotan aineiston ja teen sivustosi muutokset konsultointihinnalla 90\u00a0€\u00a0/\u00a0h\u00a0+\u00a0alv.",
       },
       independenceLabel: "Riippumaton",
-      independence: ["Sama palvelu ja samat hinnat kaikkien puolueiden ehdokkaille.", "En ole minkään puolueen jäsen.", "Asiakkaani pysyvät luottamuksellisina."],
-      link: "Eduskuntavaalit 2027: mittaus omassa vaalipiirissäsi",
+      independence: ["Sama palvelu ja samat hinnat kaikkien puolueiden ehdokkaille.", "En ole minkään puolueen jäsen.", "Asiakkuudet ovat luottamuksellisia."],
     },
     problem: "Ennen päätöstä kysytään tekoälyltä.",
     offer: "Autan sinua näkymään tekoälyn vastauksissa.",
@@ -366,6 +374,11 @@ export const COPY: Record<Lang, Copy> = {
     ],
     backgroundHeading: "Tausta",
     navElectionsPage: "Eduskuntavaalit 2027",
+    navServicesPage: "Palvelut ja hinnat",
+    services: {
+      headTitle: "Palvelut ja hinnat: GEO ja näkyvyys tekoälyn vastauksissa",
+      lead: "Josua Kiviranta: toimiala-analyysi ja konsultointi 90 € / h + alv, näkyvyyden jatkuva mittaus tekoälyn vastauksissa 190 € / kk + alv.",
+    },
     visibility: {
       summary: "Jos tekoäly ei löydä sinua, se suosittelee kilpailijaasi.",
       measured: {
@@ -377,29 +390,30 @@ export const COPY: Record<Lang, Copy> = {
           first: "**{x} kertaa useammin** kuin tyypillinen ehdokas.",
         },
         tail: { y: "Maininnat tekoälyn vastauksissa", left: "Paljon mainintoja", right: "Vähän mainintoja", most: "Useimmat vaihtoehdot mainitaan harvoin", here: "Haluat kuulua harvoihin usein mainittuihin vaihtoehtoihin" },
-        study: { title: "Esimerkki: Eduskuntavaalit 2027", bridge: "Sama jakauma voidaan mitata ehdokkaiden nimeämisessä vaaleissa.", players: "{n} ehdokasta", intro: "ChatGPT:ltä ja Claudelta kysyttiin {n} kysymystä Helsingin vaalipiirin ehdokkaista, ilman ehdokkaiden nimeämistä." },
+        study: { title: "Esimerkki: Eduskuntavaalit 2027", players: "{n} mitattua ehdokasta", intro: "ChatGPT:ltä ja Claudelta kysyttiin {n} kysymystä Helsingin vaalipiirin ehdokkaista, ilman ehdokkaiden nimeämistä." },
       },
       sample: {
-        label: "Viikoittainen jatkuva mittaus",
+        label: "Esimerkki: Jatkuva mittaus ja toimintaohjeet",
         basis: "Näkyvyytesi {n} vastauksessa.",
         rivals: ["Kilpailija A", "Kilpailija B", "Kilpailija C"],
         you: "Sinä",
         ask: "Näytkö sinulle tärkeissä aiheissa?",
         legend: "Jokaisesta aiheesta kysytään tarkoin määritellyt kysymykset eri tekoälymalleilta.",
         none: "Ei mainintaa",
-        named: "Sinut mainittiin {n}. nimenä vastauksessa",
-        questions: ["Aihe 1", "Aihe 2", "Aihe 211"],
+        questions: ["Aihe 1", "Aihe 2", "Aihe 100"],
         guide: {
-          lead: "+ Viikoittaiset ohjeet henkilökohtaisen analyysin pohjalta, miten lisäät näkyvyyttäsi:",
-          items: ["Mitä sinun pitää tehdä.", "Missä sinun pitää olla.", "Mitä sinun pitää lisätä.", "Mitä sinun pitää muuttaa."],
+          lead: "Kuukausittaiset ohjeet kilpailukentän tarkemman analyysin pohjalta",
+          note: "Voit antaa nämä tekoälylle tai työntekijällesi toteutettaviksi.",
+          doForYou: "Haluatko, että teen muutokset puolestasi? Tuotan aineiston ja teen sivustosi muutokset konsultointihinnalla 90\u00a0€\u00a0/\u00a0h\u00a0+\u00a0alv.",
+          items: ["Mitä lisätä tai muuttaa omilla sivuillasi.", "Missä muiden pitäisi mainita sinut.", "Mitä julkaista seuraavaksi ja mistä aiheesta.", "Missä kilpailijasi ohittavat sinut nyt."],
         },
         weekly: {
           label: "Palvelut ja hinnat ilman sitoutumista",
           lead: "Autan sinua näkymään tekoälyn vastauksissa.",
           steps: [
             { title: "Toimiala-analyysi", body: "Ensimmäisen keskustelun jälkeen lasken, kuinka usein tekoäly mainitsee sinut ja kilpailijasi.", price: "90 € / h + alv" },
-            { title: "Konsultointi", body: "Käymme yhdessä läpi, miten lisäät näkyvyyttäsi analyysin pohjalta.", price: "90 € / h + alv" },
-            { title: "Jatkuva mittaus", body: "Näet viikoittain, miten näkyvyytesi ja kilpailija-asetelma muuttuvat.", price: "190 € / kk + alv" },
+            { title: "Konsultointi", body: "Käymme yhdessä läpi, miten lisäät näkyvyyttäsi analyysin pohjalta. Autan halutessasi sinua myös ottamaan oman brändisi hallintaan tekoälyn avulla.", price: "90 € / h + alv" },
+            { title: "Jatkuva mittaus ja toimintaohjeet", body: "Näet kuukausittain, miten näkyvyytesi ja kilpailija-asetelma muuttuvat, ja saat toimintaohjeet, joilla pidät näkyvyytesi korkealla.", price: "190 € / kk + alv" },
           ],
         },
       },
@@ -407,9 +421,9 @@ export const COPY: Record<Lang, Copy> = {
         lead: "Selvitetään, miten brändisi saa näkyvyyttä tekoälyn vastauksissa.",
         body: "Ensimmäisessä keskustelussa käymme läpi",
         steps: [
-          { title: "Tavoitteesi", body: "Mitkä ostajat ja yhteydenotot haluat tavoittaa?" },
+          { title: "Tavoitteesi", body: "Keitä ostajia haluat tavoittaa ja millaisia yhteydenottoja haluat saada?" },
           { title: "Nykytilanteesi", body: "Missä vaiheessa brändisi, verkkosivustosi ja lähteesi ovat nyt?" },
-          { title: "Kilpailijasi", body: "Keitä alasi toimijoita vastaan kilpailet näkyvyydessä?" },
+          { title: "Kilpailijasi", body: "Keiden kanssa kilpailet näkyvyydestä omalla alallasi?" },
         ],
       },
       request: { label: "Varaa ilmainen keskustelu" },
@@ -467,15 +481,15 @@ export const COPY: Record<Lang, Copy> = {
       lead: "Josua Kiviranta misura quanto spesso ChatGPT e Claude nominano un candidato alle elezioni parlamentari finlandesi 2027 rispetto agli altri della circoscrizione.",
       urgency: "Elezioni il 18 aprile 2027 · L’IA si aggiorna con ritardo",
       title: "L’IA ti nomina quando un elettore chiede dei candidati della tua circoscrizione?",
-      answer: "Probabilmente di rado, a meno che tu non sia riconoscibile per l’IA come marchio, facile da trovare o comunque noto.",
+      answer: "Probabilmente di rado, a meno che tu non sia già un brand riconoscibile per l’IA, facile da trovare o comunque noto.",
       topic: "elezioni parlamentari finlandesi 2027",
       question: {
         title: "Gli elettori chiedono all’IA.",
         theme: "L’imprenditorialità è il tema più comune tra i candidati di Helsinki: 39 candidati lo citano sulle proprie pagine.",
-        asked: "All’IA sono state poste 5 domande sui candidati che promuovono l’imprenditorialità, ciascuna in due modi diversi.",
+        asked: "All’IA sono state poste 5 domande sui candidati che promuovono l’imprenditorialità, ciascuna formulata in due modi diversi.",
         missedLead: "Di questi 39 candidati",
         of: 39,
-        missed: [{ ai: "Claude", text: "non ne ha mai nominati", n: 24 }, { ai: "ChatGPT", text: "non ne ha mai nominati", n: 29 }],
+        missed: [{ ai: "Claude", text: "non li ha mai nominati", n: 24 }, { ai: "ChatGPT", text: "non li ha mai nominati", n: 29 }],
       },
       measured: { title: "Misurato: circoscrizione di Helsinki, novembre 2026" },
       offer: {
@@ -484,14 +498,13 @@ export const COPY: Record<Lang, Copy> = {
         steps: [
           { title: "Quadro della situazione", body: "Quanto spesso l’IA nomina te e i tuoi concorrenti sui tuoi temi." },
           { title: "Istruzioni per i collaboratori", body: "Istruzioni settimanali per i tuoi collaboratori: cosa pubblicare sulle tue pagine e dove altri dovrebbero scrivere di te." },
-          { title: "Temi elettorali emergenti", body: "Nuovi temi dove nessuno compare ancora, e occasioni per farti riconoscere come loro rappresentante nelle risposte dell’IA." },
+          { title: "Temi elettorali emergenti", body: "Nuovi temi in cui nessuno compare ancora, e occasioni per farti riconoscere come il loro rappresentante nelle risposte dell’IA." },
         ],
         price: "190 € / mese + IVA",
-        extra: "Vuoi che faccia io le modifiche? Produco il materiale e le modifiche al tuo sito al prezzo di consulenza di 90\u00a0€\u00a0/\u00a0ora\u00a0+\u00a0IVA.",
+        extra: "Vuoi che faccia io le modifiche? Produco il materiale e le modifiche al tuo sito alla tariffa di consulenza di 90\u00a0€\u00a0/\u00a0ora\u00a0+\u00a0IVA.",
       },
       independenceLabel: "Indipendente",
-      independence: ["Lo stesso servizio e gli stessi prezzi per i candidati di ogni partito.", "Non sono iscritto ad alcun partito.", "I miei clienti restano riservati."],
-      link: "Elezioni parlamentari finlandesi 2027: misurazione nella tua circoscrizione",
+      independence: ["Lo stesso servizio e gli stessi prezzi per i candidati di ogni partito.", "Non sono iscritto ad alcun partito.", "I nomi dei miei clienti restano confidenziali."],
     },
     problem: "Prima di decidere, si chiede all’IA.",
     offer: "Ti aiuto a comparire nelle risposte dell’IA.",
@@ -511,8 +524,13 @@ export const COPY: Record<Lang, Copy> = {
     ],
     backgroundHeading: "Formazione ed esperienza",
     navElectionsPage: "Elezioni finlandesi 2027",
+    navServicesPage: "Servizi e prezzi",
+    services: {
+      headTitle: "Servizi e prezzi: GEO e visibilità nelle risposte dell’IA",
+      lead: "Josua Kiviranta: analisi di settore e consulenza 90 € / ora + IVA, misurazione continua della visibilità nelle risposte dell’IA 190 € / mese + IVA.",
+    },
     visibility: {
-      summary: "Se l’IA non ti trova, raccomanda il tuo rivale.",
+      summary: "Se l’IA non ti trova, raccomanda un tuo concorrente.",
       measured: {
         own: {
           live: "Il candidato al {rank}º posto è nominato in media {n} volte su 100 risposte.",
@@ -521,39 +539,40 @@ export const COPY: Record<Lang, Copy> = {
           liveZero: "Il candidato al {rank}º posto non è nominato nemmeno una volta su 100 risposte.",
           first: "**{x} volte più spesso** del candidato tipico.",
         },
-        tail: { y: "Menzioni nelle risposte dell’IA", left: "Molte menzioni", right: "Poche menzioni", most: "La maggior parte delle opzioni è citata di rado", here: "Vuoi essere tra le poche opzioni citate spesso" },
-        study: { title: "Esempio: elezioni parlamentari finlandesi 2027", bridge: "La stessa distribuzione si può misurare nel modo in cui vengono nominati i candidati alle elezioni.", players: "{n} candidati", intro: "A ChatGPT e Claude sono state poste {n} domande sui candidati della circoscrizione di Helsinki, senza nominare alcun candidato nelle domande." },
+        tail: { y: "Menzioni nelle risposte dell’IA", left: "Molte menzioni", right: "Poche menzioni", most: "La maggior parte delle opzioni è menzionata di rado", here: "Vuoi essere tra le poche opzioni menzionate spesso" },
+        study: { title: "Esempio: elezioni parlamentari finlandesi 2027", players: "{n} candidati misurati", intro: "A ChatGPT e Claude sono state poste {n} domande sui candidati della circoscrizione di Helsinki, senza nominare alcun candidato nelle domande." },
       },
       sample: {
-        label: "Misurazione continua settimanale",
+        label: "Esempio: misurazione continua e linee guida",
         basis: "La tua visibilità in {n} risposte.",
         rivals: ["Concorrente A", "Concorrente B", "Concorrente C"],
         you: "Tu",
         ask: "Compari negli argomenti che contano per te?",
         legend: "Per ogni argomento si pongono domande ben definite a diversi modelli di IA.",
         none: "Nessuna menzione",
-        named: "Sei il {n}º nome nella risposta",
-        questions: ["Argomento 1", "Argomento 2", "Argomento 211"],
+        questions: ["Argomento 1", "Argomento 2", "Argomento 100"],
         guide: {
-          lead: "+ Istruzioni settimanali, basate su un’analisi personale, su come aumentare la tua visibilità:",
-          items: ["Cosa devi fare.", "Dove devi essere.", "Cosa devi aggiungere.", "Cosa devi cambiare."],
+          lead: "Linee guida mensili basate su un’analisi più approfondita del panorama competitivo",
+          note: "Puoi affidarle a un’IA o a un tuo collaboratore perché le metta in pratica.",
+          doForYou: "Vuoi che faccia io le modifiche? Produco il materiale e le modifiche al tuo sito alla tariffa di consulenza di 90\u00a0€\u00a0/\u00a0ora\u00a0+\u00a0IVA.",
+          items: ["Cosa aggiungere o cambiare nelle tue pagine.", "Dove altri dovrebbero citarti.", "Cosa pubblicare come prossimo passo, e su quale argomento.", "Dove i tuoi concorrenti ti superano ora."],
         },
         weekly: {
-          label: "Servizi e prezzi senza vincoli",
+          label: "Servizi e prezzi senza impegno",
           lead: "Ti aiuto a comparire nelle risposte dell’IA.",
           steps: [
-            { title: "Analisi di settore", body: "Dopo il primo colloquio, conto quanto spesso l’IA nomina te e i tuoi concorrenti.", price: "90 € / ora + IVA" },
-            { title: "Consulenza", body: "Vediamo insieme come aumentare la tua visibilità in base all’analisi.", price: "90 € / ora + IVA" },
-            { title: "Misurazione continua", body: "Ogni settimana vedi come cambiano la tua visibilità e la concorrenza.", price: "190 € / mese + IVA" },
+            { title: "Analisi di settore", body: "Dopo il primo colloquio, misuro quanto spesso l’IA nomina te e i tuoi concorrenti.", price: "90 € / ora + IVA" },
+            { title: "Consulenza", body: "Vediamo insieme come aumentare la tua visibilità in base all’analisi. Se lo desideri, ti aiuto anche a prendere il controllo del tuo brand con l’aiuto dell’IA.", price: "90 € / ora + IVA" },
+            { title: "Misurazione continua e linee guida", body: "Ogni mese vedi come cambiano la tua visibilità e il quadro competitivo, con le indicazioni per mantenerla alta.", price: "190 € / mese + IVA" },
           ],
         },
       },
       next: {
-        lead: "Chiariamo come il tuo marchio ottiene visibilità nelle risposte dell’IA.",
+        lead: "Chiariamo come il tuo brand ottiene visibilità nelle risposte dell’IA.",
         body: "Nel primo colloquio vediamo insieme",
         steps: [
-          { title: "Il tuo obiettivo", body: "Quali acquirenti e richieste vuoi raggiungere?" },
-          { title: "La tua situazione attuale", body: "A che punto sono oggi il tuo marchio, il tuo sito e le tue fonti?" },
+          { title: "Il tuo obiettivo", body: "Quali acquirenti vuoi raggiungere e quali richieste vuoi ricevere?" },
+          { title: "La tua situazione attuale", body: "A che punto sono oggi il tuo brand, il tuo sito e le tue fonti?" },
           { title: "I tuoi concorrenti", body: "Con quali operatori del tuo settore competi per la visibilità?" },
         ],
       },
@@ -586,7 +605,7 @@ export const COPY: Record<Lang, Copy> = {
       { label: "Telefono", ...PHONE },
       { label: "Email", ...EMAIL },
       { label: "Sede", value: "Helsinki – Firenze" },
-      { label: "Codice aziendale (Y-tunnus)", value: BUSINESS_ID },
+      { label: "Codice identificativo d’impresa (Y-tunnus)", value: BUSINESS_ID },
       { label: "LinkedIn", ...LINKEDIN },
     ],
   },

@@ -5,12 +5,13 @@ import { COPY, LANGS, type Lang } from "./prototype/homepageCopy";
 // redirects to www.
 export const SITE_URL = "https://www.josuakiviranta.com";
 
-export type PagePath = "/" | "/privacy" | "/finnish-elections-2027";
+export type PagePath = "/" | "/privacy" | "/finnish-elections-2027" | "/services-and-prices";
 
 // Pages whose address is translated (owner, 2026-11-25): the page file's
 // path is the English one; next.config.js rewrites the others to it.
 const TRANSLATED: Partial<Record<PagePath, Record<Lang, string>>> = {
   "/finnish-elections-2027": { en: "/finnish-elections-2027", fi: "/eduskuntavaalit-2027", it: "/elezioni-finlandesi-2027" },
+  "/services-and-prices": { en: "/services-and-prices", fi: "/palvelut-ja-hinnat", it: "/servizi-e-prezzi" },
 };
 
 // The page's path in `lang` without the language prefix.
@@ -32,13 +33,45 @@ const SHARE_DESCRIPTION =
 const SEARCH_DESCRIPTION: Record<Lang, string> = {
   en: "Josua Kiviranta: helping companies and individuals show up in AI answers (GEO) and measuring visibility against competitors.",
   fi: "Josua Kiviranta: autan yrityksiä ja henkilöitä näkymään tekoälyn vastauksissa (GEO) ja mittaan näkyvyyttä kilpailijoihin verrattuna.",
-  it: "Josua Kiviranta: aiutare aziende e persone a comparire nelle risposte dell’IA (GEO) e misurarne la visibilità rispetto ai concorrenti.",
+  it: "Josua Kiviranta: aiuto aziende e persone a comparire nelle risposte dell’IA (GEO) e ne misuro la visibilità rispetto ai concorrenti.",
 };
 
 const OG_LOCALE: Record<Lang, string> = { en: "en_GB", fi: "fi_FI", it: "it_IT" };
 
-// Who is behind the site, as the page shows it (header, contact, footer).
-const structuredData = (lang: Lang) => ({
+// The services page's three prices as numbers, in the order of
+// `visibility.sample.weekly.steps`, whose visible text they must match:
+// € + VAT per hour (HUR) or per month (MON) (owner, 2026-11-26).
+const PRICES = [
+  { value: 90, unit: "HUR" },
+  { value: 90, unit: "HUR" },
+  { value: 190, unit: "MON" },
+];
+
+// The services and their prices, as the services page shows them.
+const serviceData = (lang: Lang) => ({
+  "@type": "Service",
+  "@id": `${SITE_URL}${localePath(lang, "/services-and-prices")}#service`,
+  name: COPY[lang].services.headTitle,
+  serviceType: "GEO",
+  provider: { "@id": `${SITE_URL}/#josua` },
+  areaServed: "FI",
+  offers: COPY[lang].visibility.sample.weekly.steps.map((step, i) => ({
+    "@type": "Offer",
+    name: step.title,
+    description: step.body,
+    priceSpecification: {
+      "@type": "UnitPriceSpecification",
+      price: PRICES[i].value,
+      priceCurrency: "EUR",
+      unitCode: PRICES[i].unit,
+      valueAddedTaxIncluded: false,
+    },
+  })),
+});
+
+// Who is behind the site, as the page shows it (header, contact, footer),
+// and on the services page the services.
+const structuredData = (lang: Lang, path: PagePath) => ({
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -69,6 +102,7 @@ const structuredData = (lang: Lang) => ({
       inLanguage: LANGS,
       publisher: { "@id": `${SITE_URL}/#josua` },
     },
+    ...(path === "/services-and-prices" ? [serviceData(lang)] : []),
   ],
 });
 
@@ -82,13 +116,17 @@ export const SiteHead = ({ lang, path }: { lang: Lang; path: PagePath }) => {
     "/": `Josua Kiviranta — ${role}`,
     "/privacy": `${c.privacy.title} — Josua Kiviranta`,
     "/finnish-elections-2027": `${c.elections.headTitle} — Josua Kiviranta`,
+    "/services-and-prices": `${c.services.headTitle} — Josua Kiviranta`,
   }[path];
-  const description = { "/": SEARCH_DESCRIPTION[lang], "/privacy": c.privacy.intro, "/finnish-elections-2027": c.elections.lead }[path];
+  const description = { "/": SEARCH_DESCRIPTION[lang], "/privacy": c.privacy.intro, "/finnish-elections-2027": c.elections.lead, "/services-and-prices": c.services.lead }[path];
   const url = `${SITE_URL}${localePath(lang, path)}`;
   return (
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
+      {/* The privacy notice stays out of search results, so a search for the
+          name or the service returns the sales pages (owner, 2026-11-26). */}
+      {path === "/privacy" && <meta name="robots" content="noindex, follow" />}
       <link rel="canonical" href={url} />
       {LANGS.map((l) => (
         <link key={l} rel="alternate" hrefLang={l} href={`${SITE_URL}${localePath(l, path)}`} />
@@ -114,7 +152,7 @@ export const SiteHead = ({ lang, path }: { lang: Lang; path: PagePath }) => {
         content="The top of josuakiviranta.com: Josua Kiviranta, GEO and branding for AI. Before deciding, people ask AI."
       />
       <meta name="twitter:card" content="summary_large_image" />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(lang)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(lang, path)) }} />
     </Head>
   );
 };
