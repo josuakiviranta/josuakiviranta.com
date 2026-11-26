@@ -153,6 +153,9 @@ a {
   .w-column :where(p, h2, h3) {
     max-width: var(--width-text);
   }
+  .w-text {
+    max-width: var(--width-text);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -448,7 +448,7 @@ const ContactCentred = ({ c }: { c: Copy }) => {
           </Fragment>
         ))}
       </div>
-      <div className="mx-page mt-12 w-column">
+      <div className="mx-page mt-12 w-text">
         <OfficeMapOutline c={c} />
       </div>
     </section>

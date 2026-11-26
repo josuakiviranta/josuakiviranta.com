@@ -33,7 +33,7 @@ const SHARE_DESCRIPTION =
 const SEARCH_DESCRIPTION: Record<Lang, string> = {
   en: "Josua Kiviranta: helping companies and individuals show up in AI answers (GEO) and measuring visibility against competitors.",
   fi: "Josua Kiviranta: autan yrityksiä ja henkilöitä näkymään tekoälyn vastauksissa (GEO) ja mittaan näkyvyyttä kilpailijoihin verrattuna.",
-  it: "Josua Kiviranta: aiutare aziende e persone a comparire nelle risposte dell’IA (GEO) e misurarne la visibilità rispetto ai concorrenti.",
+  it: "Josua Kiviranta: aiuto aziende e persone a comparire nelle risposte dell’IA (GEO) e ne misuro la visibilità rispetto ai concorrenti.",
 };
 
 const OG_LOCALE: Record<Lang, string> = { en: "en_GB", fi: "fi_FI", it: "it_IT" };
