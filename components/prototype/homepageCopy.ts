@@ -104,9 +104,8 @@ export type Copy = {
       ask: string;
       /* The grey line under `ask`: what a set of questions is (owner, 2026-11-15). */
       legend: string;
-      /* Arrow labels on the squares (owner, 2026-11-13: like the study box's arrow): `none` at an unnamed row, `named` under the named row's highest place, `{n}` the place. */
+      /* The label over the first unnamed row's squares (owner, 2026-11-13; the named row's label dropped 2026-11-26). */
       none: string;
-      named: string;
       questions: string[];
       /* The block before the sample that sells the offer: a header and the
          three things Josua does, laid out like the next step's topics
@@ -116,7 +115,10 @@ export type Copy = {
       /* What comes with the weekly report, under it and before the button
          (owner, 2026-11-17): a caps line over numbered lines, the numbers
          drawn by the page. */
-      guide: { lead: string; items: string[] };
+      /* The instructions as the report's third part (owner, 2026-11-26):
+         `note` the grey line at the report's end, `doForYou` the line
+         before the button. */
+      guide: { lead: string; items: string[]; note: string; doForYou: string };
     };
     /* The next step before the offer (owner, 2026-11-12): `lead` the
        header, `body` the label over the three topics. */
@@ -224,7 +226,7 @@ export const COPY: Record<Lang, Copy> = {
     navElectionsPage: "Finnish elections 2027",
     navServicesPage: "Services and prices",
     services: {
-      headTitle: "Services and prices: visibility in AI answers",
+      headTitle: "Services and prices: GEO and visibility in AI answers",
       lead: "Josua Kiviranta: industry analysis and consultation €90 / hour + VAT, continuous measurement of visibility in AI answers €190 / month + VAT.",
     },
     visibility: {
@@ -241,26 +243,27 @@ export const COPY: Record<Lang, Copy> = {
         study: { title: "Example: Finnish parliamentary elections 2027", players: "{n} measured candidates", intro: "ChatGPT and Claude were asked {n} questions about candidates in the Helsinki electoral district, and the questions named no candidate." },
       },
       sample: {
-        label: "Weekly continuous measurement",
+        label: "Example: Continuous measurement and guidelines",
         basis: "Your visibility in {n} answers.",
         rivals: ["Competitor A", "Competitor B", "Competitor C"],
         you: "You",
         ask: "Do you show up in the topics that matter to you?",
         legend: "For each topic, precisely defined questions are put to different AI models.",
         none: "No mention",
-        named: "You were the {n}th name in the answer",
-        questions: ["Topic 1", "Topic 2", "Topic 211"],
+        questions: ["Topic 1", "Topic 2", "Topic 100"],
         guide: {
-          lead: "+ Weekly instructions based on a personal analysis, on how to increase your visibility:",
-          items: ["What you have to do.", "Where you should be.", "What you should add.", "What you should change."],
+          lead: "Monthly guidelines based on a closer analysis of the competitive field",
+          note: "You can give these to an AI or to your staff to carry out.",
+          doForYou: "Want me to make the changes for you? I produce the material and the changes to your website at the consultation price of €90\u00a0/\u00a0hour\u00a0+\u00a0VAT.",
+          items: ["What to add or change on your own pages.", "Where others should mention you.", "What to publish next, and on which topic.", "Where your competitors overtake you now."],
         },
         weekly: {
           label: "Services and prices, no commitment",
           lead: "I help you show up in AI answers.",
           steps: [
             { title: "Industry analysis", body: "After the first conversation, I count how often AI names you and your competitors.", price: "€90 / hour + VAT" },
-            { title: "Consultation", body: "Together we go through how to increase your visibility based on the analysis.", price: "€90 / hour + VAT" },
-            { title: "Continuous measurement", body: "Each week you see how your visibility and the competition change.", price: "€190 / month + VAT" },
+            { title: "Consultation", body: "Together we go through how to increase your visibility based on the analysis. If you wish, I also help you take control of your own brand with AI.", price: "€90 / hour + VAT" },
+            { title: "Continuous measurement and guidelines", body: "Each month you see how your visibility and the competition change, with guidelines on how to keep your visibility high.", price: "€190 / month + VAT" },
           ],
         },
       },
@@ -373,7 +376,7 @@ export const COPY: Record<Lang, Copy> = {
     navElectionsPage: "Eduskuntavaalit 2027",
     navServicesPage: "Palvelut ja hinnat",
     services: {
-      headTitle: "Palvelut ja hinnat: näkyvyys tekoälyn vastauksissa",
+      headTitle: "Palvelut ja hinnat: GEO ja näkyvyys tekoälyn vastauksissa",
       lead: "Josua Kiviranta: toimiala-analyysi ja konsultointi 90 € / h + alv, näkyvyyden jatkuva mittaus tekoälyn vastauksissa 190 € / kk + alv.",
     },
     visibility: {
@@ -390,26 +393,27 @@ export const COPY: Record<Lang, Copy> = {
         study: { title: "Esimerkki: Eduskuntavaalit 2027", players: "{n} mitattua ehdokasta", intro: "ChatGPT:ltä ja Claudelta kysyttiin {n} kysymystä Helsingin vaalipiirin ehdokkaista, ilman ehdokkaiden nimeämistä." },
       },
       sample: {
-        label: "Viikoittainen jatkuva mittaus",
+        label: "Esimerkki: Jatkuva mittaus ja toimintaohjeet",
         basis: "Näkyvyytesi {n} vastauksessa.",
         rivals: ["Kilpailija A", "Kilpailija B", "Kilpailija C"],
         you: "Sinä",
         ask: "Näytkö sinulle tärkeissä aiheissa?",
         legend: "Jokaisesta aiheesta kysytään tarkoin määritellyt kysymykset eri tekoälymalleilta.",
         none: "Ei mainintaa",
-        named: "Sinut mainittiin {n}. nimenä vastauksessa",
-        questions: ["Aihe 1", "Aihe 2", "Aihe 211"],
+        questions: ["Aihe 1", "Aihe 2", "Aihe 100"],
         guide: {
-          lead: "+ Viikoittaiset ohjeet henkilökohtaisen analyysin pohjalta, miten lisäät näkyvyyttäsi:",
-          items: ["Mitä sinun pitää tehdä.", "Missä sinun pitää olla.", "Mitä sinun pitää lisätä.", "Mitä sinun pitää muuttaa."],
+          lead: "Kuukausittaiset ohjeet tarkemman analyysin kilpailukentän pohjalta",
+          note: "Voit antaa nämä tekoälylle tai työntekijällesi toteutettaviksi.",
+          doForYou: "Haluatko, että teen muutokset puolestasi? Tuotan aineiston ja sivustosi muutokset konsultointihinnalla 90\u00a0€\u00a0/\u00a0h\u00a0+\u00a0alv.",
+          items: ["Mitä lisätä tai muuttaa omilla sivuillasi.", "Missä muiden pitäisi mainita sinut.", "Mitä julkaista seuraavaksi ja mistä aiheesta.", "Missä kilpailijasi ohittavat sinut nyt."],
         },
         weekly: {
           label: "Palvelut ja hinnat ilman sitoutumista",
           lead: "Autan sinua näkymään tekoälyn vastauksissa.",
           steps: [
             { title: "Toimiala-analyysi", body: "Ensimmäisen keskustelun jälkeen lasken, kuinka usein tekoäly mainitsee sinut ja kilpailijasi.", price: "90 € / h + alv" },
-            { title: "Konsultointi", body: "Käymme yhdessä läpi, miten lisäät näkyvyyttäsi analyysin pohjalta.", price: "90 € / h + alv" },
-            { title: "Jatkuva mittaus", body: "Näet viikoittain, miten näkyvyytesi ja kilpailija-asetelma muuttuvat.", price: "190 € / kk + alv" },
+            { title: "Konsultointi", body: "Käymme yhdessä läpi, miten lisäät näkyvyyttäsi analyysin pohjalta. Autan halutessasi sinua myös ottamaan oman brändisi hallintaan tekoälyn avulla.", price: "90 € / h + alv" },
+            { title: "Jatkuva mittaus ja toimintaohjeet", body: "Näet kuukausittain, miten näkyvyytesi ja kilpailija-asetelma muuttuvat sekä toimintaohjeet miten pidät näkyvyytesi korkealla.", price: "190 € / kk + alv" },
           ],
         },
       },
@@ -522,7 +526,7 @@ export const COPY: Record<Lang, Copy> = {
     navElectionsPage: "Elezioni finlandesi 2027",
     navServicesPage: "Servizi e prezzi",
     services: {
-      headTitle: "Servizi e prezzi: visibilità nelle risposte dell’IA",
+      headTitle: "Servizi e prezzi: GEO e visibilità nelle risposte dell’IA",
       lead: "Josua Kiviranta: analisi di settore e consulenza 90 € / ora + IVA, misurazione continua della visibilità nelle risposte dell’IA 190 € / mese + IVA.",
     },
     visibility: {
@@ -539,26 +543,27 @@ export const COPY: Record<Lang, Copy> = {
         study: { title: "Esempio: elezioni parlamentari finlandesi 2027", players: "{n} candidati misurati", intro: "A ChatGPT e Claude sono state poste {n} domande sui candidati della circoscrizione di Helsinki, senza nominare alcun candidato nelle domande." },
       },
       sample: {
-        label: "Misurazione continua settimanale",
+        label: "Esempio: misurazione continua e linee guida",
         basis: "La tua visibilità in {n} risposte.",
         rivals: ["Concorrente A", "Concorrente B", "Concorrente C"],
         you: "Tu",
         ask: "Compari negli argomenti che contano per te?",
         legend: "Per ogni argomento si pongono domande ben definite a diversi modelli di IA.",
         none: "Nessuna menzione",
-        named: "Sei il {n}º nome nella risposta",
-        questions: ["Argomento 1", "Argomento 2", "Argomento 211"],
+        questions: ["Argomento 1", "Argomento 2", "Argomento 100"],
         guide: {
-          lead: "+ Istruzioni settimanali, basate su un’analisi personale, su come aumentare la tua visibilità:",
-          items: ["Cosa devi fare.", "Dove devi essere.", "Cosa devi aggiungere.", "Cosa devi cambiare."],
+          lead: "Linee guida mensili basate su un’analisi più approfondita del panorama competitivo",
+          note: "Puoi affidarle a un’IA o a un tuo collaboratore perché le metta in pratica.",
+          doForYou: "Vuoi che faccia io le modifiche? Produco il materiale e le modifiche al tuo sito al prezzo di consulenza di 90\u00a0€\u00a0/\u00a0ora\u00a0+\u00a0IVA.",
+          items: ["Cosa aggiungere o cambiare nelle tue pagine.", "Dove altri dovrebbero citarti.", "Cosa pubblicare dopo, e su quale tema.", "Dove i tuoi concorrenti ti superano ora."],
         },
         weekly: {
           label: "Servizi e prezzi senza vincoli",
           lead: "Ti aiuto a comparire nelle risposte dell’IA.",
           steps: [
             { title: "Analisi di settore", body: "Dopo il primo colloquio, conto quanto spesso l’IA nomina te e i tuoi concorrenti.", price: "90 € / ora + IVA" },
-            { title: "Consulenza", body: "Vediamo insieme come aumentare la tua visibilità in base all’analisi.", price: "90 € / ora + IVA" },
-            { title: "Misurazione continua", body: "Ogni settimana vedi come cambiano la tua visibilità e la concorrenza.", price: "190 € / mese + IVA" },
+            { title: "Consulenza", body: "Vediamo insieme come aumentare la tua visibilità in base all’analisi. Se lo desideri, ti aiuto anche a prendere il controllo del tuo brand con l’IA.", price: "90 € / ora + IVA" },
+            { title: "Misurazione continua e linee guida", body: "Ogni mese vedi come cambiano la tua visibilità e la concorrenza, con le linee guida per mantenere alta la tua visibilità.", price: "190 € / mese + IVA" },
           ],
         },
       },

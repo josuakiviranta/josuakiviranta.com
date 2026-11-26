@@ -6,7 +6,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { MAP_ASPECT, MAP_PINS } from "../officeMapLabels";
 import { COPY, LANGS, type Copy, type Lang, type OfferCopy } from "./homepageCopy";
 import { pageSlug } from "../SiteHead";
@@ -381,7 +381,8 @@ const B3Steps = ({ items }: { items: { title: string; body: string; price?: stri
           <p className="mt-1 leading-snug">{s.body}</p>
           {/* The offer's steps carry their price, on one shared line on wide
               screens (owner, 2026-11-15). */}
-          {s.price && <p className="mt-2 whitespace-nowrap tabular-nums sm:mt-auto sm:pt-2">{s.price}</p>}
+          {/* Bold (owner, 2026-11-26). */}
+          {s.price && <p className="mt-2 whitespace-nowrap font-strong tabular-nums sm:mt-auto sm:pt-2">{s.price}</p>}
         </div>
       </Fragment>
     ))}
@@ -956,19 +957,21 @@ const STUDY = {
 } as const;
 
 /* The questions behind `MEASURED.combined`, each asked in 2 wordings, so
-   `PAGE_ANSWERS` answers per AI. Both examples show `ASKED`: the election
-   example's "{n} kysymystä" and the weekly example's "Näkyvyytesi {n}
-   vastauksessa" (owner, 2026-11-15; 2026-11-19: "keep it simple"). */
+   `PAGE_ANSWERS` answers per AI. The election example's "{n} kysymystä"
+   (owner, 2026-11-15; 2026-11-19: "keep it simple"). */
 const ASKED = 211;
 
 /* The weekly example (owner, 2026-11-15: tie it to the election example):
    the rivals are places 1–3 of `MEASURED.combined` and "Sinä" place 24,
-   each rounded. `questions`: per square, 0 = not named, n = place among
-   the names in the answer; the last row follows a "⋮". */
+   each per 100 answers like the election example, rounded (owner,
+   2026-11-26: "Näkyvyytesi 100 vastauksessa"; was out of 211).
+   `questions`: per square, 0 = not named, n = named (its place among the
+   names, no longer shown); the last row follows a "⋮". */
+const per100 = (i: number) => Math.round((MEASURED.combined[i] / PAGE_ANSWERS) * 100);
 const SAMPLE = {
-  answers: PAGE_ANSWERS,
-  top: [90, 70, 58],
-  you: { rank: 24, count: 14 },
+  answers: 100,
+  top: [per100(0), per100(1), per100(2)],
+  you: { rank: 24, count: per100(23) },
   questions: [
     [0, 0, 0, 0],
     [1, 4, 2, 2],
@@ -1003,8 +1006,10 @@ const Sample = ({ c }: { c: Copy }) => {
       <section data-track-section="weekly">
         <Pinned length={WEEKLY_HOLD}>
           {(p) => {
-            const p1 = seg(p, 0.1, 0.45);
-            const p2 = seg(p, 0.55, 0.95);
+            // The bars, the topics' squares, then the instructions one by one.
+            const p1 = seg(p, 0.1, 0.35);
+            const p2 = seg(p, 0.4, 0.7);
+            const p3 = seg(p, 0.75, 0.97);
             let k = 0;
             return (
               <>
@@ -1014,7 +1019,7 @@ const Sample = ({ c }: { c: Copy }) => {
               <div className="mt-8 border-x border-rule px-3 sm:mt-14 sm:px-6">
                 <figure>
                   {/* Black caps (owner, 2026-11-15; was a grey line). */}
-                  <Caps className="block !text-ink">{s.basis.replace("{n}", String(ASKED))}</Caps>
+                  <Caps className="block !text-ink">{s.basis.replace("{n}", String(SAMPLE.answers))}</Caps>
                   <ol className="mt-4 text-left">
                     {SAMPLE.top.map((n, i) => (
                       <Row key={i} rank={i + 1} name={s.rivals[i]} count={n} grow={seg(p1, i / rows, (i + 1) / rows)} />
@@ -1038,28 +1043,20 @@ const Sample = ({ c }: { c: Copy }) => {
                         {SAMPLE.questions.map((qs, i) => {
                           const named = qs.some(Boolean);
                           // The first unnamed row gets "Ei mainintaa"; the
-                          // first named row's highest place gets "Mainittiin
-                          // {n}. nimenä"; the other rows get no label.
+                          // other rows get no label ("Sinut mainittiin {n}.
+                          // nimenä" dropped, owner 2026-11-26).
                           const first = !named && SAMPLE.questions.findIndex((q) => !q.some(Boolean)) === i;
-                          const at = qs.indexOf(Math.max(...qs));
-                          const label = first
-                            ? { sq: 0, text: s.none, room: 1, wraps: false, draw: seg(p2, 0, 0.2), words: seg(p2, 0.15, 0.3) }
-                            : i === SAMPLE.questions.findIndex((q) => q.some(Boolean))
-                              ? // Opens its own room first, so its row starts
-                                // close under "Aihe 1" (owner, 2026-11-15).
-                                { sq: at, text: s.named.replace("{n}", String(qs[at])), room: seg(p2, 0.62, 0.74), wraps: true, draw: seg(p2, 0.72, 0.86), words: seg(p2, 0.82, 1) }
-                              : null;
+                          const label = first ? { sq: 0, text: s.none, draw: seg(p2, 0, 0.2), words: seg(p2, 0.15, 0.3) } : null;
                           return (
                             <Fragment key={i}>
-                              {/* "⋮" before the last row, "Aihe 211" (owner, 2026-11-15). */}
+                              {/* "⋮" before the last row, "Aihe 100" (owner, 2026-11-15; 211 until 2026-11-26). */}
                               {i > 0 && i === SAMPLE.questions.length - 1 && <li className="text-muted">⋮</li>}
                               <li>
                                 {/* Labels like the long tail's: plain black text over
                                     their square, a thin grey line dropping
                                     to touch it, no arrows (owner, 2026-11-15; plain text, 2026-11-16). */}
                                 {label && (
-                                  // Taller on phones for the long label, whose words wrap to two lines there.
-                                  <div className={`relative ${label.wraps ? "h-[calc(var(--room)*3.4rem)]" : "h-[calc(var(--room)*2.25rem)]"} sm:h-[calc(var(--room)*2.25rem)]`} style={{ "--room": label.room } as CSSProperties}>
+                                  <div className="relative h-[2.25rem]">
                                     <span
                                       className="absolute bottom-[0.9rem] right-0 pl-2 leading-snug text-ink sm:right-auto sm:whitespace-nowrap"
                                       style={{ left: `calc(${label.sq} * (1.25rem + 3px) + 0.625rem - 0.5rem)`, opacity: label.words }}
@@ -1072,17 +1069,16 @@ const Sample = ({ c }: { c: Copy }) => {
                                     />
                                   </div>
                                 )}
-                                {/* The squares and the topic on one row (owner, 2026-11-15). */}
+                                {/* The squares and the topic on one row (owner, 2026-11-15);
+                                    the squares carry no numbers (owner, 2026-11-26). */}
                                 <div className="flex items-center gap-[3px]">
                                   {qs.map((h, j) => {
-                                    const ink = h > 0 && p2 >= 0.3 + (++k / hits) * 0.3;
+                                    const ink = h > 0 && p2 >= 0.3 + (++k / hits) * 0.6;
                                     return (
                                       <span
                                         key={j}
-                                        className={`flex h-5 w-5 items-center justify-center text-[0.7em] font-strong tabular-nums transition-colors duration-150 motion-reduce:transition-none ${ink ? "bg-ink text-paper" : "bg-faint text-transparent"}`}
-                                      >
-                                        {h || ""}
-                                      </span>
+                                        className={`h-5 w-5 transition-colors duration-150 motion-reduce:transition-none ${ink ? "bg-ink" : "bg-faint"}`}
+                                      />
                                     );
                                   })}
                                   <span className="ml-3">{s.questions[i]}</span>
@@ -1096,6 +1092,22 @@ const Sample = ({ c }: { c: Copy }) => {
                         })}
                       </ul>
                     </div>
+                    {/* The instructions as the report's third part, after
+                        the measures (owner, 2026-11-26, picked "A" on a
+                        throwaway switch; was a list under the report),
+                        then a grey note on who can carry them out. */}
+                    <div className="pt-8 sm:pt-12">
+                      <Caps className="block leading-relaxed !text-ink">{s.guide.lead}</Caps>
+                      <ol className="mt-4 space-y-2 text-left">
+                        {s.guide.items.map((it, i) => (
+                          <li key={it} className="flex items-baseline gap-3" style={{ opacity: seg(p3, i / 5, (i + 1.5) / 5) }}>
+                            <span className="w-6 shrink-0 tabular-nums text-muted">{String(i + 1).padStart(2, "0")}</span>
+                            <span>{it}</span>
+                          </li>
+                        ))}
+                      </ol>
+                      <p className="mt-4 leading-snug text-muted" style={{ opacity: seg(p3, 0.8, 1) }}>{s.guide.note}</p>
+                    </div>
                 </figure>
               </div>
               </>
@@ -1105,19 +1117,9 @@ const Sample = ({ c }: { c: Copy }) => {
         {/* What comes with the report, before the button (owner,
             2026-11-17), as far from the report as the button was (owner,
             2026-11-16). */}
-        <div className="mt-12 sm:mt-20">
-          {/* Black caps over numbered bold lines, like the next step's
-              label and topics (owner, 2026-11-17). */}
-          <Caps className="block leading-relaxed !text-ink">{s.guide.lead}</Caps>
-          <ol className="mt-5 flex flex-col gap-3">
-            {s.guide.items.map((it, i) => (
-              <li key={it} className="flex items-baseline justify-page gap-[0.5em]">
-                <span className="text-muted tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                <span className="type-h3">{it}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
+        {/* The do-it-for-you line before the button, as on the elections
+            page (owner, 2026-11-26). */}
+        <p className="mt-12 max-w-[34rem] leading-snug sm:mt-20"><KeepPct text={s.guide.doForYou} /></p>
         {/* The free conversation again once the reader has seen the
             prices and the report (owner, 2026-11-15). */}
         <BookButton offer={c.visibility} place="weekly" />
@@ -1153,9 +1155,9 @@ const OfferSection = ({ c, lead, label, steps, below }: { c: Copy; lead?: string
 };
 
 /* The weekly example's hold in screen heights: its bars draw, then its
-   squares and labels (was 2.5 with the steps, the box's rise and its
-   opening; the body alone had 1.15). */
-const WEEKLY_HOLD = 1.2;
+   squares and labels, then the instructions (1.6 since they joined the
+   report, 2026-11-26; was 1.2). */
+const WEEKLY_HOLD = 1.6;
 
 /* The next step's hold in screen heights while its header fills black
    (owner, 2026-11-16; the label filled before, now it is black at once). */

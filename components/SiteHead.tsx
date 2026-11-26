@@ -38,8 +38,40 @@ const SEARCH_DESCRIPTION: Record<Lang, string> = {
 
 const OG_LOCALE: Record<Lang, string> = { en: "en_GB", fi: "fi_FI", it: "it_IT" };
 
-// Who is behind the site, as the page shows it (header, contact, footer).
-const structuredData = (lang: Lang) => ({
+// The services page's three prices as numbers, in the order of
+// `visibility.sample.weekly.steps`, whose visible text they must match:
+// € + VAT per hour (HUR) or per month (MON) (owner, 2026-11-26).
+const PRICES = [
+  { value: 90, unit: "HUR" },
+  { value: 90, unit: "HUR" },
+  { value: 190, unit: "MON" },
+];
+
+// The services and their prices, as the services page shows them.
+const serviceData = (lang: Lang) => ({
+  "@type": "Service",
+  "@id": `${SITE_URL}${localePath(lang, "/services-and-prices")}#service`,
+  name: COPY[lang].services.headTitle,
+  serviceType: "GEO",
+  provider: { "@id": `${SITE_URL}/#josua` },
+  areaServed: "FI",
+  offers: COPY[lang].visibility.sample.weekly.steps.map((step, i) => ({
+    "@type": "Offer",
+    name: step.title,
+    description: step.body,
+    priceSpecification: {
+      "@type": "UnitPriceSpecification",
+      price: PRICES[i].value,
+      priceCurrency: "EUR",
+      unitCode: PRICES[i].unit,
+      valueAddedTaxIncluded: false,
+    },
+  })),
+});
+
+// Who is behind the site, as the page shows it (header, contact, footer),
+// and on the services page the services.
+const structuredData = (lang: Lang, path: PagePath) => ({
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -70,6 +102,7 @@ const structuredData = (lang: Lang) => ({
       inLanguage: LANGS,
       publisher: { "@id": `${SITE_URL}/#josua` },
     },
+    ...(path === "/services-and-prices" ? [serviceData(lang)] : []),
   ],
 });
 
@@ -91,6 +124,9 @@ export const SiteHead = ({ lang, path }: { lang: Lang; path: PagePath }) => {
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
+      {/* The privacy notice stays out of search results, so a search for the
+          name or the service returns the sales pages (owner, 2026-11-26). */}
+      {path === "/privacy" && <meta name="robots" content="noindex, follow" />}
       <link rel="canonical" href={url} />
       {LANGS.map((l) => (
         <link key={l} rel="alternate" hrefLang={l} href={`${SITE_URL}${localePath(l, path)}`} />
@@ -116,7 +152,7 @@ export const SiteHead = ({ lang, path }: { lang: Lang; path: PagePath }) => {
         content="The top of josuakiviranta.com: Josua Kiviranta, GEO and branding for AI. Before deciding, people ask AI."
       />
       <meta name="twitter:card" content="summary_large_image" />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(lang)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(lang, path)) }} />
     </Head>
   );
 };

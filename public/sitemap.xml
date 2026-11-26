@@ -2,63 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.josuakiviranta.com/</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/"/>
     <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it"/>
   </url>
   <url>
     <loc>https://www.josuakiviranta.com/fi</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/"/>
     <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it"/>
   </url>
   <url>
     <loc>https://www.josuakiviranta.com/it</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/"/>
     <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it"/>
   </url>
   <url>
-    <loc>https://www.josuakiviranta.com/privacy</loc>
-    <lastmod>2026-11-25</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/privacy"/>
-    <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/privacy"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/privacy"/>
-  </url>
-  <url>
-    <loc>https://www.josuakiviranta.com/fi/privacy</loc>
-    <lastmod>2026-11-25</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/privacy"/>
-    <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/privacy"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/privacy"/>
-  </url>
-  <url>
-    <loc>https://www.josuakiviranta.com/it/privacy</loc>
-    <lastmod>2026-11-25</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/privacy"/>
-    <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/privacy"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/privacy"/>
-  </url>
-  <url>
     <loc>https://www.josuakiviranta.com/finnish-elections-2027</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/finnish-elections-2027"/>
     <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/eduskuntavaalit-2027"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/elezioni-finlandesi-2027"/>
   </url>
   <url>
     <loc>https://www.josuakiviranta.com/fi/eduskuntavaalit-2027</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/finnish-elections-2027"/>
     <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/eduskuntavaalit-2027"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/elezioni-finlandesi-2027"/>
   </url>
   <url>
     <loc>https://www.josuakiviranta.com/it/elezioni-finlandesi-2027</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/finnish-elections-2027"/>
     <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/eduskuntavaalit-2027"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/elezioni-finlandesi-2027"/>
