@@ -186,7 +186,7 @@ export const COPY: Record<Lang, Copy> = {
       question: {
         title: "Voters ask AI.",
         theme: "Entrepreneurship is the most common theme among Helsinki candidates: 39 candidates feature it on their pages.",
-        asked: "AI was asked 5 questions about candidates who champion entrepreneurship, each asked in two different ways.",
+        asked: "AI was asked 20 questions about candidates who champion entrepreneurship, each asked in two different ways.",
         missedLead: "Of these 39 candidates",
         of: 39,
         missed: [{ ai: "Claude", text: "never named", n: 24 }, { ai: "ChatGPT", text: "never named", n: 29 }],
@@ -336,7 +336,7 @@ export const COPY: Record<Lang, Copy> = {
       question: {
         title: "Äänestäjä kysyy tekoälyltä.",
         theme: "Yrittäjyys on Helsingin ehdokkaiden yleisin teema: 39 ehdokasta nostaa sen esiin sivuillaan.",
-        asked: "Tekoälyltä kysyttiin 5 kysymystä yrittäjyyttä ajavista ehdokkaista, kukin kahdella eri tavalla.",
+        asked: "Tekoälyltä kysyttiin 20 kysymystä yrittäjyyttä ajavista ehdokkaista, kukin kahdella eri tavalla.",
         missedLead: "Näistä 39 ehdokkaasta",
         of: 39,
         missed: [{ ai: "Claude", text: "ei maininnut kertaakaan", n: 24 }, { ai: "ChatGPT", text: "ei maininnut kertaakaan", n: 29 }],
@@ -486,7 +486,7 @@ export const COPY: Record<Lang, Copy> = {
       question: {
         title: "Gli elettori chiedono all’IA.",
         theme: "L’imprenditorialità è il tema più comune tra i candidati di Helsinki: 39 candidati lo citano sulle proprie pagine.",
-        asked: "All’IA sono state poste 5 domande sui candidati che promuovono l’imprenditorialità, ciascuna formulata in due modi diversi.",
+        asked: "All’IA sono state poste 20 domande sui candidati che promuovono l’imprenditorialità, ciascuna formulata in due modi diversi.",
         missedLead: "Di questi 39 candidati",
         of: 39,
         missed: [{ ai: "Claude", text: "non li ha mai nominati", n: 24 }, { ai: "ChatGPT", text: "non li ha mai nominati", n: 29 }],
