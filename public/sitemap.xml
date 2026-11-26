@@ -42,4 +42,25 @@
     <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/privacy"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/privacy"/>
   </url>
+  <url>
+    <loc>https://www.josuakiviranta.com/finnish-elections-2027</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/finnish-elections-2027"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/eduskuntavaalit-2027"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/elezioni-finlandesi-2027"/>
+  </url>
+  <url>
+    <loc>https://www.josuakiviranta.com/fi/eduskuntavaalit-2027</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/finnish-elections-2027"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/eduskuntavaalit-2027"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/elezioni-finlandesi-2027"/>
+  </url>
+  <url>
+    <loc>https://www.josuakiviranta.com/it/elezioni-finlandesi-2027</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/finnish-elections-2027"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/eduskuntavaalit-2027"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/elezioni-finlandesi-2027"/>
+  </url>
 </urlset>
