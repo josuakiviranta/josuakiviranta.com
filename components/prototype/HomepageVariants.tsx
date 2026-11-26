@@ -148,10 +148,10 @@ const Band = ({ children, tight, id, className = "" }: { children: ReactNode; ti
   <section id={id} className={`${tight ? "py-10" : "py-14"} ${className}`}>{children}</section>
 );
 
-const PAGES = ["home", "background", "case", "privacy", "elections"] as const;
+const PAGES = ["home", "background", "case", "privacy", "elections", "services"] as const;
 /* The pages with their own address (pages/privacy.tsx,
-   pages/finnish-elections-2027.tsx). */
-type Route = "privacy" | "elections";
+   pages/finnish-elections-2027.tsx, pages/services-and-prices.tsx). */
+type Route = "privacy" | "elections" | "services";
 type Page = (typeof PAGES)[number];
 
 /* The page shown: the privacy notice has its own address (`route`); the
@@ -223,14 +223,24 @@ const useScrolledPast = (share = 0.6) => {
 /* The offer's section's anchor. */
 const SERVICES_ID = "palvelut-ja-hinnat";
 
-/* The nav's link to the elections page, counted like the main page's
-   link line; underlined on that page itself (owner, 2026-11-25). */
-const ElectionsNav = ({ c, lang, current, place, className }: { c: Copy; lang: Lang; current: boolean; place: string; className: string }) => (
-  <Link href="/finnish-elections-2027" as={pageSlug(lang, "/finnish-elections-2027")} scroll={false}>
-    <a data-track="elections-page" data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "text-ink underline underline-offset-4" : "text-muted hover:text-ink"}`}>
-      {c.navElectionsPage}
+/* A nav link to one of the site's own pages, grey until hovered and navy,
+   underlined, on that page itself (owner, 2026-11-25/26). A click counts as
+   `track` × `place` (nav, menu). */
+const PageNav = ({ path, label, track, lang, current, place, className }: { path: string; label: string; track: string; lang: Lang; current: boolean; place: string; className: string }) => (
+  <Link href={path} as={pageSlug(lang, path)} scroll={false}>
+    <a data-track={track} data-track-place={place} aria-current={current ? "page" : undefined} className={`${className} ${current ? "text-ink underline underline-offset-4" : "text-muted hover:text-ink"}`}>
+      {label}
     </a>
   </Link>
+);
+
+/* The nav's links: the elections page, then services and prices (owner,
+   2026-11-26). */
+const NavLinks = ({ c, lang, page, place, className }: { c: Copy; lang: Lang; page: Page; place: string; className: string }) => (
+  <>
+    <PageNav path="/finnish-elections-2027" label={c.navElectionsPage} track="elections-page" lang={lang} current={page === "elections"} place={place} className={className} />
+    <PageNav path="/services-and-prices" label={c.navServicesPage} track="services-page" lang={lang} current={page === "services"} place={place} className={className} />
+  </>
 );
 
 const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: (p: Page) => void }) => {
@@ -272,10 +282,11 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
       </span>
     </button>
     <div className="flex items-center gap-6">
-      {/* One link, to the elections page (owner, 2026-11-25; was "Palvelut",
-          to the offer, 2026-11-16; "Tausta" hidden, its page kept). */}
-      <nav className="hidden gap-5 text-nav sm:flex">
-        <ElectionsNav c={c} lang={lang} current={page === "elections"} place="nav" className="" />
+      {/* The elections page and services and prices (owner, 2026-11-26; was
+          the elections page alone, 2026-11-25; "Palvelut" to the offer,
+          2026-11-16; "Tausta" hidden, its page kept). */}
+      <nav className="hidden gap-6 text-nav sm:flex">
+        <NavLinks c={c} lang={lang} page={page} place="nav" className="" />
       </nav>
       {/* On phones the languages move into the menu, so the header keeps
           one row (2026-11-16). */}
@@ -294,7 +305,7 @@ const B3Header = ({ c, lang, page, go }: { c: Copy; lang: Lang; page: Page; go: 
     </div>
     {menu && (
       <nav className="absolute inset-x-0 top-full border-b border-rule bg-paper px-5 pb-5 pt-2 sm:hidden">
-        <ElectionsNav c={c} lang={lang} current={page === "elections"} place="menu" className="block py-2 type-sub" />
+        <NavLinks c={c} lang={lang} page={page} place="menu" className="block py-2 type-sub" />
         <div className="mt-3">
           <LangSwitch lang={lang} />
         </div>
@@ -965,12 +976,10 @@ const SAMPLE = {
   ],
 };
 
-/* What a measurement looks like, under the offer's three steps. Held with
-   the header and the steps as one piece, like the long tail and the election
-   box (owner, 2026-11-15): the box rises closed under the still steps, the
-   piece moves up until the box is centred, the box opens, its bars draw one
-   by one, then it grows to show the questions, whose named squares turn
-   ink. Each bar is its count out of `SAMPLE.answers` (owner, 2026-11-13). */
+/* What a measurement looks like, under the offer's three steps on the
+   services page (owner, 2026-11-26; was on Home): held while its bars draw
+   one by one, then the questions' named squares turn ink. Each bar is its
+   count out of `SAMPLE.answers` (owner, 2026-11-13). */
 const Sample = ({ c }: { c: Copy }) => {
   const s = c.visibility.sample;
   const rows = SAMPLE.top.length + 1;
@@ -988,16 +997,10 @@ const Sample = ({ c }: { c: Copy }) => {
   const hits = SAMPLE.questions.flat().filter(Boolean).length;
   return (
     <>
-      {/* The three things Josua does, under the section's header and a
-          quiet label spaced like the next step's (owner, 2026-11-15). Its
-          own held section, apart from the weekly example (owner, 2026-11-15;
-          the example rose under the steps as one piece). */}
-      <OfferSection c={c} />
-
       {/* The weekly example as its own section like the election example,
           the whole report open before its animations start (owner,
           2026-11-15; was a box that rose under the steps and opened). */}
-      <section data-track-section="weekly" className={SECTION_GAP}>
+      <section data-track-section="weekly">
         <Pinned length={WEEKLY_HOLD}>
           {(p) => {
             const p1 = seg(p, 0.1, 0.45);
@@ -1240,7 +1243,6 @@ const VisibilitySection = ({ c }: { c: Copy }) => {
         </Pinned>
       </section>
 
-      <Sample c={c} />
       </div>
     </Band>
   );
@@ -1361,6 +1363,42 @@ const B3Elections = ({ c }: { c: Copy }) => {
   );
 };
 
+/* Services and prices (owner, 2026-11-26; was the offer and the weekly
+   example on Home): the offer as a still first screen, its header the
+   page's h1 and its caps label black at once; then the weekly example,
+   held while it animates, the weekly instructions and the button; then
+   Yhteystiedot. */
+const B3Services = ({ c }: { c: Copy }) => {
+  // Opened from the nav, start at the top at once (as B3Elections).
+  useBrowserLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, []);
+  const w = c.visibility.sample.weekly;
+  return (
+    <>
+      <div className="flex min-h-[calc(100svh-9rem)] flex-col justify-center py-16">
+        <section id={SERVICES_ID} data-track-section="first-screen" className="mx-page w-column align-page">
+          <h1 className="type-h1-long">{w.lead}</h1>
+          <div className="mt-6 mb-4 sm:mt-14 sm:mb-5">
+            <Caps className="!text-ink">{w.label}</Caps>
+          </div>
+          <B3Steps items={w.steps} />
+        </section>
+      </div>
+
+      <Band className="pb-24 sm:pb-32">
+        <div className="mx-page w-column align-page">
+          <Sample c={c} />
+        </div>
+      </Band>
+
+      <Band className="!pb-0">
+        <ContactCentred c={c} />
+      </Band>
+    </>
+  );
+};
+
 const B3Case = ({ c }: { c: Copy }) => {
   const cs = c.caseStudy;
   const client = c.clients.find((cl) => cl.findings);
@@ -1404,7 +1442,8 @@ const VariantB3 = ({ c, lang, route }: { c: Copy; lang: Lang; route?: Route }) =
       {page === "case" && <B3Case c={c} />}
       {page === "privacy" && <B3Privacy c={c} />}
       {page === "elections" && <B3Elections c={c} />}
-      <Footer c={c} places close={page === "home" || page === "elections"} />
+      {page === "services" && <B3Services c={c} />}
+      <Footer c={c} places close={page === "home" || page === "elections" || page === "services"} />
     </main>
   );
 };

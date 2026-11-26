@@ -5,12 +5,13 @@ import { COPY, LANGS, type Lang } from "./prototype/homepageCopy";
 // redirects to www.
 export const SITE_URL = "https://www.josuakiviranta.com";
 
-export type PagePath = "/" | "/privacy" | "/finnish-elections-2027";
+export type PagePath = "/" | "/privacy" | "/finnish-elections-2027" | "/services-and-prices";
 
 // Pages whose address is translated (owner, 2026-11-25): the page file's
 // path is the English one; next.config.js rewrites the others to it.
 const TRANSLATED: Partial<Record<PagePath, Record<Lang, string>>> = {
   "/finnish-elections-2027": { en: "/finnish-elections-2027", fi: "/eduskuntavaalit-2027", it: "/elezioni-finlandesi-2027" },
+  "/services-and-prices": { en: "/services-and-prices", fi: "/palvelut-ja-hinnat", it: "/servizi-e-prezzi" },
 };
 
 // The page's path in `lang` without the language prefix.
@@ -82,8 +83,9 @@ export const SiteHead = ({ lang, path }: { lang: Lang; path: PagePath }) => {
     "/": `Josua Kiviranta — ${role}`,
     "/privacy": `${c.privacy.title} — Josua Kiviranta`,
     "/finnish-elections-2027": `${c.elections.headTitle} — Josua Kiviranta`,
+    "/services-and-prices": `${c.services.headTitle} — Josua Kiviranta`,
   }[path];
-  const description = { "/": SEARCH_DESCRIPTION[lang], "/privacy": c.privacy.intro, "/finnish-elections-2027": c.elections.lead }[path];
+  const description = { "/": SEARCH_DESCRIPTION[lang], "/privacy": c.privacy.intro, "/finnish-elections-2027": c.elections.lead, "/services-and-prices": c.services.lead }[path];
   const url = `${SITE_URL}${localePath(lang, path)}`;
   return (
     <Head>

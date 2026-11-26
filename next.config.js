@@ -18,6 +18,7 @@ const old = (query, destination) =>
 // it, and the English path under that language redirects to its own.
 const translated = [
   { page: "/finnish-elections-2027", fi: "/eduskuntavaalit-2027", it: "/elezioni-finlandesi-2027" },
+  { page: "/services-and-prices", fi: "/palvelut-ja-hinnat", it: "/servizi-e-prezzi" },
 ];
 
 const nextConfig = {

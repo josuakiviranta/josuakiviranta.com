@@ -47,8 +47,7 @@ export type Copy = {
      of them each AI left unnamed in its answers to the theme's questions
      (`missed`: the AI, its words and the count, shown as a big "n / of");
      the questions' wording stays unshown (owner, 2026-11-25). `offer` replaces
-     the main page's priced steps (owner, 2026-11-25). `link` is the main
-     page's line under the election example. */
+     the main page's priced steps (owner, 2026-11-25). */
   elections: {
     headTitle: string;
     lead: string;
@@ -75,6 +74,10 @@ export type Copy = {
   /* The nav's one link, to the elections page (owner, 2026-11-25; was
      `navServices`, to the offer). */
   navElectionsPage: string;
+  /* The nav's link to the services page and that page's head (owner,
+     2026-11-26); its words are `visibility.sample` (weekly, guide). */
+  navServicesPage: string;
+  services: { headTitle: string; lead: string };
   /* The sales section under the first screen (owner, 2026-11-13; was the
      AI-visibility service page). `request.label` is the booking button's
      label. For anyone, companies too. */
@@ -219,6 +222,11 @@ export const COPY: Record<Lang, Copy> = {
     ],
     backgroundHeading: "Background",
     navElectionsPage: "Finnish elections 2027",
+    navServicesPage: "Services and prices",
+    services: {
+      headTitle: "Services and prices: visibility in AI answers",
+      lead: "Josua Kiviranta: industry analysis and consultation €90 / hour + VAT, continuous measurement of visibility in AI answers €190 / month + VAT.",
+    },
     visibility: {
       summary: "If AI can’t find you, it recommends your rival.",
       measured: {
@@ -363,6 +371,11 @@ export const COPY: Record<Lang, Copy> = {
     ],
     backgroundHeading: "Tausta",
     navElectionsPage: "Eduskuntavaalit 2027",
+    navServicesPage: "Palvelut ja hinnat",
+    services: {
+      headTitle: "Palvelut ja hinnat: näkyvyys tekoälyn vastauksissa",
+      lead: "Josua Kiviranta: toimiala-analyysi ja konsultointi 90 € / h + alv, näkyvyyden jatkuva mittaus tekoälyn vastauksissa 190 € / kk + alv.",
+    },
     visibility: {
       summary: "Jos tekoäly ei löydä sinua, se suosittelee kilpailijaasi.",
       measured: {
@@ -507,6 +520,11 @@ export const COPY: Record<Lang, Copy> = {
     ],
     backgroundHeading: "Formazione ed esperienza",
     navElectionsPage: "Elezioni finlandesi 2027",
+    navServicesPage: "Servizi e prezzi",
+    services: {
+      headTitle: "Servizi e prezzi: visibilità nelle risposte dell’IA",
+      lead: "Josua Kiviranta: analisi di settore e consulenza 90 € / ora + IVA, misurazione continua della visibilità nelle risposte dell’IA 190 € / mese + IVA.",
+    },
     visibility: {
       summary: "Se l’IA non ti trova, raccomanda il tuo rivale.",
       measured: {

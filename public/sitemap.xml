@@ -63,4 +63,25 @@
     <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/eduskuntavaalit-2027"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/elezioni-finlandesi-2027"/>
   </url>
+  <url>
+    <loc>https://www.josuakiviranta.com/services-and-prices</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/services-and-prices"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/palvelut-ja-hinnat"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/servizi-e-prezzi"/>
+  </url>
+  <url>
+    <loc>https://www.josuakiviranta.com/fi/palvelut-ja-hinnat</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/services-and-prices"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/palvelut-ja-hinnat"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/servizi-e-prezzi"/>
+  </url>
+  <url>
+    <loc>https://www.josuakiviranta.com/it/servizi-e-prezzi</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.josuakiviranta.com/services-and-prices"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://www.josuakiviranta.com/fi/palvelut-ja-hinnat"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.josuakiviranta.com/it/servizi-e-prezzi"/>
+  </url>
 </urlset>
